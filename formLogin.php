@@ -8,8 +8,8 @@
       @include('modalinstrucc.php')
     ?>
 
-    <script src="/js/validar.js"></script> 
-     
+    <script src="/js/validar.js"></script>
+
   </head>
   <body>
   <figure>
@@ -32,7 +32,7 @@
                       <button type="submit" class="btn btn-primary">
                        </i>Iniciar Sesión
                       </button>
-                    </div>  
+                    </div>
                   </div>
                 </form>
               </div>
