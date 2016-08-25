@@ -1,6 +1,6 @@
 <?php
 session_start();
 session_destroy();
-header("location:/formLogin.php");
+header("location:../Vistas/formLogin.php");
 exit();
 ?>

@@ -1,11 +1,11 @@
 
 
-<link href="css/global.css" rel="stylesheet">
+<link href="../source/css/global.css" rel="stylesheet">
 
 
-<script type="text/javascript" src="source/jquery-1.10.1.min.js"></script> 
-<script type="text/javascript" src="source/jquery.fancybox.js?v=2.1.5"></script> 
-<link rel="stylesheet" type="text/css" href="source/jquery.fancybox.css?v=2.1.5" media="screen" /> 
+<script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
      <script type="text/javascript">
       $(document).ready(function() {
@@ -182,7 +182,7 @@
 
 
       });
-    </script> 
+    </script>
 
      <style type="text/css">
       .fancybox-custom .fancybox-skin {
@@ -190,4 +190,4 @@
       }
 
 
-    </style> 
+    </style>

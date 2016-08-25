@@ -1,3 +1,7 @@
+<?php
+session_start();
+session_destroy();
+ ?>
 <!doctype html>
 <html lang="es">
   <head>
@@ -8,23 +12,24 @@
       @include('modalinstrucc.php')
     ?>
 
-    <script src="/js/validar.js"></script>
+    <script src="../source/js/validar.js"></script>
 
   </head>
   <body>
   <figure>
-    <img src="img/banner.png" alt="banner juego autoevaluación" width="800">
+    <img src="../source/img/banner.png" alt="banner juego autoevaluación" width="800">
   </figure>
 
   <section>
-    <img src="img/pje1.png" alt="Personaje juego">
+    <img src="../source/img/pje1.png" alt="Personaje juego">
+
     <div class="container">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
           <div class="panel panel-default">
             <div class="panel-heading headline1">Comienza Aquí:</div>
               <div class="panel-body">
-                <form action="login.php" method="post">
+                <form action="../Controlador/login.php" method="post">
                   <div class="form-group">
                     <div class="col-md-6">
                       <input type="email" class="form-control" name="usuario" id="usuario" placeholder="Correo (sena o misena)" size="26" required="">
@@ -40,6 +45,7 @@
         </div>
       </div>
     </div>
+
   </section>
 
   <?php

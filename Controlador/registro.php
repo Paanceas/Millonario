@@ -2,8 +2,7 @@
 
 include 'config.php';
 
-function eje()
-{
+
   $sql="SELECT * from tipo_identificacion";
   $resultado = $conexion->query($sql);
   if ($resultado->num_rows > 0)
@@ -18,7 +17,7 @@ function eje()
   {
     echo "No hay resultados";
   }
-}
+
 
 
 
