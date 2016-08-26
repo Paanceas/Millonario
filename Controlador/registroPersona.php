@@ -4,9 +4,13 @@ session_start();
 
 include "../Conexion/config.php";
 
+$nombres=$_POST['nombres'];
+$documento=$_POST['documento'];
+// $tipoIdentificacion=$_POST['tipoIdentificacion'];
 $correo=$_POST['correo'];
 $clave=$_POST['clave'];
 $confirm=$_POST['confirm'];
+
 
 $sql="SELECT * from tipo_identificacion";
 $resultado = $conexion->query($sql);
@@ -15,7 +19,7 @@ if ($resultado->num_rows > 0)
   $tipoIdentificacion="";
   while ($row = $resultado->fetch_array(MYSQLI_ASSOC))
   {
-    $tipoIdentificacion .=" <option value='".$row['id_tipo_identificacion']."'>".$row['tipo_identificacion']."</option>";
+    $tipoIdentificacion .=" <option name='tipoIdentificacion' value='".$row['id_tipo_identificacion']."'>".$row['tipo_identificacion']."</option>";
   }
 }
 else
@@ -38,9 +42,9 @@ else
   echo "No hay resultados";
 }
 
-$conexion = mysqli_connect($server, $usuario, $contrasena, $bd);
-    if(isset($correo) && isset($clave) && isset($confirm)){
-      if(!empty($correo) || !empty($clave) || !empty($confirm)){
+  $conexion = mysqli_connect($server, $usuario, $contrasena, $bd);
+    if(isset($nombres) && isset($documento) && isset($correo) && isset($clave) && isset($confirm)){
+      if(!empty($nombres) || !empty($documento) || !empty($correo) || !empty($clave) || !empty($confirm)){
 
       if($clave==$confirm){
 
@@ -52,16 +56,28 @@ $conexion = mysqli_connect($server, $usuario, $contrasena, $bd);
         }
 
 
-      $sql = "INSERT INTO usuario (id_roll, correo, clave) VALUES(2, '$correo', '$clave');";
+      $registroUsuario = "INSERT INTO usuario (id_roll, correo, clave) VALUES(2, '$correo', '$clave');";
       mysqli_set_charset($conexion, "utf8");
-      if(mysqli_query($conexion, $sql)){
-        echo "Datos Insertados Correctamente.";
+      if(mysqli_query($conexion, $registroUsuario)){
+
+        $ultimoUsuario="SELECT max(id_usuario) FROM usuario";
+        $verificaUsu=mysqli_query($conexion, $ultimoUsuario);
+
+        if(mysqli_num_rows($verificaUsu)>0){
+          $registroAprendiz = "INSERT INTO aprendiz (id_usuario, nombres, documento, id_tipo_identificacion) VALUES ('$resultadoUltUsu', '$nombres', '$documento', 1);";
+
+        }else{
+          die("Fallo en la inserción de Datos.".mysqli_error($conexion));
+        }
+
       }else{
         die("Fallo en la inserción de Datos.".mysqli_error($conexion));
       }
     }else{
       echo "Las claves no coinciden";
     }
+
+
   }else{
     echo "Llene los campos";
   }
