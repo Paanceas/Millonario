@@ -7,7 +7,7 @@
     <?php
       @include('modalinstrucc.php');//Diseño
       @include('../Conexion/config.php');//Conexion
-      @include('../Controlador/registro.php');
+      @include('../Controlador/registroPersona.php');
 			require('../Controlador/clases/mensajes.php');
     ?>
 	</head>
@@ -28,7 +28,7 @@
 
               <section>
                 <h1>DATOS DE INGRESO</h1>
-                <input type="text" placeholder="Nombre Completo" class="inp02" name="nombres" id="nombres">
+                <input type="text" placeholder="Nombre Completo" class="inp02" name="nombres" id="nombres" >
                 <br>
                 <select name="tipoIdentificacion" id ="tIdentificacion" class="inp02" required="">
                   <option value="null">Seleccione</option>
@@ -41,11 +41,7 @@
                   <?php echo $programaFormacion; ?>
                 </select>
 
-                <input type="email" placeholder="Correo Sena" name="correo" class="inp02" id="correo" value="<?php
-								if (isset($_POST['correo'])) {
-									echo $correo;
-								}
-								?>">
+                <input type="email" placeholder="Correo Sena" name="correo" class="inp02" id="correo">
                 <input type="password" placeholder="Contraseña" name="clave" class="inp02" id="clave">
 
                 <input type="password" placeholder="Confirme Contraseña" name="confirm" value="" class="inp02" id="clave2">
