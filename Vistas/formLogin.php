@@ -8,9 +8,14 @@ session_destroy();
     <title>Juego Autoevaluación</title>
     <meta charset="utf-8">
     <?php
-       @include('modalinstrucc.php')
+       @include('modalinstrucc.php');
+       require('../Controlador/clases/MensajesLogin.php');
+
      ?>
     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+
+      <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
+
     <script src="../source/js/validar.js"></script>
 <style>
 body{
@@ -45,19 +50,33 @@ body{
   <figure>
     <img src="../source/img/banner.png" alt="banner juego autoevaluación" width="800">
   </figure>
+  <div class="container animated zoomIn" style="width: 400px;">
+    <?php
+    if(isset($_GET["MSN"])){
+      MensajesLogin::mensajesIngreso($_GET["MSN"]);
+    }
+     ?>
+  </div>
   <div class="mitad_pa">
     <!-- <img src="../source/img/pje1.png" alt="Personaje juego"> -->
 
-    <form action="../Controlador/login.php" method="post" role="form" class="form23">
+
+    <form action="../Controlador/login.php" method="post" role="form" class="form23 animated zoomInDown">
+
           <div class="form-group">
 
               <input type="email" class="form-control" name="usuario" id="usuario" placeholder="Correo (sena o misena)" size="26" required=""><br/>
               <input type="password" class="form-control" name="contrasena" id="contrasena" title="Contraseña" placeholder="Contraseña" size="26" required="" min="6"><br/><br/>
               <button type="submit" class="btn btn-sucess">
-           </i>Iniciar Sesión
-          </button>
+                <span class="glyphicon glyphicon-log-in"></span>Iniciar Sesión
+              </button>
+              <button type="button" onclick = "location='formRegistro.php'" class="btn btn-sucess">
+                <span class="glyphicon glyphicon-user"></span>Registrarse
+              </button>
 
       </div>
+
+
     </form>
   </div>
 
