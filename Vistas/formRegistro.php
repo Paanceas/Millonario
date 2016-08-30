@@ -38,7 +38,7 @@
                 <input type="text" placeholder="Número Documento" name="documento" class="inp02" size="40">
                 <select name="programa" id ="programa" class="inp02" required="">
                   <option value="null">Seleccione programa</option>
-                  <?php echo $programaFormacion; ?>
+                  <?php echo $programaFormacionSelect; ?>
                 </select>
 
                 <input type="email" placeholder="Correo Sena" name="correo" class="inp02" id="correo">

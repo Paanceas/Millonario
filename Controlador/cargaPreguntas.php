@@ -1,7 +1,6 @@
 <?php
 
 include "../Conexion/config.php";
-
 function randomNum(){
     $num = range(1, 4);
     shuffle($num);
@@ -12,27 +11,46 @@ function randomNum(){
 }
 
 
-$sql       = "SELECT * from pregunta";
-mysqli_set_charset($conexion, "utf8");
+// $sql       = "SELECT * from pregunta";
+// mysqli_set_charset($conexion, "utf8");
+// $resultado = $conexion->query($sql);
+// if ($resultado->num_rows > 0) {
+//     $preguntas = "";
+//
+//     $row = $resultado->fetch_array(MYSQLI_ASSOC);
+//     $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $row['preguntas'] . "</span><br>";
+//
+// }
 
-$resultado = $conexion->query($sql);
+//Captura el id de la pregunta
+// $sql       = "SELECT id_pregunta from pregunta";
+// mysqli_set_charset($conexion, "utf8");
+// $resultado = $conexion->query($sql);
+// if ($resultado->num_rows > 0) {
+//
+//     $row = $resultado->fetch_array(MYSQLI_ASSOC);
+//         $preguntaID = $row['id_pregunta'];
+//
+// }
 
-if ($resultado->num_rows > 0) {
-    $preguntas = "";
-    while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
-        $preguntas .= " <option value='" . $row['id_programa'] . "'>" . $row['preguntas'] . "</option>";
-    }
-}
 
 
-$consultaRespuesta = "SELECT * from respuesta";
+
+$consultaRespuesta = "SELECT * from respuesta r JOIN pregunta p ON p.id_pregunta = r.id_pregunta ";
 $resultado         = $conexion->query($consultaRespuesta);
 mysqli_set_charset($conexion, "utf8");
 if ($resultado->num_rows > 0) {
+
+
     $respuesta = "";
     //==
     $cont      = 0;
+
     while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
+      $preguntas = "";
+      $row = $resultado->fetch_array(MYSQLI_ASSOC);
+      $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $row['preguntas'] . "</span><br>";
+
         $arrayNumeros = array();
         $arrayNumeros = randomNum();
         foreach ($arrayNumeros as $value) {

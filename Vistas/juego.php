@@ -24,8 +24,13 @@ include "modalinstrucc.php";
 	<button type="submit" onclick = "location='../Controlador/logout.php'" class="btn btn-primary" >Salir</button>
 
 
-<div><?php echo $preguntas; ?></div>
-<div><?php echo $respuesta; ?></div>
+<div>
+<table border=2>
+<th><?php echo $preguntas; ?>
+  <td><?php echo $respuesta; ?></td>
+</th>
+</table>
+
 
 </body>
 </html>

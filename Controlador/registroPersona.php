@@ -2,7 +2,7 @@
 //INICIAR SESION
 // session_start();
 include "../Conexion/config.php";
-
+//Carga select tipo identificacion
 $sql       = "SELECT * from tipo_identificacion";
 $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
@@ -11,18 +11,22 @@ if ($resultado->num_rows > 0) {
         $tipoIdentificacionSelect .= " <option value='" . $row['id_tipo_identificacion'] . "'>" . $row['tipo_identificacion'] . "</option>";
     }
 } else {
-    echo "No hay resultados";
+    $tipoIdentificacionSelect .= "<option value='null'>No hay registros</option>";
 }
+
+//Carga select programa
 $sql       = "SELECT * from programa order by programas asc";
 $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
-    $programaFormacion = "";
+    $programaFormacionSelect = "";
     while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
-        $programaFormacion .= " <option value='" . $row['id_programa'] . "'>" . $row['programas'] . "</option>";
+        $programaFormacionSelect .= " <option value='" . $row['id_programa'] . "'>" . $row['programas'] . "</option>";
     }
 } else {
-    echo "No hay resultados";
+  $programaFormacionSelect .= "<option value='null'>No hay registros</option>";
+
 }
+
 /*----------------------------------------------------------------------------*/
 if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['correo']) && isset($_POST['tipoIdentificacion']) && isset($_POST['programa']) && isset($_POST['clave']) && isset($_POST['confirm'])) {
     $nombres            = $_POST['nombres'];
@@ -34,12 +38,12 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
     $confirm            = $_POST['confirm'];
 
     //Validacion con Expresiones regulares
-    $patronNombres   = "/^([a-zA-Z Ññáéíóú.]{2,60})$/";
+    $patronNombres   = "/^([a-zA-Z ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.]{2,60})$/";
     $patronDocumento = "/^[0-9]{6,12}+$/";
     $patronCorreo    = "/^([a-zA-Z0-9_.+-])*\@(([misena-sena]+)\.)+([edu])+\.([co])+$/";
     $patronClave     = "/^[^ ][0-9a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.,¡!¿?\s]{5,60}+$/";
-    $patronTI        = "/^[0-9]{1,10}$/";
-    $patronPrograma  = "/^[0-9]{1,10}$/";
+    $patronTI        = "/^[0-9]{1,10}+$/";
+    $patronPrograma  = "/^[0-9]{1,10}+$/";
 
     //Valida todos lo campos
     if (empty($nombres) && empty($documento) && empty($correo) && !empty($tipoIdentificacion) && empty($programa) && empty($clave) && empty($confirm)) {
