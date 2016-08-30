@@ -6,14 +6,14 @@ include "../Conexion/config.php";
 $sql       = "SELECT * from tipo_identificacion";
 $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
-    $tipoIdentificacion = "";
+    $tipoIdentificacionSelect = "";
     while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
-        $tipoIdentificacion .= " <option value='" . $row['id_tipo_identificacion'] . "'>" . $row['tipo_identificacion'] . "</option>";
+        $tipoIdentificacionSelect .= " <option value='" . $row['id_tipo_identificacion'] . "'>" . $row['tipo_identificacion'] . "</option>";
     }
 } else {
     echo "No hay resultados";
 }
-$sql       = "SELECT * from programa";
+$sql       = "SELECT * from programa order by programas asc";
 $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
     $programaFormacion = "";
@@ -34,7 +34,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
     $confirm            = $_POST['confirm'];
 
     //Validacion con Expresiones regulares
-    $patronNombres   = "/^([a-zA-Z ñáéíóú.]{2,60})$/";
+    $patronNombres   = "/^([a-zA-Z Ññáéíóú.]{2,60})$/";
     $patronDocumento = "/^[0-9]{6,12}+$/";
     $patronCorreo    = "/^([a-zA-Z0-9_.+-])*\@(([misena-sena]+)\.)+([edu])+\.([co])+$/";
     $patronClave     = "/^[^ ][0-9a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.,¡!¿?\s]{5,60}+$/";
@@ -100,7 +100,9 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
         } else {
             header("location:../Vistas/formRegistro.php?MSN=5.1");
         }
-    } else {
+    }
+    //Termina Validacion de campos y expresiones regulares
+    else {
         //Confirma clave
         if ($clave == $confirm) {
 

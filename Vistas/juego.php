@@ -20,10 +20,12 @@ include "modalinstrucc.php";
 </head>
 <body>
 <h1>Bienvenido Aprendiz</h1>
-<form action="../Controlador/logout.php">
-	<button type="submit" class="btn btn-primary" >Salir</button>
-</form>
-<div><?php echo $tipoIdentificacion; ?></div>
+
+	<button type="submit" onclick = "location='../Controlador/logout.php'" class="btn btn-primary" >Salir</button>
+
+
+<div><?php echo $preguntas; ?></div>
+<div><?php echo $respuesta; ?></div>
 
 </body>
 </html>

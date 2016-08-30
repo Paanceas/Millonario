@@ -31,13 +31,13 @@
                 <input type="text" placeholder="Nombre Completo" class="inp02" name="nombres" id="nombres">
                 <br>
                 <select name="tipoIdentificacion" id ="tIdentificacion" class="inp02" required="">
-                  <option value="null">Seleccione</option>
-                  <?php echo $tipoIdentificacion; ?>
+                  <option value="null">Seleccione tipo identificación</option>
+                  <?php echo $tipoIdentificacionSelect; ?>
                 </select>
 
                 <input type="text" placeholder="Número Documento" name="documento" class="inp02" size="40">
                 <select name="programa" id ="programa" class="inp02" required="">
-                  <option value="null">Seleccione</option>
+                  <option value="null">Seleccione programa</option>
                   <?php echo $programaFormacion; ?>
                 </select>
 

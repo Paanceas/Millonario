@@ -15,7 +15,7 @@ if (mysqli_num_rows($resultado) > 0) {
     if ($row['id_roll'] == 1) {
         session_start();
         $_SESSION['validacion'] = 1;
-        $_SESSION['id_roll']=1;
+        $_SESSION['id_roll']    = 1;
         header("location:../Vistas/admin.php");
     } else if ($row['id_roll'] == 2) {
         session_start();
