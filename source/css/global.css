@@ -217,6 +217,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a3ccc6', end
   right: -26px;
 
 }
+
+.btn-primary2Volver{
+  background:#59b548;
+  border:3px #59b548 outset;
+  padding: 8px;
+  color:#fff;
+  font-size: 15px;
+  //float:left;
+  //margin:6px 0 0 10px;
+  position: relative;
+  bottom: 190px;
+  right: -50px;
+
+}
 .btn-primary3{
   background:#59b548;
   border:3px #59b548 outset;
