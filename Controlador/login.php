@@ -21,7 +21,7 @@ if (mysqli_num_rows($resultado) > 0) {
         session_start();
         $_SESSION['validacion'] = 1;
 
-        header("location:../Vistas/juego.php");
+        header("location:cargaPreguntas.php");
     }
 } else {
     session_unset();
