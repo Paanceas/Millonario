@@ -1,8 +1,8 @@
 <?php
-//INICIAR SESION
-// session_start();
 include "../Conexion/config.php";
-//Carga select tipo identificacion
+function TipoIdentificacionCombobox(){
+  //Carga select tipo identificacion
+include "../Conexion/config.php";
 $sql       = "SELECT * from tipo_identificacion";
 $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
@@ -13,8 +13,13 @@ if ($resultado->num_rows > 0) {
 } else {
     $tipoIdentificacionSelect .= "<option value='null'>No hay registros</option>";
 }
+return $tipoIdentificacionSelect;
+}
 
-//Carga select programa
+function ProgramaFormacionCombobox(){
+  //Carga select programa
+
+  include "../Conexion/config.php";
 $sql       = "SELECT * from programa order by programas asc";
 $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
@@ -24,7 +29,8 @@ if ($resultado->num_rows > 0) {
     }
 } else {
   $programaFormacionSelect .= "<option value='null'>No hay registros</option>";
-
+}
+return $programaFormacionSelect;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +158,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
         }
         mysqli_close($conexion);
     }
-    // header('location:../Vistas/formRegistro.php');
 }
+
 
 ?>

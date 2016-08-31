@@ -32,13 +32,14 @@
                 <br>
                 <select name="tipoIdentificacion" id ="tIdentificacion" class="inp02" required="">
                   <option value="null">Seleccione tipo identificación</option>
-                  <?php echo $tipoIdentificacionSelect; ?>
+                  <?php
+									echo TipoIdentificacionCombobox();?>
                 </select>
 
                 <input type="text" placeholder="Número Documento" name="documento" class="inp02" size="40">
                 <select name="programa" id ="programa" class="inp02" required="">
                   <option value="null">Seleccione programa</option>
-                  <?php echo $programaFormacionSelect; ?>
+                  <?php echo ProgramaFormacionCombobox(); ?>
                 </select>
 
                 <input type="email" placeholder="Correo Sena" name="correo" class="inp02" id="correo">
