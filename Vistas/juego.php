@@ -1,7 +1,7 @@
 <?php
 session_start();
-if($_SESSION['validacion']==1){
-
+if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
+$usuario=$_SESSION['id_usuario'];
 
  ?>
 <!DOCTYPE html>
@@ -32,19 +32,14 @@ include "modalinstrucc.php";
 </tr>
 </th>
 </table>
-<input type="hidden" id="respCorrec" name="respCorrec"/>
+<input type="hidden" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
+<input type="hidden" name="respSeleccionada" id="respSeleccionada" />
 </form>
 <script type="text/javascript">
-
-  var hiddenVar = document.getElementById('respCorrec');
-
-
   function vp(num) {
-    if (num == 1) {
-      hiddenVar.value = num;
-    }else {
-      hiddenVar.value = 2;
-    }
+
+    $selectAnswer = document.getElementById("respSeleccionada");
+    $selectAnswer.value = num;
     switch (num) {
       case 1:
         alert ('muy bien esa es la correcta');

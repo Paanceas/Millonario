@@ -10,16 +10,20 @@ $resultado  = mysqli_query($conexion, $sql);
 $row        = mysqli_fetch_array($resultado);
 if (mysqli_num_rows($resultado) > 0) {
     session_start();
+    $_SESSION['id_usuario'] = $row['id_usuario'];
     $_SESSION['usuario']    = $usuario;
     $_SESSION['contrasena'] = $contrasena;
     if ($row['id_roll'] == 1) {
         session_start();
+        $_SESSION['id_usuario'] = $row['id_usuario'];
         $_SESSION['validacion'] = 1;
         $_SESSION['id_roll']    = 1;
         header("location:../Vistas/admin.php");
     } else if ($row['id_roll'] == 2) {
         session_start();
         $_SESSION['validacion'] = 1;
+        $_SESSION['id_usuario'] = $row['id_usuario'];
+
 
         header("location:cargaPreguntas.php");
     }
