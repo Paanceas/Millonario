@@ -1,7 +1,9 @@
 <?php
 session_start();
 include "../Conexion/config.php";
-
+if ($_SESSION['id_aprendiz'] > 0); {
+    $usuario = $_SESSION['id_aprendiz'];
+}
 function randomNum()
 {
     $num = range(1, 4);
@@ -15,8 +17,8 @@ function randomNum()
 function jugar($respuesta, $validarRes)
 {
     include "../Conexion/config.php";
-    if ($_SESSION['id_usuario'] > 0); {
-        $usuario = $_SESSION['id_usuario'];
+    if ($_SESSION['id_aprendiz'] > 0); {
+        $usuario = $_SESSION['id_aprendiz'];
     }
     //Si es correcta actualiza puntaje
     if($validarRes==1){
@@ -64,9 +66,7 @@ if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada']) ) {
 $valor = jugar($cargarLaPregunta, $validarRespuesta);
 
 if ($valor > 0) {
-  if ($_SESSION['id_usuario'] > 0); {
-      $usuario = $_SESSION['id_usuario'];
-  }
+
 
 
   $consultaRespuesta = "SELECT * from respuesta r JOIN pregunta p ON p.id_pregunta = r.id_pregunta where id_respuesta=$valor";
@@ -99,16 +99,16 @@ if ($valor > 0) {
           foreach ($arrayNumeros as $value) {
               switch ($value) {
                   case '1':
-                      $respuesta .= "<td><button name='r1' id='r1' onclick='vp(1)'>" . $row['respuesta1'] . "</button></td>";
+                      $respuesta .= "<td><button name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button></td>";
                       break;
                   case '2':
                       $respuesta .= "<td><button name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button></td>";
                       break;
                   case '3':
-                      $respuesta .= "<td><button name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td>";
+                      $respuesta .= "<td><button  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td>";
                       break;
                   case '4':
-                      $respuesta .= "<td><button name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button></td>";
+                      $respuesta .= "<td><button  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button></td>";
                       break;
               }
           }
@@ -121,10 +121,10 @@ if ($valor > 0) {
   header('location: ../Vistas/juego.php');
 
 }
-// else {
-  // header('location: ../Vistas/footer.php');
+else {
+  header('location: ../Vistas/admin.php');
 
-// }
+}
 }else {
   header('location: ../Vistas/finJuego.php');
 }

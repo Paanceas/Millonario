@@ -519,7 +519,29 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
   margin: 120px 0 0 20px;
 }
 
-.gameTime h2{
+.gameTimeJuego{
+  width: 400px;
+  height: 300px;
+  float: right;
+  position: relative;
+  margin: -320px 25% 0px 25%;
+}
+
+.picTimeJuego{
+  width:200px;
+  margin: 0px 0 0 0px;
+}
+
+.gameTimeJuego  h2{
+  position: absolute;
+  margin: -140px 20px 0px -20px;
+  left: 105px;
+  font-family: 'Metrophobic', Arial, serif;
+  color: #fff;
+  font-size: 40px;
+  background: #238276;
+}
+.gameTime  h2{
   position: absolute;
   top:360px;
   left: 105px;

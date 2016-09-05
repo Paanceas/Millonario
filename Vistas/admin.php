@@ -5,6 +5,8 @@ if ($_SESSION['validacion'] == 1) {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta content="charset=utf-8"/>
+
   <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
@@ -17,7 +19,28 @@ if ($_SESSION['validacion'] == 1) {
 ?>
    <title>Inicio</title>
 </head>
-<body>
+<!--Deshabiilita inspeccionar elemento <body> -->
+<script type="text/javascript">
+document.oncontextmenu=inhabilitar;
+//Deshabiilita clic derecho de toda la pagina
+document.onmousedown=anularBotonDerecho;
+document.oncontextmenu=new Function("return false");
+function inhabilitar(){
+   	alert ("Esta función está inhabilitada.\n\nPerdonen las molestias.")
+   	return false
+}
+function anularBotonDerecho(e) {
+ if (navigator.appName == 'Netscape'
+       && (e.which == 3 || e.which == 2)){
+   alert(sMensaje);
+   return false;
+ } else if (navigator.appName == 'Microsoft Internet Explorer'
+       && (event.button == 2)) {
+   alert(sMensaje);
+ }
+}
+</script>
+<body onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"">
   <!-- header barra de navegacion -->
   <nav class="navbar" style="background:#238276">
     <div class="container-fluid">
@@ -34,7 +57,10 @@ if ($_SESSION['validacion'] == 1) {
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <form class="navbar-form navbar-left" action="../Controlador/logout.php">
-           <button type="submit" class="btn btn-success" >Salir</button>
+
+           <button type="submit" class="btn btn-success" >
+            Salir <span class="glyphicon glyphicon-log-out"></span>
+           </button>
          </form>
         </ul>
       </div><!-- /.navbar-collapse -->
@@ -44,15 +70,15 @@ if ($_SESSION['validacion'] == 1) {
 
   <!-- contenido de la pagina -->
   <div class="contenidoPag">
-    <h1> HAGASE RICO XD XD XD </h1>
+    <h1> Quién quiere ser Millonario </h1>
     <div class="row">
       <div class="col-md-7">
         <div class="well bs-component">
           <form class="form-horizontal" action="../Controlador/cargaPreguntas.php" method="post">
             <fieldset>
-              <legend>Informacion</legend>
+              <legend>Información</legend>
               <p>
-                A continuacion encontraras una serie de preguntas el cual debes contestar de acuerdo a tu conocimiento, dale click en jugar y que comienze de juego XD
+                A continuación encontrarás una serie de preguntas el cual debes contestar de acuerdo a tu conocimiento, dale click en Jugar y buena suerte.
               </p>
              <div class="form-group">
                  <div class="col-lg-10 col-lg-offset-2">
@@ -77,13 +103,13 @@ if ($_SESSION['validacion'] == 1) {
           </thead>
           <tbody>
             <tr >
-             <td><?php echo "$puntaje"." pts"; ?></td>
+             <td><?php echo "$puntaje"." Pts"; ?></td>
              <td><?php echo "$preguntaCorrecta"; ?></td>
              <td><?php echo "$numPregun"; ?></td>
            </tr>
           </tbody>
         </table>
-        <h3>has respondido el: <?php echo ($preguntaCorrecta*100)/$numPregun."%";?> </h3>
+        <h3>Has respondido el: <?php echo ($preguntaCorrecta*100)/$numPregun."%";?> </h3>
         <div class="progress progress-striped active">
           <div class="progress-bar progress-bar-success" style="width: <?php echo ($preguntaCorrecta*100)/$numPregun?>%"></div>
         </div>

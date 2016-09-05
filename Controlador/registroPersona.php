@@ -143,9 +143,17 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                 //Obtiene el id del ultimo usuario
                 $id_usuario       = $ultimoUsuario->fetch_array(MYSQLI_NUM);
                 $registroAprendiz = "INSERT INTO aprendiz (id_usuario, id_tipo_identificacion, id_programa, nombres, documento) VALUES ($id_usuario[0], '$tipoIdentificacion', '$programa', '$nombres', '$documento');";
-                mysqli_set_charset($conexion, "utf8");
+                // mysqli_set_charset($conexion, "utf8");
                 if (mysqli_query($conexion, $registroAprendiz)) {
-                    header("location:../Vistas/formRegistro.php?MSN=ok");
+                  //Consulta ultimo aprendiz registrado
+                  $verificaAprendiz = "SELECT max(a.id_aprendiz) from aprendiz a";
+                  $ultimoAprendiz    = mysqli_query($conexion, $verificaAprendiz);
+                  $id_aprendiz       = $ultimoAprendiz->fetch_array(MYSQLI_NUM);
+                  //Registra el puntaje
+                  $validaPuntaje="INSERT INTO puntaje (id_aprendiz, puntajes, estado) VALUES($id_aprendiz[0], 0, 0)";
+                  $registroPuntaje=$conexion->query($validaPuntaje);
+
+                  header("location:../Vistas/formRegistro.php?MSN=ok");
                 } else {
                     header("location:../Vistas/formRegistro.php?MSN=error");
 

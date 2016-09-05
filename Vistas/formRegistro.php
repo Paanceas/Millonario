@@ -9,9 +9,29 @@
       @include('../Conexion/config.php');//Conexion
       @include('../Controlador/registroPersona.php');
 			require('../Controlador/clases/mensajes.php');
+
     ?>
 	</head>
-	<body>
+	<!--Deshabiilita inspeccionar elemento <body> -->
+  <script type="text/javascript">
+
+  //Deshabiilita clic derecho de toda la pagina
+  document.onmousedown=anularBotonDerecho;
+  document.oncontextmenu=new Function("return false");
+
+  function anularBotonDerecho(e) {
+   if (navigator.appName == 'Netscape'
+         && (e.which == 3 || e.which == 2)){
+     alert(sMensaje);
+     return false;
+   } else if (navigator.appName == 'Microsoft Internet Explorer'
+         && (event.button == 2)) {
+     alert(sMensaje);
+   }
+  }
+  </script>
+  <body onmousedown="anularBotonDerecho(event); oncontextmenu="return false"">
+
 
     <header></header>
       <figure><center><img src="../source/img/banner.png" alt="banner juego autoevaluación" width="500"></center></figuer>
