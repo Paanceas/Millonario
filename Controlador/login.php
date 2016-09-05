@@ -18,14 +18,25 @@ if (mysqli_num_rows($resultado) > 0) {
         $_SESSION['id_usuario'] = $row['id_usuario'];
         $_SESSION['validacion'] = 1;
         $_SESSION['id_roll']    = 1;
-        header("location:../Vistas/admin.php");
+        header("location:../Vistas/finJuego.php");
     } else if ($row['id_roll'] == 2) {
+        $user = $row['id_usuario'];
+        // consultar el aprendiz de la session
+        $sql = "SELECT a.id_aprendiz, a.nombres, p.programas FROM aprendiz a INNER JOIN programa p on p.id_programa = a.id_programa WHERE a.id_usuario = $user;";
+        $resultado  = mysqli_query($conexion, $sql);
+        $aprendizSession = mysqli_fetch_array($resultado);
+        // fin de la consulta del aprendiz
+
         session_start();
+
+        // asignacion de valores de la cosulta del aprendiz
+        $_SESSION['id_aprendiz'] = $aprendizSession['id_aprendiz'];
+        $_SESSION['nombreAprendiz'] = $aprendizSession['nombres'];
+        $_SESSION['programaAprendiz'] = $aprendizSession['programas'];
+        // fin asignacion de valores
         $_SESSION['validacion'] = 1;
-        $_SESSION['id_usuario'] = $row['id_usuario'];
-
-
-        header("location:cargaPreguntas.php");
+        $_SESSION['id_usuario'] = $user;
+        header("location:../Vistas/admin.php");
     }
 } else {
     session_unset();

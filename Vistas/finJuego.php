@@ -22,11 +22,18 @@ $usuario=$_SESSION['id_usuario'];
             </p>
         </div>
 
+        <a href="../Vistas/admin.php" class="opcion encorefois">
+          <p class="endTitle">
+              volver
+          </p>
+        </a>
+        
         <a href="../Controlador/logout.php" class="opcion encorefois">
           <p class="endTitle">
               Salir
           </p>
         </a>
+
 
       </article>
       <article class="gameTime">
@@ -45,8 +52,8 @@ $usuario=$_SESSION['id_usuario'];
 </html>
 <?php
 }else{
+  session_destroy();
   header('location:../Vistas/formLogin.php');
 }
-session_destroy();
 
 ?>

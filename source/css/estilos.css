@@ -1,0 +1,119 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Oxygen+Mono);
+body{
+  //background: #BDD3D9;
+  background: url(../img/fondo.png) fixed;
+
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#bdd3d9+32,ffffff+100 */
+//background: #bdd3d9 fixed; /* Old browsers */
+}
+.contenidoPag{
+  background: rgba(255, 255, 255, 0.53);
+  border-radius: 20px;
+  margin-left: 10%;
+  padding: 20px;
+  width: 80%;
+}
+.contenidoPag h1{
+  text-align: center;
+  padding: 10px 0;
+}
+
+ul li a{
+  color: #ffffff;
+}
+
+.opcion{
+  display: block;
+  width:356px;
+  height: 100px;
+  float: left;
+  margin: 20px 40px 0 0 ;
+  background: #238276;
+  /*box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);*/
+  border-radius: 5px;
+  box-sizing: border-box;
+  text-decoration: none;
+  padding:20px;
+  transition: all 0.2s;
+  /*cursor: pointer;*/
+  border:0;
+}
+.opcion{
+  position: relative;
+  display: block;
+  width:306px;
+  height: 100px;
+  float: left;
+  margin: 20px 40px 0 25px ;
+  background: #238276;
+  /*box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);*/
+  border-radius: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  padding:20px;
+  transition: all 0.2s;
+  /*cursor: pointer;
+  filter:drop-shadow(2px 2px 6px #000);
+  -webkit-filter:drop-shadow(2px 2px 6px #000);
+  -moz-filter:drop-shadow(2px 2px 6px #000);
+  -o-filter:drop-shadow(2px 2px 6px #000);*/
+}
+.opcion:before {
+   width: 0;
+   height: 0;
+   content: "";
+   position: absolute;
+   top: 0;
+   left: 306px;
+   border-top: 50px solid transparent;
+   border-bottom: 50px solid transparent;
+   border-left: 25px solid #238276;
+  }
+  .opcion:after {
+   width: 0;
+   height: 0;
+   content: "";
+   position: absolute;
+   bottom: 0;
+   left: -25px;
+   border-top: 50px solid transparent;
+   border-bottom: 50px solid transparent;
+   border-right: 25px solid #238276;
+
+}
+.opcion:hover{
+  filter:hue-rotate(40deg);
+  -webkit-filter:hue-rotate(40deg);
+  -moz-filter:hue-rotate(40deg);
+  -o-filter:hue-rotate(40deg);
+}
+.opcion p{
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+  color:#fff;
+}
+.fancybox-custom .fancybox-skin {
+  box-shadow: 0 0 50px #222;
+}
+
+footer {
+  background-color: #238276;
+  color: white;
+  padding: 1rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+}
+footer a{
+  color: white;
+  text-decoration: none;
+  font-size: 2em;
+  padding: 3px 20px;
+}
+footer a:hover{
+  color: white;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.74);
+}

@@ -23,8 +23,8 @@ function jugar($respuesta, $validarRes)
       $intento="SELECT * from puntaje where id_aprendiz = $usuario";
       $resultadoIntento=$conexion->query($intento);
       while($rowPuntaje=$resultadoIntento->fetch_array(MYSQLI_ASSOC)){
-            $puntajes=$rowPuntaje['puntajes'];
-            $nuevo = $puntajes + 1; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
+            $puntajes= $rowPuntaje['puntajes'];
+            $nuevo = $puntajes + 1000; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
             $actualizaPuntaje = "UPDATE puntaje SET puntajes =  '".$nuevo."' where id_aprendiz = $usuario";
             $ejecutaSql=$conexion->query($actualizaPuntaje);
             // var_dump($ejecutaSql);exit();
@@ -42,7 +42,7 @@ function jugar($respuesta, $validarRes)
     $query = "";
 
     return $row["max(r.id_respuesta)"] + 1;
-    
+
   }else {
     return 0;
   }
