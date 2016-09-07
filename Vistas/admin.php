@@ -1,6 +1,8 @@
 <?php
 session_start();
 if ($_SESSION['validacion'] == 1) {
+  $_SESSION['jugar'] = 1;
+  var_dump($_SESSION['jugar']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,14 +12,13 @@ if ($_SESSION['validacion'] == 1) {
   <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
-    <!-- Add fancyBox main JS and CSS files -->
-    	<script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
+
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 <?php
     include "../Controlador/adminController.php";
+    require('../Controlador/clases/mensajeJuego.php');
 ?>
-   <title>Inicio</title>
+  <title>Inicio</title>
 </head>
 <!--Deshabiilita inspeccionar elemento <body> -->
 <script type="text/javascript">
@@ -26,8 +27,8 @@ document.oncontextmenu=inhabilitar;
 document.onmousedown=anularBotonDerecho;
 document.oncontextmenu=new Function("return false");
 function inhabilitar(){
-   	alert ("Esta función está inhabilitada.\n\nPerdonen las molestias.")
-   	return false
+       alert ("Esta función está inhabilitada.\n\nPerdonen las molestias.")
+       return false
 }
 function anularBotonDerecho(e) {
  if (navigator.appName == 'Netscape'
@@ -41,6 +42,7 @@ function anularBotonDerecho(e) {
 }
 </script>
 <body onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"">
+
   <!-- header barra de navegacion -->
   <nav class="navbar" style="background:#238276">
     <div class="container-fluid">
@@ -52,8 +54,12 @@ function anularBotonDerecho(e) {
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li> <a> Bienvenido: <?php echo $_SESSION['nombreAprendiz'] ?></a> </li>
-          <li> <a> Programa: <?php echo $_SESSION['programaAprendiz'] ?> </a></li>
+          <li> <a>   Bienvenid@: <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
+    echo $_SESSION['nombreAprendiz'];
+?></a> </li>
+          <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
+    echo $_SESSION['programaAprendiz'];
+?> </a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <form class="navbar-form navbar-left" action="../Controlador/logout.php">
@@ -67,7 +73,13 @@ function anularBotonDerecho(e) {
     </div><!-- /.container-fluid -->
   </nav>
   <!-- fin barra de navegacion -->
-
+  <div class="container animated flipInX">
+    <?php
+    if (isset($_GET["MSN"])) {
+        mensajeJuego::msnJuego($_GET["MSN"]);
+    }
+?>
+ </div>
   <!-- contenido de la pagina -->
   <div class="contenidoPag">
     <h1> Quién quiere ser Millonario </h1>
@@ -84,7 +96,8 @@ function anularBotonDerecho(e) {
                  <div class="col-lg-10 col-lg-offset-2">
                    <input type="hidden" id="respCorrec" name="respCorrec" value="0"/>
                    <input type="hidden" name="respSeleccionada" id="respSeleccionada" value="0"/>
-                    <button type="submit" class="opcion encorefois"><p><span class="glyphicon glyphicon-play" aria-hidden="true"></span> JUGAR</p></button>
+                   <input type="hidden" name="intento" id="intento" value="1"/>
+                    <button type="submit"  class="opcion encorefois"><p><span class="glyphicon glyphicon-play" aria-hidden="true"></span> JUGAR</p></button>
                  </div>
                </div>
             </fieldset>
@@ -96,22 +109,32 @@ function anularBotonDerecho(e) {
         <table class="table table-striped table-hover" style="text-align:center">
           <thead>
             <tr class="success">
-              <th>Puntaje</th>
-              <th>Pregunta Actual</th>
-              <th>Total Preguntas</th>
+              <th><center><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></center> Puntaje</th>
+              <th><center><span class="glyphicon glyphicon-flag" aria-hidden="true"></span></center>Pregunta Actual</th>
+              <th><center><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></center> Total Preguntas</th>
             </tr>
           </thead>
           <tbody>
             <tr >
-             <td><?php echo "$puntaje"." Pts"; ?></td>
-             <td><?php echo "$preguntaCorrecta"; ?></td>
-             <td><?php echo "$numPregun"; ?></td>
+             <td><?php
+    echo "$puntaje" . " Pts";
+?></td>
+             <td><?php
+    echo "$preguntaCorrecta";
+?></td>
+             <td><?php
+    echo "$numPregun";
+?></td>
            </tr>
           </tbody>
         </table>
-        <h3>Has respondido el: <?php echo ($preguntaCorrecta*100)/$numPregun."%";?> </h3>
+        <h3>Has respondido el: <?php
+    echo ($preguntaCorrecta * 100) / $numPregun . "%";
+?> </h3>
         <div class="progress progress-striped active">
-          <div class="progress-bar progress-bar-success" style="width: <?php echo ($preguntaCorrecta*100)/$numPregun?>%"></div>
+          <div class="progress-bar progress-bar-success" style="width: <?php
+    echo ($preguntaCorrecta * 100) / $numPregun;
+?>%"></div>
         </div>
       </div>
     </div>
@@ -126,9 +149,14 @@ function anularBotonDerecho(e) {
   <img src="../source/img/instrucciones.png" width="800px"/>
   </div>
 </footer>
+<!-- Add fancyBox main JS and CSS files -->
+<script src="../Bootstrap/js/jquery-1.10.2.min.js"></script>
+<script src="../Bootstrap/js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script> -->
+<script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-  			$('.fancybox').fancybox();
+              $('.fancybox').fancybox();
 });
 </script>
 </body>

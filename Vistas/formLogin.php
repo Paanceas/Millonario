@@ -50,7 +50,7 @@ body{
   <figure>
     <img src="../source/img/banner.png" alt="banner juego autoevaluación" width="800">
   </figure>
-  <div class="container animated zoomIn" style="width: 400px;">
+  <div class="container animated lightSpeedIn" style="width: 400px;">
     <?php
     if(isset($_GET["MSN"])){
       MensajesLogin::mensajesIngreso($_GET["MSN"]);

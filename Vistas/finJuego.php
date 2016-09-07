@@ -2,6 +2,8 @@
 session_start();
 if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
 $usuario=$_SESSION['id_usuario'];
+$_SESSION['jugar'] = 0;
+var_dump($_SESSION['jugar']);
  ?>
 <!DOCTYPE html>
 <html>

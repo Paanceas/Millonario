@@ -1,9 +1,11 @@
 <?php
+
 session_start();
 include "../Conexion/config.php";
 if ($_SESSION['id_aprendiz'] > 0); {
     $usuario = $_SESSION['id_aprendiz'];
 }
+
 function randomNum()
 {
     $num = range(1, 4);
@@ -49,25 +51,54 @@ function jugar($respuesta, $validarRes)
     return 0;
   }
 }
+function validaIntento(){
+  include '../Conexion/config.php';
+  if ($_SESSION['id_aprendiz'] > 0); {
+      $usuario = $_SESSION['id_aprendiz'];
+  }
+  $intentos="SELECT estado from puntaje where id_aprendiz = $usuario";
+  $consultaIntento=$conexion->query($intentos);
+  $ValorEstado       = $consultaIntento->fetch_array(MYSQLI_NUM);
+
+    if($ValorEstado[0] <= 1){
+          $nuevoEstado = $ValorEstado[0] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
+          $actualizaEstado = "UPDATE puntaje SET estado =  '".$nuevoEstado."' where id_aprendiz = $usuario";
+          $ejecutaSql=$conexion->query($actualizaEstado);
+          // var_dump($ejecutaSql);exit();
+          return $ValorEstado[0];
+      }else {
+          // echo "perdiste ".$ValorEstado[0]." intenos";exit();
+          return $ValorEstado[0];
+      }
 
 
+}
 /*------------------------------------*/
 //
+
+// var_dump($juego);exit();
+
+if (isset($_POST['intento'])) {
+    $intento=$_POST['intento'];
+    if ($intento == 1) {
+      $validarInenrod= validaIntento($intento);
+      $_SESSION['intentos'] = $validarInenrod;
+
+  }
+}
 if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada']) ) {
   $cargarLaPregunta = $_POST['respCorrec'];
   $validarRespuesta= $_POST['respSeleccionada'];
+}else {
+      $cargarLaPregunta = 0;
+      $valor            = 0;
+      $validarRespuesta = 0;
+  }
 
-} else {
-    $cargarLaPregunta = 0;
-    $valor            = 0;
-    $validarRespuesta = 0;
-}
 
 $valor = jugar($cargarLaPregunta, $validarRespuesta);
 
 if ($valor > 0) {
-
-
 
   $consultaRespuesta = "SELECT * from respuesta r JOIN pregunta p ON p.id_pregunta = r.id_pregunta where id_respuesta=$valor";
 
@@ -99,16 +130,16 @@ if ($valor > 0) {
           foreach ($arrayNumeros as $value) {
               switch ($value) {
                   case '1':
-                      $respuesta .= "<td><button name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button></td>";
+                      $respuesta .= " <button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> ";
                       break;
                   case '2':
-                      $respuesta .= "<td><button name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button></td>";
+                      $respuesta .= " <button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> ";
                       break;
                   case '3':
-                      $respuesta .= "<td><button  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td>";
+                      $respuesta .= " <button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button> ";
                       break;
                   case '4':
-                      $respuesta .= "<td><button  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button></td>";
+                      $respuesta .= " <button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> ";
                       break;
               }
           }
@@ -122,7 +153,7 @@ if ($valor > 0) {
 
 }
 else {
-  header('location: ../Vistas/admin.php');
+  header('location: ../Vistas/admin.php?MSN=1');
 
 }
 }else {
