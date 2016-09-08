@@ -111,6 +111,22 @@ ul li a{
   -moz-filter:hue-rotate(40deg);
   -o-filter:hue-rotate(40deg);
 }
+
+.picTimeJuego{
+  width:200px;
+  margin: 0px 0 0 0px;
+}
+
+.gameTimeJuego  h2{
+  position: absolute;
+  margin: -140px 20px 0px -20px;
+  left: 105px;
+  font-family: 'Metrophobic', Arial, serif;
+  color: #fff;
+  font-size: 40px;
+  background: #238276;
+}
+
 .opcion p{
   font-size: 18px;
   font-family: 'Open Sans', sans-serif;

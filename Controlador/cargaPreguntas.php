@@ -76,7 +76,17 @@ function validaIntento(){
 /*------------------------------------*/
 //
 
-// var_dump($juego);exit();
+if (isset($_POST['clicJugar'])) {
+  $_POST['clicJugar']=1;
+  $_SESSION['clicJugarSess']=1;
+  if ($_POST['clicJugar'] == 1) {
+    $clic=$_POST['clicJugar'];
+    }
+}else {
+  $_POST['clicJugar']=0;
+  header('location: ../Vistas/admin.php?MSN=4');
+}
+// var_dump($_POST['clicJugar']);exit();
 
 if (isset($_POST['intento'])) {
     $intento=$_POST['intento'];
@@ -145,6 +155,7 @@ if ($valor > 0) {
           }
       }
   }else{
+    $_SESSION['jugar']=0;
 
     header('location: ../Vistas/finJuego.php');
 
@@ -157,6 +168,7 @@ else {
 
 }
 }else {
+  $_SESSION['jugar']=0;
   header('location: ../Vistas/finJuego.php');
 }
 

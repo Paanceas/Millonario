@@ -1,8 +1,8 @@
 <?php
 session_start();
 if ($_SESSION['validacion'] == 1) {
-  $_SESSION['jugar'] = 1;
-  var_dump($_SESSION['jugar']);
+  $_SESSION['clicJugarSess'] = 0;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -97,7 +97,7 @@ function anularBotonDerecho(e) {
                    <input type="hidden" id="respCorrec" name="respCorrec" value="0"/>
                    <input type="hidden" name="respSeleccionada" id="respSeleccionada" value="0"/>
                    <input type="hidden" name="intento" id="intento" value="1"/>
-                    <button type="submit"  class="opcion encorefois"><p><span class="glyphicon glyphicon-play" aria-hidden="true"></span> JUGAR</p></button>
+                    <button type="submit" name="clicJugar" class="opcion encorefois"><p><span class="glyphicon glyphicon-play" aria-hidden="true"></span> JUGAR</p></button>
                  </div>
                </div>
             </fieldset>
@@ -162,7 +162,10 @@ $(document).ready(function() {
 </body>
 </html>
 <?php
+
+
 } else {
-    header('location:../Vistas/formLogin.php');
+    header('location:../Vistas/formLogin.php?MSN=2');
 }
+
 ?>

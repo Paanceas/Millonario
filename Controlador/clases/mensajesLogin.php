@@ -8,7 +8,9 @@ class MensajesLogin
             case '1':
                 $men = "Verifica tus credenciales";
                 break;
-
+                case '2':
+                    $men = "Por favor Inicia sesión";
+                    break;
 
         }
 
@@ -18,7 +20,7 @@ class MensajesLogin
           <strong>Ooops<br></strong>' . $men . '
           </div>';
         }
-        
+
 
     }
 }

@@ -20,6 +20,10 @@ class mensajeJuego
           $men="Menos una vida";
           $tipoAlert ="warning";
           break;
+          case '4':
+            $men="De clic en jugar";
+            $tipoAlert ="warning";
+            break;
 
     }
     if (!empty($men)) {

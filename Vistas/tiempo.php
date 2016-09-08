@@ -103,6 +103,6 @@ document.oncontextmenu = new Function("return false"
 </html>
 <?php
 }else{
-  header('location:../Vistas/formLogin.php');
+  header('location:../Vistas/formLogin.php?MSN=2');
 }
 ?>

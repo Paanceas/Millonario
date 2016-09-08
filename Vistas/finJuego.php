@@ -2,8 +2,7 @@
 session_start();
 if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
 $usuario=$_SESSION['id_usuario'];
-$_SESSION['jugar'] = 0;
-var_dump($_SESSION['jugar']);
+$_SESSION['clicJugarSess'] = 0;
  ?>
 <!DOCTYPE html>
 <html>
@@ -76,7 +75,7 @@ var_dump($_SESSION['jugar']);
 <?php
 }else{
   session_destroy();
-  header('location:../Vistas/formLogin.php');
+  header('location:../Vistas/formLogin.php?MSN=2');
 }
 
 ?>

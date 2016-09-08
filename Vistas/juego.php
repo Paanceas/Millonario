@@ -1,15 +1,17 @@
 <?php
 session_start();
-if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
+if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0 ){
 $usuario=$_SESSION['id_usuario'];
-//Clic en jugar
-var_dump($_SESSION['jugar']);
-if($_SESSION['jugar'] === 1){
 
+//Clic en jugar
+if($_SESSION['clicJugarSess'] != 1){
+  header('location:../Vistas/admin.php?MSN=4');
+}
 
 
 //Valida intentos
 if ($_SESSION['intentos'] <= 1) {
+
  ?>
 <!DOCTYPE html>
 <html>
@@ -72,7 +74,7 @@ include "modalinstrucc.php";
 </form>
   </div>
 
-<div class="gameTime">
+<div class="gameTimeJuego">
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </div>
 
@@ -126,17 +128,17 @@ document.oncontextmenu=new Function("return false");
     }
   }
 
-//   function timer(){
-//   var t=setTimeout("timer()",1000);
-//   document.getElementById('contador').innerHTML = ''+i--+" ";
-//   if (i==-1){
-//     document.getElementById('contador').innerHTML = 'FIN';
-//     clearTimeout(t);
-//     alert('Su Tiempo se acabó');
-//     location.href='finJuego.php';
-//   }
-// }
-// i=2;
+  function timer(){
+  var t=setTimeout("timer()",1000);
+  document.getElementById('contador').innerHTML = ''+i--+" ";
+  if (i==-1){
+    document.getElementById('contador').innerHTML = 'FIN';
+    clearTimeout(t);
+    alert('Su Tiempo se acabó');
+    location.href='finJuego.php';
+  }
+}
+i=1;
 
 </script>
 </body>
@@ -146,12 +148,9 @@ document.oncontextmenu=new Function("return false");
   }else {
       header('location:../Vistas/admin.php?MSN=2');
   }
-}else {
-  $_SESSION['jugar']=1;
-header('location:../Vistas/admin.php?MSN=3');
-}
+
 
 }else{
-  header('location:../Vistas/formLogin.php');
+  header('location:../Vistas/formLogin.php?MSN=2');
 }
 ?>
