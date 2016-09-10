@@ -18,7 +18,7 @@ if (mysqli_num_rows($resultado) > 0) {
         $_SESSION['id_usuario'] = $row['id_usuario'];
         $_SESSION['validacion'] = 1;
         $_SESSION['id_roll']    = 1;
-        header("location:../Vistas/finJuego.php");
+        header("location:../Controlador/carga.php");
     } else if ($row['id_roll'] == 2) {
         $user = $row['id_usuario'];
         // consultar el aprendiz de la session

@@ -129,12 +129,11 @@ function anularBotonDerecho(e) {
           </tbody>
         </table>
         <h3>Has respondido el: <?php
-    echo ($preguntaCorrecta * 100) / $numPregun . "%";
-?> </h3>
+        $porcentaje = round(($preguntaCorrecta * 100) / $numPregun);
+        echo $porcentaje . "%"; ?> </h3>
         <div class="progress progress-striped active">
           <div class="progress-bar progress-bar-success" style="width: <?php
-    echo ($preguntaCorrecta * 100) / $numPregun;
-?>%"></div>
+    echo ($preguntaCorrecta * 100) / $numPregun; ?>%"></div>
         </div>
       </div>
     </div>
@@ -142,7 +141,7 @@ function anularBotonDerecho(e) {
   <!-- fin contenido de la pagina -->
 
 
-<footer>
+<footer class="footer">
   <a class="fancybox" href="#inline1" title="Instrucciones">Instrucciones</a>
   <div id="inline1" style="width:800px;display: none;">
   <h3>Instrucciones</h3>

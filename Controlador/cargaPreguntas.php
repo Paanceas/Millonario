@@ -105,8 +105,8 @@ if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada']) ) {
       $validarRespuesta = 0;
   }
 
-
 $valor = jugar($cargarLaPregunta, $validarRespuesta);
+
 
 if ($valor > 0) {
 
@@ -115,7 +115,6 @@ if ($valor > 0) {
   mysqli_set_charset($conexion, "utf8");
 
   $resultado = $conexion->query($consultaRespuesta);
-
   //Control el lilmite de ultima pregunta
   $ultimaPregunta="SELECT max(r.id_respuesta) from respuesta r;";
   $resultadoUltPregunta=$conexion->query($ultimaPregunta);
@@ -140,16 +139,16 @@ if ($valor > 0) {
           foreach ($arrayNumeros as $value) {
               switch ($value) {
                   case '1':
-                      $respuesta .= " <button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> ";
+                      $respuesta .= "<td><button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
                       break;
                   case '2':
-                      $respuesta .= " <button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> ";
+                      $respuesta .= " <td><button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
                       break;
                   case '3':
-                      $respuesta .= " <button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button> ";
+                      $respuesta .= " <td><button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
                       break;
                   case '4':
-                      $respuesta .= " <button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> ";
+                      $respuesta .= "<td><button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
                       break;
               }
           }

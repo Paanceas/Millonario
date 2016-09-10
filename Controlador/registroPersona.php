@@ -1,5 +1,6 @@
 <?php
 include "../Conexion/config.php";
+
 function TipoIdentificacionCombobox(){
   //Carga select tipo identificacion
 include "../Conexion/config.php";
@@ -167,6 +168,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
         mysqli_close($conexion);
     }
 }
+
 
 
 ?>
