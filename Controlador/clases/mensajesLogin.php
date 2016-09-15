@@ -11,12 +11,15 @@ class MensajesLogin
                 case '2':
                     $men = "Por favor Inicia sesión";
                     break;
+                    case '3':
+                        $men = "Ya hay una sesión iniciado con este usuario";
+                        break;
 
         }
 
         if (!empty($men)) {
-          echo '<div class="alert alert-dismissible alert-danger">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          echo '<div class="alert alert-dismissible alert-danger" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <strong>Ooops<br></strong>' . $men . '
           </div>';
         }

@@ -34,7 +34,7 @@
 
 
     <header></header>
-      <figure><center><img src="../source/img/banner.png" alt="banner juego autoevaluación" width="500"></center></figuer>
+      <div style="margin: -2% 25% -2% 30%;"><img src="../source/img/banner.png" alt="banner juego autoevaluación" width="500"></div>
 				<div class="container animated zoomIn">
 					<?php
 					if(isset($_GET["MSN"])){
@@ -48,6 +48,7 @@
 
               <section>
                 <h1>DATOS DE INGRESO</h1>
+
                 <input type="text" placeholder="Nombre Completo" class="inp02" name="nombres" id="nombres">
                 <br>
                 <select name="tipoIdentificacion" id ="tIdentificacion" class="inp02" required="">
@@ -67,15 +68,18 @@
 
                 <input type="password" placeholder="Confirme Contraseña" name="confirm" value="" class="inp02" id="clave2">
 
-                <button type="submit" name="registrarse" class="btn btn-primary2">Registrate</button>
 
-								<button type="button" name="volver" onclick = "location='formLogin.php'" class="btn btn-primary2Volver">Volver</button>
+
+								<button type="submit" name="registrarse" class="botonRegistro"><span class="glyphicon glyphicon-user"> </span> Registrate</button>
+
+								<button type="button" name="volver" onclick = "location='formLogin.php'" class="botonVolver"><span class="glyphicon glyphicon-arrow-left"> </span> Volver</button>
 
 
             <br>
-          </section>
-        </div>
 
+          </section>
+
+        </div>
       </form>
 
     </article>

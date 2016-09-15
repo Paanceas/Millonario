@@ -56,8 +56,8 @@ figure{
   margin: 0 auto;
 }
 section{
-    width:100%;
-    height: 400px;
+  width: 100%;
+  height: 447px;
     position: relative;
     border: 4px solid white;
 }
@@ -204,31 +204,32 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a3ccc6', end
   right:220px;
 
 }
-.btn-primary2{
+.botonRegistro{
   background:#59b548;
-  border:3px #59b548 outset;
+  border-radius: 3px;
   padding: 8px;
   color:#fff;
-  font-size: 15px;
+  font-size: 19px;
   //float:left;
   //margin:6px 0 0 10px;
-  position: relative;
-  bottom: -10px;
-  right: -26px;
-
+  position: absolute;
+  margin:67% 0% 0% -38%;
+  border: none;
+  box-shadow: 1px 1px 3px rgba(179, 137, 120, 0.57);
 }
 
-.btn-primary2Volver{
+.botonVolver{
   background:#59b548;
-  border:3px #59b548 outset;
+  border-radius: 3px;
   padding: 8px;
   color:#fff;
-  font-size: 15px;
+  font-size: 19px;
   //float:left;
   //margin:6px 0 0 10px;
-  position: relative;
-  bottom: 200px;
-  right: -50px;
+  position: absolute;
+  margin:67% 0% 0% -63%;
+  border: none;
+  box-shadow: 1px 1px 3px rgba(179, 137, 120, 0.57);
 
 }
 .btn-primary3{
@@ -293,12 +294,11 @@ header{
 
 }
 .loginData div{
-  width:590px;
-  height: 425px;
+  width: 513px;
+  height: 475px;
   border-radius: 3px;
   background: #238276;
-  margin-top: 50px;
-  margin-left: 60px;
+  margin: 7% 0% 2% 73%;
   box-shadow: 3px 3px 7px #000;
   box-sizing: border-box;
   padding:15px;
@@ -327,7 +327,7 @@ header{
 }
 .loginData input,select{
   margin-top:15px;
-  margin-left: 10px;
+  margin-left: 176px;
   height: 30px;
   border:#ccc solid 2px;
   border-radius: 5px;
@@ -343,12 +343,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .loginData .ss1{width:152px;}
 .loginData .ss2{width:300px;margin-right: 20px;}
 .loginData .ss3{width:173px;}
-.inp02{width:300px; float: left;}
-.loginData button{
-  margin: 215px 0 0 75px;
-  border: none;
-  box-shadow: 1px 1px 3px rgba(179, 137, 120, 0.57);
-}
+.inp02 {width: 271px; float: left;}
+
+
 .prrr{
   display:block;
   width:500px;

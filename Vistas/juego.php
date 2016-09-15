@@ -116,14 +116,17 @@ function anularBotonDerecho(e) {
   function timer(){
   var t=setTimeout("timer()",1000);
   document.getElementById('contador').innerHTML = ''+i--+" ";
+
   if (i==-1){
     document.getElementById('contador').innerHTML = 'FIN';
     clearTimeout(t);
     alert('Su Tiempo se acabó');
     location.href='finJuego.php';
   }
+
 }
 i=60;
+
 
 </script>
 

@@ -24,7 +24,10 @@ class mensajeJuego
             $men="De clic en jugar";
             $tipoAlert ="warning";
             break;
-
+            case '5':
+              $men="Ya tenemos un ganador";
+              $tipoAlert ="info";
+              break;
     }
     if (!empty($men)) {
       echo '<div class="alert alert-'.$tipoAlert.' alert-dismissible" role="alert">

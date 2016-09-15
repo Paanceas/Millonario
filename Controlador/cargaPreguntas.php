@@ -5,6 +5,16 @@ include "../Conexion/config.php";
 if ($_SESSION['id_aprendiz'] > 0); {
     $usuario = $_SESSION['id_aprendiz'];
 }
+function cerrarSesionEstado(){
+  include "../Conexion/config.php";
+  if ($_SESSION['id_usuario'] > 0); {
+      $usuarioSesion = $_SESSION['id_usuario'];
+  }
+
+  $consultaSesion="UPDATE usuario SET verificaSesion = 0 where id_usuario = $usuarioSesion";
+  $actualizaEstado=$conexion->query($consultaSesion);
+
+}
 
 function randomNum()
 {
@@ -16,159 +26,200 @@ function randomNum()
     return $posiciones;
 }
 
+Function randPregunta()
+{
+    include "../Conexion/config.php";
+
+    $cantPreguntas  = "SELECT count(e.id_respuesta) from respuesta e";
+    $resulCantPreg  = $conexion->query($cantPreguntas);
+    $numeroPregunta = $resulCantPreg->fetch_array(MYSQLI_NUM);
+
+    $num = range(1, $numeroPregunta[0]);
+
+    shuffle($num);
+
+    foreach ($num as $val) {
+        $posiciones[] = $val;
+    }
+    return $posiciones;
+
+}
+
+
 function jugar($respuesta, $validarRes)
 {
     include "../Conexion/config.php";
     if ($_SESSION['id_aprendiz'] > 0); {
         $usuario = $_SESSION['id_aprendiz'];
     }
-    //Si es correcta actualiza puntaje
-    if($validarRes==1){
-      $intento="SELECT * from puntaje where id_aprendiz = $usuario";
-      $resultadoIntento=$conexion->query($intento);
-      while($rowPuntaje=$resultadoIntento->fetch_array(MYSQLI_ASSOC)){
-            $puntajes= $rowPuntaje['puntajes'];
-            $nuevo = $puntajes + 1000; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
-            $actualizaPuntaje = "UPDATE puntaje SET puntajes =  '".$nuevo."' where id_aprendiz = $usuario";
-            $ejecutaSql=$conexion->query($actualizaPuntaje);
-            // var_dump($ejecutaSql);exit();
-          }
+    //Consulta si ya hay un registro del usuario
+    $consultaResCorrectas = "SELECT * FROM evaluacion_aprendiz where id_aprendiz = $usuario";
+    $resContador          = $conexion->query($consultaResCorrectas);
+
+    //Si no hay realiza el registro
+    if (mysqli_num_rows($resContador) <= 0) {
+        $registroHas  = "INSERT INTO evaluacion_aprendiz(id_respuesta, id_aprendiz, resCorrectas) VALUES ($respuesta, $usuario, 1);";
+        $resultadoHas = $conexion->query($registroHas);
     }
 
-    if ($validarRes == 1 || $validarRes == 0 ) {
-    $registroHas     = "INSERT INTO evaluacion_aprendiz(id_respuesta, id_aprendiz) VALUES ($respuesta, $usuario);";
-    $resultadoHas = $conexion->query($registroHas);
 
-    $query     = "SELECT max(r.id_respuesta) from evaluacion_aprendiz ep inner join respuesta r on r.id_respuesta = ep.id_respuesta where ep.id_aprendiz = $usuario;";
+    //Si es correcta actualiza puntaje y suma +1 a la res correcta
+    if ($validarRes == 1 || $validarRes == 0) {
+        if ($validarRes == 1) {
+            //Actualiza el puntaje
+            $intento          = "SELECT * from puntaje where id_aprendiz = $usuario";
+            $resultadoIntento = $conexion->query($intento);
+            while ($rowPuntaje = $resultadoIntento->fetch_array(MYSQLI_ASSOC)) {
+                $puntajes         = $rowPuntaje['puntajes'];
+                $nuevo            = $puntajes + 1000; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
+                $actualizaPuntaje = "UPDATE puntaje SET puntajes =  '" . $nuevo . "' where id_aprendiz = $usuario";
+                $ejecutaSql       = $conexion->query($actualizaPuntaje);
+                // var_dump($ejecutaSql);exit();
+            }
+
+            while ($rowResCorrectas = $resContador->fetch_array(MYSQLI_ASSOC)) {
+                $resCorrectas          = $rowResCorrectas['resCorrectas'];
+                $nuevoResC             = $resCorrectas + 1; // obtenemos el valor de 'resCorrectas' y le añadimos mas una pregunta correcta
+                $actualizaresCorrectas = "UPDATE evaluacion_aprendiz SET resCorrectas =  '" . $nuevoResC . "' where id_aprendiz = $usuario;";
+                $ejecutaResCorrecta    = $conexion->query($actualizaresCorrectas);
+            }
+        }
+
+    } else {
+        return 0;
+    }
+    //Muestra pregunta al azar
+    $aleatoria = randPregunta();
+
+    $query     = "SELECT r.id_respuesta from respuesta r where r.id_respuesta = $aleatoria[0];";
     $resultado = $conexion->query($query);
     $row       = $resultado->fetch_array(MYSQLI_ASSOC);
 
-    $query = "";
-
-    return $row["max(r.id_respuesta)"] + 1;
-
-  }else {
-    return 0;
-  }
+    return $row['id_respuesta'];
 }
-function validaIntento(){
-  include '../Conexion/config.php';
-  if ($_SESSION['id_aprendiz'] > 0); {
-      $usuario = $_SESSION['id_aprendiz'];
-  }
-  $intentos="SELECT estado from puntaje where id_aprendiz = $usuario";
-  $consultaIntento=$conexion->query($intentos);
-  $ValorEstado       = $consultaIntento->fetch_array(MYSQLI_NUM);
+function validaIntento()
+{
+    include '../Conexion/config.php';
+    if ($_SESSION['id_aprendiz'] > 0); {
+        $usuario = $_SESSION['id_aprendiz'];
+    }
+    //Consulta si hay intentos disponibles
+    $intentos        = "SELECT estado from puntaje where id_aprendiz = $usuario";
+    $consultaIntento = $conexion->query($intentos);
+    $ValorEstado     = $consultaIntento->fetch_array(MYSQLI_NUM);
 
-    if($ValorEstado[0] <= 1){
-          $nuevoEstado = $ValorEstado[0] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
-          $actualizaEstado = "UPDATE puntaje SET estado =  '".$nuevoEstado."' where id_aprendiz = $usuario";
-          $ejecutaSql=$conexion->query($actualizaEstado);
-          // var_dump($ejecutaSql);exit();
-          return $ValorEstado[0];
-      }else {
-          // echo "perdiste ".$ValorEstado[0]." intenos";exit();
-          return $ValorEstado[0];
-      }
-
-
+    if ($ValorEstado[0] <= 1) {
+        $nuevoEstado     = $ValorEstado[0] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
+        $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "' where id_aprendiz = $usuario";
+        $ejecutaSql      = $conexion->query($actualizaEstado);
+        // var_dump($ejecutaSql);exit();
+        return $ValorEstado[0];
+    } else {
+        // echo "perdiste ".$ValorEstado[0]." intenos";exit();
+        return $ValorEstado[0];
+    }
 }
 /*------------------------------------*/
 //
 
 if (isset($_POST['clicJugar'])) {
-  $_POST['clicJugar']=1;
-  $_SESSION['clicJugarSess']=1;
-  if ($_POST['clicJugar'] == 1) {
-    $clic=$_POST['clicJugar'];
+    $_POST['clicJugar']        = 1;
+    $_SESSION['clicJugarSess'] = 1;
+    if ($_POST['clicJugar'] == 1) {
+        $clic = $_POST['clicJugar'];
     }
-}else {
-  $_POST['clicJugar']=0;
-  header('location: ../Vistas/admin.php?MSN=4');
+} else {
+    $_POST['clicJugar'] = 0;
+    header('location: ../Vistas/admin.php?MSN=4');
 }
 // var_dump($_POST['clicJugar']);exit();
 
 if (isset($_POST['intento'])) {
-    $intento=$_POST['intento'];
+    $intento = $_POST['intento'];
     if ($intento == 1) {
-      $validarInenrod= validaIntento($intento);
-      $_SESSION['intentos'] = $validarInenrod;
+        $validarInenrod       = validaIntento($intento);
+        $_SESSION['intentos'] = $validarInenrod;
 
-  }
+    }
 }
-if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada']) ) {
-  $cargarLaPregunta = $_POST['respCorrec'];
-  $validarRespuesta= $_POST['respSeleccionada'];
-}else {
-      $cargarLaPregunta = 0;
-      $valor            = 0;
-      $validarRespuesta = 0;
-  }
+if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada'])) {
+    $cargarLaPregunta = $_POST['respCorrec'];
+    $validarRespuesta = $_POST['respSeleccionada'];
+} else {
+    $cargarLaPregunta = 0;
+    $valor            = 0;
+    $validarRespuesta = 0;
+}
 
 $valor = jugar($cargarLaPregunta, $validarRespuesta);
 
-
 if ($valor > 0) {
+    $consultaRespuesta = "SELECT * from respuesta r JOIN pregunta p ON p.id_pregunta = r.id_pregunta where id_respuesta=$valor";
 
-  $consultaRespuesta = "SELECT * from respuesta r JOIN pregunta p ON p.id_pregunta = r.id_pregunta where id_respuesta=$valor";
+    mysqli_set_charset($conexion, "utf8");
+    $resultado = $conexion->query($consultaRespuesta);
 
-  mysqli_set_charset($conexion, "utf8");
+    //Verifica el campo resCorrectas
+    $controlLimite   = "SELECT resCorrectas FROM evaluacion_aprendiz where id_aprendiz=$usuario";
+    $resultadoLimite = $conexion->query($controlLimite);
 
-  $resultado = $conexion->query($consultaRespuesta);
-  //Control el lilmite de ultima pregunta
-  $ultimaPregunta="SELECT max(r.id_respuesta) from respuesta r;";
-  $resultadoUltPregunta=$conexion->query($ultimaPregunta);
-  // $filaUltimaPregunta       = $resultadoUltPregunta->fetch_array(MYSQLI_NUM);
+    //Captura el valor del campo resCorrectas de acuerdo al aprendiz logueado
+    $resPCorrecLimite = $resultadoLimite->fetch_array(MYSQLI_ASSOC);
+    $rowLimite        = $resPCorrecLimite['resCorrectas'];
 
+    //Control Si hay un jugador con cantidad respondidas correctas 15 gana y nadie mas puede jugar
+    $controlGanador   = "SELECT * FROM evaluacion_aprendiz where resCorrectas >= 15";
+    $resultadoGanador = $conexion->query($controlGanador);
 
-  // var_dump($filaUltimaPregunta);exit();
+    if(mysqli_num_rows($resultadoGanador) > 0){
+      header("location: ../Vistas/admin.php?MSN=5");
+    }else{
 
-  if ($resultado->num_rows > 0) {
-      if($resultado>=$resultadoUltPregunta){
-      $respuesta = "";
-      $preguntas = "";
+    if ($resultado->num_rows > 0 && $rowLimite < 15) {
+        $respuesta = "";
+        $preguntas = "";
 
-      //==
-      $cont         = 0;
-      $arrayNumeros = array();
-      $arrayNumeros = randomNum();
+        //==================
+        $cont         = 0;
+        $arrayNumeros = array();
+        $arrayNumeros = randomNum();
 
-      while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
-          $idRespuesta = $row["id_respuesta"];
-          $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $row['preguntas'] . "</span><br>";
-          foreach ($arrayNumeros as $value) {
-              switch ($value) {
-                  case '1':
-                      $respuesta .= "<td><button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
-                      break;
-                  case '2':
-                      $respuesta .= " <td><button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
-                      break;
-                  case '3':
-                      $respuesta .= " <td><button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
-                      break;
-                  case '4':
-                      $respuesta .= "<td><button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
-                      break;
-              }
-          }
-      }
-  }else{
-    $_SESSION['jugar']=0;
+        $arrayPregunta = array();
+        $arrayPregunta = randPregunta();
 
-    header('location: ../Vistas/finJuego.php');
+        while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
+            $idRespuesta = $row["id_respuesta"];
 
+            $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $row['preguntas'] . "</span><br>";
+
+            foreach ($arrayNumeros as $value) {
+                switch ($value) {
+                    case '1':
+                        $respuesta .= "<td><button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
+                        break;
+                    case '2':
+                        $respuesta .= " <td><button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
+                        break;
+                    case '3':
+                        $respuesta .= " <td><button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
+                        break;
+                    case '4':
+                        $respuesta .= "<td><button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
+                        break;
+                }
+            }
+        }
+
+        header('location: ../Vistas/juego.php');
+
+    } else {
+        header('location: ../Vistas/admin.php?MSN=1');
+    }
   }
-  header('location: ../Vistas/juego.php');
 
-}
-else {
-  header('location: ../Vistas/admin.php?MSN=1');
-
-}
-}else {
-  $_SESSION['jugar']=0;
-  header('location: ../Vistas/finJuego.php');
+} else {
+    $_SESSION['jugar'] = 0;
+    header('location: ../Vistas/finJuego.php');
 }
 
 ?>
