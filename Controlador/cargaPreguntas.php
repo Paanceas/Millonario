@@ -3,17 +3,15 @@
 session_start();
 include "../Conexion/config.php";
 if ($_SESSION['id_aprendiz'] > 0); {
-    $usuario = $_SESSION['id_aprendiz'];
+    $aprendiz = $_SESSION['id_aprendiz'];
 }
 function cerrarSesionEstado(){
   include "../Conexion/config.php";
   if ($_SESSION['id_usuario'] > 0); {
       $usuarioSesion = $_SESSION['id_usuario'];
   }
-
   $consultaSesion="UPDATE usuario SET verificaSesion = 0 where id_usuario = $usuarioSesion";
   $actualizaEstado=$conexion->query($consultaSesion);
-
 }
 
 function randomNum()
@@ -50,42 +48,75 @@ function jugar($respuesta, $validarRes)
 {
     include "../Conexion/config.php";
     if ($_SESSION['id_aprendiz'] > 0); {
-        $usuario = $_SESSION['id_aprendiz'];
+        $aprendiz = $_SESSION['id_aprendiz'];
     }
     //Consulta si ya hay un registro del usuario
-    $consultaResCorrectas = "SELECT * FROM evaluacion_aprendiz where id_aprendiz = $usuario";
+    $consultaResCorrectas = "SELECT * FROM evaluacion_aprendiz where id_aprendiz = $aprendiz";
     $resContador          = $conexion->query($consultaResCorrectas);
 
     //Si no hay realiza el registro
     if (mysqli_num_rows($resContador) <= 0) {
-        $registroHas  = "INSERT INTO evaluacion_aprendiz(id_respuesta, id_aprendiz, resCorrectas) VALUES ($respuesta, $usuario, 1);";
+
+        $registroHas  = "INSERT INTO evaluacion_aprendiz(id_respuesta, id_aprendiz, resCorrectas) VALUES ($respuesta, $aprendiz, 1);";
         $resultadoHas = $conexion->query($registroHas);
     }
+
 
 
     //Si es correcta actualiza puntaje y suma +1 a la res correcta
     if ($validarRes == 1 || $validarRes == 0) {
         if ($validarRes == 1) {
             //Actualiza el puntaje
-            $intento          = "SELECT * from puntaje where id_aprendiz = $usuario";
+            $intento          = "SELECT * from puntaje where id_aprendiz = $aprendiz";
             $resultadoIntento = $conexion->query($intento);
+
             while ($rowPuntaje = $resultadoIntento->fetch_array(MYSQLI_ASSOC)) {
+
                 $puntajes         = $rowPuntaje['puntajes'];
-                $nuevo            = $puntajes + 1000; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
-                $actualizaPuntaje = "UPDATE puntaje SET puntajes =  '" . $nuevo . "' where id_aprendiz = $usuario";
+                $record = $rowPuntaje['record'];
+                $nuevo            = $puntajes + 100; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
+
+                $actualizaPuntaje = "UPDATE puntaje SET puntajes =  '" . $nuevo . "' where id_aprendiz = $aprendiz";
                 $ejecutaSql       = $conexion->query($actualizaPuntaje);
-                // var_dump($ejecutaSql);exit();
+
+                // $puntajes         = $rowPuntaje['puntajes'];
+                var_dump($nuevo);
+
+                if($nuevo > $record){
+                  $recordNuevo            = $record + 100;
+                  $actualizaRecord= "UPDATE puntaje SET record =  '" . $recordNuevo . "' where id_aprendiz = $aprendiz";
+                  $ejecutaSqlRecord       = $conexion->query($actualizaRecord);
+                }
             }
+
+            // //Actualiza si el puntaje nuevo es mayor all record
+            // while ($rowRecord=$resultadoIntento->fetch_array(MYSQLI_ASSOC)) {
+            //   $record           = $rowRecord['record'];
+            //   $puntajes         = $rowPuntaje['puntajes'];
+            //
+            //   if($puntajes > $record){
+            //
+            //     $recordNuevo            = $puntajes;
+            //     $actualizaRecord= "UPDATE puntaje SET record =  '" . $recordNuevo . "' where id_aprendiz = $aprendiz";
+            //     $ejecutaSqlRecord       = $conexion->query($actualizaRecord);
+            //
+            //   }
+            //   var_dump($ejecutaSqlRecord);exit();
+            // }
 
             while ($rowResCorrectas = $resContador->fetch_array(MYSQLI_ASSOC)) {
                 $resCorrectas          = $rowResCorrectas['resCorrectas'];
                 $nuevoResC             = $resCorrectas + 1; // obtenemos el valor de 'resCorrectas' y le añadimos mas una pregunta correcta
-                $actualizaresCorrectas = "UPDATE evaluacion_aprendiz SET resCorrectas =  '" . $nuevoResC . "' where id_aprendiz = $usuario;";
+                $actualizaresCorrectas = "UPDATE evaluacion_aprendiz SET resCorrectas =  '" . $nuevoResC . "' where id_aprendiz = $aprendiz;";
                 $ejecutaResCorrecta    = $conexion->query($actualizaresCorrectas);
             }
+
+
         }
 
     } else {
+      $actualizaPuntaje = "UPDATE puntaje SET puntajes = 0 where id_aprendiz = $aprendiz";
+      $ejecutaSql       = $conexion->query($actualizaPuntaje);
         return 0;
     }
     //Muestra pregunta al azar
@@ -101,16 +132,16 @@ function validaIntento()
 {
     include '../Conexion/config.php';
     if ($_SESSION['id_aprendiz'] > 0); {
-        $usuario = $_SESSION['id_aprendiz'];
+        $aprendiz = $_SESSION['id_aprendiz'];
     }
     //Consulta si hay intentos disponibles
-    $intentos        = "SELECT estado from puntaje where id_aprendiz = $usuario";
+    $intentos        = "SELECT estado from puntaje where id_aprendiz = $aprendiz";
     $consultaIntento = $conexion->query($intentos);
     $ValorEstado     = $consultaIntento->fetch_array(MYSQLI_NUM);
 
     if ($ValorEstado[0] <= 1) {
         $nuevoEstado     = $ValorEstado[0] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
-        $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "' where id_aprendiz = $usuario";
+        $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "' where id_aprendiz = $aprendiz";
         $ejecutaSql      = $conexion->query($actualizaEstado);
         // var_dump($ejecutaSql);exit();
         return $ValorEstado[0];
@@ -120,26 +151,25 @@ function validaIntento()
     }
 }
 /*------------------------------------*/
-//
 
+//No entra al juego sino le da en el botón jugar
 if (isset($_POST['clicJugar'])) {
     $_POST['clicJugar']        = 1;
     $_SESSION['clicJugarSess'] = 1;
     if ($_POST['clicJugar'] == 1) {
         $clic = $_POST['clicJugar'];
     }
-} else {
+}else {
     $_POST['clicJugar'] = 0;
     header('location: ../Vistas/admin.php?MSN=4');
 }
-// var_dump($_POST['clicJugar']);exit();
+
 
 if (isset($_POST['intento'])) {
     $intento = $_POST['intento'];
     if ($intento == 1) {
         $validarInenrod       = validaIntento($intento);
         $_SESSION['intentos'] = $validarInenrod;
-
     }
 }
 if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada'])) {
@@ -160,8 +190,9 @@ if ($valor > 0) {
     $resultado = $conexion->query($consultaRespuesta);
 
     //Verifica el campo resCorrectas
-    $controlLimite   = "SELECT resCorrectas FROM evaluacion_aprendiz where id_aprendiz=$usuario";
+    $controlLimite   = "SELECT resCorrectas FROM evaluacion_aprendiz where id_aprendiz = $aprendiz";
     $resultadoLimite = $conexion->query($controlLimite);
+
 
     //Captura el valor del campo resCorrectas de acuerdo al aprendiz logueado
     $resPCorrecLimite = $resultadoLimite->fetch_array(MYSQLI_ASSOC);
@@ -171,11 +202,22 @@ if ($valor > 0) {
     $controlGanador   = "SELECT * FROM evaluacion_aprendiz where resCorrectas >= 15";
     $resultadoGanador = $conexion->query($controlGanador);
 
+    //Si ya hay un ganador y el aprendiz logueado es el ganador
+    if ($resultadoGanador == true && $rowLimite >=15 ) {
+      //Actualiza todos los demas que esten jugando a cero y termina el juego
+      $reiniciaResCorrec="UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz != $aprendiz";
+      $ejecutaReinicio=$conexion->query($reiniciaResCorrec);
+    }
+
+    //Verifica si hay algún ganador
     if(mysqli_num_rows($resultadoGanador) > 0){
+      $_SESSION['verificaGanador']=1;
       header("location: ../Vistas/admin.php?MSN=5");
     }else{
+      $_SESSION['verificaGanador']=0;
 
-    if ($resultado->num_rows > 0 && $rowLimite < 15) {
+
+    if ($resultado->num_rows > 0) {
         $respuesta = "";
         $preguntas = "";
 
@@ -209,15 +251,16 @@ if ($valor > 0) {
                 }
             }
         }
-
         header('location: ../Vistas/juego.php');
-
     } else {
         header('location: ../Vistas/admin.php?MSN=1');
     }
   }
-
 } else {
+  //Si se equivoca las resCorrectas vuelven a cero
+  $reiniciaResCorrec="UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz = $aprendiz";
+  $ejecutaReinicioi=$conexion->query($reiniciaResCorrec);
+
     $_SESSION['jugar'] = 0;
     header('location: ../Vistas/finJuego.php');
 }

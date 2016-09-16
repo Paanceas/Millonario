@@ -12,7 +12,7 @@ class MensajesLogin
                     $men = "Por favor Inicia sesión";
                     break;
                     case '3':
-                        $men = "Ya hay una sesión iniciado con este usuario";
+                        $men = "Hay una sesión iniciado con este usuario";
                         break;
 
         }

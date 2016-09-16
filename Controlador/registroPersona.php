@@ -151,7 +151,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                   $ultimoAprendiz    = mysqli_query($conexion, $verificaAprendiz);
                   $id_aprendiz       = $ultimoAprendiz->fetch_array(MYSQLI_NUM);
                   //Registra el puntaje
-                  $validaPuntaje="INSERT INTO puntaje (id_aprendiz, puntajes, estado) VALUES($id_aprendiz[0], 0, 0)";
+                  $validaPuntaje="INSERT INTO puntaje (id_aprendiz, puntajes, estado, record) VALUES($id_aprendiz[0], 0, 0, 0)";
                   $registroPuntaje=$conexion->query($validaPuntaje);
 
                   header("location:../Vistas/formRegistro.php?MSN=ok");

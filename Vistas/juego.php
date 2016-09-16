@@ -1,8 +1,10 @@
 <?php
+// require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
-if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0 ){
+// $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
+// var_dump($_SESSION['verificaSesion']);
+if($_SESSION['validacion']==1 && $_SESSION['id_usuario'] > 0){
 $usuario=$_SESSION['id_usuario'];
-
 //Clic en jugar
 if($_SESSION['clicJugarSess'] != 1){
   header('location:../Vistas/admin.php?MSN=4');
@@ -10,7 +12,7 @@ if($_SESSION['clicJugarSess'] != 1){
 
 
 //Valida intentos
-if ($_SESSION['intentos'] <= 1) {
+if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
 
  ?>
 <!DOCTYPE html>

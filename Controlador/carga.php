@@ -57,13 +57,13 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
               $resUltPreg= $conexion->query($consultaUltPre);
               $id_pregunta=$resUltPreg->fetch_array(MYSQLI_NUM);
 
-if($id_pregunta[0]==null){
-  $id_pregunta[0]=1;
-}
+              if($id_pregunta[0]==null){
+                $id_pregunta[0]=1;
+              }
                 $sql = "INSERT into millonario.pregunta(id_pregunta, preguntas) values($id_pregunta[0], '$data[0]')";
                 //Insertamos los datos con los valores...
 
-                if ($data[0] = '') {
+                if ($data[0] == '') {
                     echo "CAMPO PREGUNTA VACIO";
                 } else {
                     $res = $conexion->query($sql);
@@ -74,9 +74,7 @@ if($id_pregunta[0]==null){
 
                         $id_pregunta = $resUltmaPregunta->fetch_array(MYSQLI_NUM);
 
-
                         /*---------------------------RESPUESTA---------------------------*/
-
                         //evitar que se salten los id de las repsuestas
                         $consultaUltimaResp = "select max(r.id_respuesta)+1 from respuesta r";
                         $resUltmaRespuesta  = $conexion->query($consultaUltimaResp);
@@ -91,20 +89,23 @@ if($id_pregunta[0]==null){
                         // echo "<br>ULTIMA RESPUESTA";
                         // var_dump($id_respuesta[0]);
                         $sqlRespuesta = "INSERT into millonario.respuesta(id_respuesta, id_pregunta, respuesta1, respuesta2, respuesta3, respuesta4) values($id_respuesta[0], $id_pregunta[0], '$data[1]', '$data[2]', '$data[3]', '$data[4]')";
+                        //Si hay una respuesta vacía borra la pregunta y la respuesta no se guarda
+                        if($data[1]=='' || $data[2]=='' || $data[3]=='' || $data[4]==''){
+                          $eliminaUltResp = "DELETE FROM respuesta where id_pregunta='$id_pregunta[0]'";
+                          $ejecutaEliminarResp=$conexion->query($eliminaUltResp);
+                          var_dump($eliminaUltResp);
+                          var_dump($ejecutaEliminarResp);exit();
+                          $eliminaUltPregunta =  "DELETE FROM pregunta where id_pregunta='$id_pregunta[0]'";
+                          $ejecutaEliminarPreg=$conexion->query($eliminaUltPregunta);
+
+                        }
                         echo "<br>resulrado res:   ";
 
                         // var_dump($sqlRespuesta);
                         $registroRespuesta = $conexion->query($sqlRespuesta);
                         echo "<br>";
 
-
-                    } else {
-
-                        // echo "YA SUBIO ESTE archivo<br>";
-                    }
-
                 }
-
             }
 
 

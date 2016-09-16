@@ -1,6 +1,9 @@
 <?php
+require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
-if ($_SESSION['validacion'] == 1) {
+$_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
+var_dump($_SESSION['verificaSesion']);
+if ($_SESSION['validacion'] == 1  && $_SESSION['verificaSesion']  == 1) {
   $_SESSION['clicJugarSess'] = 0;
 
 ?>
@@ -17,6 +20,8 @@ if ($_SESSION['validacion'] == 1) {
 <?php
     include "../Controlador/adminController.php";
     require('../Controlador/clases/mensajeJuego.php');
+
+
 ?>
   <title>Inicio</title>
 </head>
@@ -161,10 +166,10 @@ $(document).ready(function() {
 </body>
 </html>
 <?php
-
-
-} else {
-    header('location:../Vistas/formLogin.php?MSN=2');
+}else{
+session_unset();
+session_destroy();
+header("location:../Vistas/formLogin.php?MSN=3");
 }
 
 ?>
