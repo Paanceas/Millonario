@@ -1,9 +1,9 @@
 <?php
-// require('../Controlador/clases/consultasAvanzadas.php');
+require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
-// $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
+$_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 // var_dump($_SESSION['verificaSesion']);
-if($_SESSION['validacion']==1 && $_SESSION['id_usuario'] > 0){
+if($_SESSION['validacion']==1 && $_SESSION['id_usuario'] > 0 && $_SESSION['verificaSesion'] == 1){
 $usuario=$_SESSION['id_usuario'];
 //Clic en jugar
 if($_SESSION['clicJugarSess'] != 1){

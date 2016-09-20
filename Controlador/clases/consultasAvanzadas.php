@@ -10,10 +10,19 @@ class consultasAvanzadas
     $rowSesion=mysqli_fetch_array($resultado);
 
     $verifica=$rowSesion['verificaSesion'];
-
     return $verifica;
   }
-  mysqli_close($conexion);
+
+  public static function recuperar($usLog)
+  {
+    include "../Conexion/config.php";
+    $sql        = "SELECT recuperar FROM usuario WHERE id_usuario = '$usLog';";
+    $resultado  = mysqli_query($conexion, $sql);
+    $rowSesion=mysqli_fetch_array($resultado);
+
+    $recuperar=$rowSesion['recuperar'];
+    return $recuperar;
+  }
 }
 
  ?>

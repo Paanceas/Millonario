@@ -61,8 +61,6 @@ function jugar($respuesta, $validarRes)
         $resultadoHas = $conexion->query($registroHas);
     }
 
-
-
     //Si es correcta actualiza puntaje y suma +1 a la res correcta
     if ($validarRes == 1 || $validarRes == 0) {
         if ($validarRes == 1) {
@@ -89,29 +87,12 @@ function jugar($respuesta, $validarRes)
                 }
             }
 
-            // //Actualiza si el puntaje nuevo es mayor all record
-            // while ($rowRecord=$resultadoIntento->fetch_array(MYSQLI_ASSOC)) {
-            //   $record           = $rowRecord['record'];
-            //   $puntajes         = $rowPuntaje['puntajes'];
-            //
-            //   if($puntajes > $record){
-            //
-            //     $recordNuevo            = $puntajes;
-            //     $actualizaRecord= "UPDATE puntaje SET record =  '" . $recordNuevo . "' where id_aprendiz = $aprendiz";
-            //     $ejecutaSqlRecord       = $conexion->query($actualizaRecord);
-            //
-            //   }
-            //   var_dump($ejecutaSqlRecord);exit();
-            // }
-
             while ($rowResCorrectas = $resContador->fetch_array(MYSQLI_ASSOC)) {
                 $resCorrectas          = $rowResCorrectas['resCorrectas'];
                 $nuevoResC             = $resCorrectas + 1; // obtenemos el valor de 'resCorrectas' y le añadimos mas una pregunta correcta
                 $actualizaresCorrectas = "UPDATE evaluacion_aprendiz SET resCorrectas =  '" . $nuevoResC . "' where id_aprendiz = $aprendiz;";
                 $ejecutaResCorrecta    = $conexion->query($actualizaresCorrectas);
             }
-
-
         }
 
     } else {
@@ -127,6 +108,7 @@ function jugar($respuesta, $validarRes)
     $row       = $resultado->fetch_array(MYSQLI_ASSOC);
 
     return $row['id_respuesta'];
+
 }
 function validaIntento()
 {
@@ -135,20 +117,32 @@ function validaIntento()
         $aprendiz = $_SESSION['id_aprendiz'];
     }
     //Consulta si hay intentos disponibles
-    $intentos        = "SELECT estado from puntaje where id_aprendiz = $aprendiz";
+    $intentos        = "SELECT * from puntaje where id_aprendiz = $aprendiz";
     $consultaIntento = $conexion->query($intentos);
-    $ValorEstado     = $consultaIntento->fetch_array(MYSQLI_NUM);
+    $ValorEstado     = $consultaIntento->fetch_array(MYSQLI_ASSOC);
 
-    if ($ValorEstado[0] <= 1) {
-        $nuevoEstado     = $ValorEstado[0] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
+
+    //Fecha que esta guardada
+    $ValorEstado['fecha'];
+    //FECHA LOCAL DATE
+    $fechaActualizacion=date('Y-m-d');
+
+    //Si la fecha guardada es diferente a la fecha de hoy actualiza intentos
+if($ValorEstado['fecha'] != $fechaActualizacion){
+  $actualizaFecha = "UPDATE puntaje SET fecha = '$fechaActualizacion', estado = 1 where id_aprendiz = $aprendiz";
+  $ejecutaActualizac=$conexion->query($actualizaFecha);
+}else{
+    if ($ValorEstado['estado'] <= 1 ) {
+        $nuevoEstado     = $ValorEstado['estado'] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
         $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "' where id_aprendiz = $aprendiz";
         $ejecutaSql      = $conexion->query($actualizaEstado);
         // var_dump($ejecutaSql);exit();
-        return $ValorEstado[0];
+        return $ValorEstado['estado'];
     } else {
         // echo "perdiste ".$ValorEstado[0]." intenos";exit();
-        return $ValorEstado[0];
+        return $ValorEstado['estado'];
     }
+  }
 }
 /*------------------------------------*/
 
@@ -207,6 +201,9 @@ if ($valor > 0) {
       //Actualiza todos los demas que esten jugando a cero y termina el juego
       $reiniciaResCorrec="UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz != $aprendiz";
       $ejecutaReinicio=$conexion->query($reiniciaResCorrec);
+      //Actualiza el puntaje a 0 para que no lleguen dos puntajes al tiempo
+      $actualizaPuntaje = "UPDATE puntaje SET puntajes =  0 where id_aprendiz != $aprendiz";
+      $ejecutaSql       = $conexion->query($actualizaPuntaje);
     }
 
     //Verifica si hay algún ganador

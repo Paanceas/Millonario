@@ -76,13 +76,18 @@ font-size: 28px;
           <div class="form-group">
             <div class="textoTitulo">¡Comienza acá!</div>
               <input type="email" class="form-control" name="usuario" id="usuario" placeholder="Correo (sena o misena)" size="26" required=""><br/>
-              <input type="password" class="form-control" name="contrasena" id="contrasena" title="Contraseña" placeholder="Contraseña" size="26" required="" min="6"><br/><br/>
+              <input type="password" class="form-control" name="contrasena" id="contrasena" title="Contraseña" placeholder="Contraseña" size="26" required="" min="6"><br/>
               <center><button type="submit" class="btn btn-sucess">
                 <span class="glyphicon glyphicon-log-in"></span>Iniciar Sesión
               </button>
               <button type="button" onclick = "location='formRegistro.php'" class="btn btn-sucess">
                 <span class="glyphicon glyphicon-user"></span>Registrarse
-              </button></center>
+              </button><br/>
+
+              <a style="font-size: 15px; color: #ffffff;" href="/Millonario/Vistas/recuperaPass.php" >
+                <span class="glyphicon glyphicon-lock"></span> Recupera tu contraseña
+              </a>
+            </center>
 
       </div>
 

@@ -38,16 +38,17 @@ return $programaFormacionSelect;
 if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['correo']) && isset($_POST['tipoIdentificacion']) && isset($_POST['programa']) && isset($_POST['clave']) && isset($_POST['confirm'])) {
     $nombres            = $_POST['nombres'];
     $documento          = $_POST['documento'];
-    $correo             = $_POST['correo'];
+    $correo             = strtolower($_POST['correo']);
     $tipoIdentificacion = $_POST['tipoIdentificacion'];
     $programa           = $_POST['programa'];
     $clave              = $_POST['clave'];
     $confirm            = $_POST['confirm'];
 
+
     //Validacion con Expresiones regulares
     $patronNombres   = "/^([a-zA-Z ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.]{2,60})$/";
     $patronDocumento = "/^[0-9]{6,12}+$/";
-    $patronCorreo    = "/^([a-zA-Z0-9_.+-])*\@(([misena-sena]+)\.)+([edu])+\.([co])+$/";
+    $patronCorreo    = "/^([a-z0-9_.+-])*\@(([misena-sena]+)\.)+([edu])+\.([co])+$/";
     $patronClave     = "/^[^ ][0-9a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.,¡!¿?\s]{5,60}+$/";
     $patronTI        = "/^[0-9]{1,10}+$/";
     $patronPrograma  = "/^[0-9]{1,10}+$/";
@@ -131,6 +132,8 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                 header("location:../Vistas/formRegistro.php?MSN=8");
             } else {
                 //Registra usuario
+                $clave              = md5($_POST['clave']);
+
                 $registroUsuario = "INSERT INTO usuario (id_roll, correo, clave) VALUES(2, '$correo', '$clave');";
             }
 
@@ -151,7 +154,9 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                   $ultimoAprendiz    = mysqli_query($conexion, $verificaAprendiz);
                   $id_aprendiz       = $ultimoAprendiz->fetch_array(MYSQLI_NUM);
                   //Registra el puntaje
-                  $validaPuntaje="INSERT INTO puntaje (id_aprendiz, puntajes, estado, record) VALUES($id_aprendiz[0], 0, 0, 0)";
+                  $fecha=date('Y-m-d');
+                  $validaPuntaje="INSERT INTO puntaje (id_aprendiz, puntajes, estado, record, fecha) VALUES($id_aprendiz[0], 0, 0, 0, '$fecha')";
+
                   $registroPuntaje=$conexion->query($validaPuntaje);
 
                   header("location:../Vistas/formRegistro.php?MSN=ok");

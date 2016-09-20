@@ -74,7 +74,9 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
 
                         $id_pregunta = $resUltmaPregunta->fetch_array(MYSQLI_NUM);
 
+
                         /*---------------------------RESPUESTA---------------------------*/
+
                         //evitar que se salten los id de las repsuestas
                         $consultaUltimaResp = "select max(r.id_respuesta)+1 from respuesta r";
                         $resUltmaRespuesta  = $conexion->query($consultaUltimaResp);
@@ -86,33 +88,28 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
                             // $id_respuesta       = $resUltmaRespuesta->fetch_array(MYSQLI_NUM);
                             $id_respuesta[0] = 1;
                         }
-                        // echo "<br>ULTIMA RESPUESTA";
-                        // var_dump($id_respuesta[0]);
+
                         $sqlRespuesta = "INSERT into millonario.respuesta(id_respuesta, id_pregunta, respuesta1, respuesta2, respuesta3, respuesta4) values($id_respuesta[0], $id_pregunta[0], '$data[1]', '$data[2]', '$data[3]', '$data[4]')";
                         //Si hay una respuesta vacía borra la pregunta y la respuesta no se guarda
                         if($data[1]=='' || $data[2]=='' || $data[3]=='' || $data[4]==''){
                           $eliminaUltResp = "DELETE FROM respuesta where id_pregunta='$id_pregunta[0]'";
                           $ejecutaEliminarResp=$conexion->query($eliminaUltResp);
-                          var_dump($eliminaUltResp);
-                          var_dump($ejecutaEliminarResp);exit();
+
                           $eliminaUltPregunta =  "DELETE FROM pregunta where id_pregunta='$id_pregunta[0]'";
                           $ejecutaEliminarPreg=$conexion->query($eliminaUltPregunta);
 
                         }
-                        echo "<br>resulrado res:   ";
+                        // echo "<br>resulrado res:   ";
 
                         // var_dump($sqlRespuesta);
                         $registroRespuesta = $conexion->query($sqlRespuesta);
-                        echo "<br>";
-
-                }
-            }
-
+                      }
+                    }
+                  }
 
             //cerramos la lectura del archivo "abrir archivo" con un "cerrar archivo"
             fclose($handle);
             echo "<br>Importación exitosa!";
-
         } else {
             //si aparece esto es posible que el archivo no tenga el formato adecuado, inclusive cuando es cvs, revisarlo para             //ver si esta separado por " , "
             echo "Archivo invalido!";

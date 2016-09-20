@@ -61,7 +61,7 @@ class MensajesJuego
         }
 
         if (!empty($men)) {
-          echo '<div class="alert alert-dismissible alert-danger">
+          echo '<div style="font-size: 20px; font-family: sans-serif" class="alert alert-dismissible alert-danger">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
           <strong>Ooops<br></strong>' . $men . '
           </div>';

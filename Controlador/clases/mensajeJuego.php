@@ -28,9 +28,13 @@ class mensajeJuego
               $men="Ya tenemos un ganador";
               $tipoAlert ="info";
               break;
+              case '6':
+                $men="por loca";
+                $tipoAlert ="info";
+                break;
     }
     if (!empty($men)) {
-      echo '<div class="alert alert-'.$tipoAlert.' alert-dismissible" role="alert">
+      echo '<div style="font-size: 18px;" class="alert alert-'.$tipoAlert.' alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       '.$men.'
       </div>';

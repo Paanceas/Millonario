@@ -2,10 +2,15 @@
 require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
-var_dump($_SESSION['verificaSesion']);
-if ($_SESSION['validacion'] == 1  && $_SESSION['verificaSesion']  == 1) {
-  $_SESSION['clicJugarSess'] = 0;
+$_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);
 
+if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
+    $_SESSION['clicJugarSess'] = 0;
+    //Si el usuario esta en recuperar pass no lo deja salir de esa vista
+
+    if ($_SESSION['recuperar'] == 1) {
+        header("location: ../Vistas/nuevaPass.php");
+    } else {
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,12 +23,12 @@ if ($_SESSION['validacion'] == 1  && $_SESSION['verificaSesion']  == 1) {
 
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 <?php
-    include "../Controlador/adminController.php";
-    require('../Controlador/clases/mensajeJuego.php');
+        include "../Controlador/adminController.php";
+        require('../Controlador/clases/mensajeJuego.php');
 
 
 ?>
-  <title>Inicio</title>
+ <title>Inicio</title>
 </head>
 <!--Deshabiilita inspeccionar elemento <body> -->
 <script type="text/javascript">
@@ -53,17 +58,17 @@ function anularBotonDerecho(e) {
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="admin.php" style="padding:0;">
-          <img alt="sena" src="../source/img/logo_sena.png" height="100%" width="60px"/>
+          <img alt="sena" src="../source/img/logo_sena.png" height="110%" width="62px"/>
         </a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li> <a>   Bienvenid@: <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
-    echo $_SESSION['nombreAprendiz'];
+        echo $_SESSION['nombreAprendiz'];
 ?></a> </li>
           <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
-    echo $_SESSION['programaAprendiz'];
+        echo $_SESSION['programaAprendiz'];
 ?> </a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -80,9 +85,9 @@ function anularBotonDerecho(e) {
   <!-- fin barra de navegacion -->
   <div class="container animated flipInX">
     <?php
-    if (isset($_GET["MSN"])) {
-        mensajeJuego::msnJuego($_GET["MSN"]);
-    }
+        if (isset($_GET["MSN"])) {
+            mensajeJuego::msnJuego($_GET["MSN"]);
+        }
 ?>
  </div>
   <!-- contenido de la pagina -->
@@ -109,38 +114,7 @@ function anularBotonDerecho(e) {
           </form>
         </div>
       </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-4">
-        <table class="table table-striped table-hover" style="text-align:center">
-          <thead>
-            <tr class="success">
-              <th><center><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></center> Puntaje</th>
-              <th><center><span class="glyphicon glyphicon-flag" aria-hidden="true"></span></center>Pregunta Actual</th>
-              <th><center><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></center> Total Preguntas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr >
-             <td><?php
-    echo "$puntaje" . " Pts";
-?></td>
-             <td><?php
-    echo "$preguntaCorrecta";
-?></td>
-             <td><?php
-    echo "$numPregun";
-?></td>
-           </tr>
-          </tbody>
-        </table>
-        <h3>Has respondido el: <?php
-        $porcentaje = round(($preguntaCorrecta * 100) / $numPregun);
-        echo $porcentaje . "%"; ?> </h3>
-        <div class="progress progress-striped active">
-          <div class="progress-bar progress-bar-success" style="width: <?php
-    echo ($preguntaCorrecta * 100) / $numPregun; ?>%"></div>
-        </div>
-      </div>
+
     </div>
   </div>
   <!-- fin contenido de la pagina -->
@@ -166,10 +140,11 @@ $(document).ready(function() {
 </body>
 </html>
 <?php
-}else{
-session_unset();
-session_destroy();
-header("location:../Vistas/formLogin.php?MSN=3");
+    }
+} else {
+    session_unset();
+    session_destroy();
+    header("location:../Vistas/formLogin.php?MSN=3");
 }
 
 ?>
