@@ -1,108 +1,38 @@
-<?php
-session_start();
-if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
-$usuario=$_SESSION['id_usuario'];
- ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <title>Bootstrap Example</title>
   <meta charset="utf-8">
-<?php
-include "modalinstrucc.php";
-@include('../Controlador/cargaPreguntas.php');
-?>
-	<title>Inicio</title>
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body onLoad="timer()">
-<h1>Bienvenido Aprendiz</h1>
-<button type="submit" onclick = "location='../Controlador/logout.php'" class="btn btn-primary" >Salir</button>
-<div>
-<form class="" action="../Controlador/cargaPreguntas.php" method="post">
+<body>
 
 
-<table border="2" style="margin-top: 180px;">
-<tr><td colspan="4"><center><?php echo $preguntas; ?></center></td></tr>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 
-
-<tr>
-  <?php echo $respuesta; ?>
-</tr>
-</th>
-</table>
-
-
-
-<article class="gameTime">
-  <img src="../source/img/pje1.png" class="picTime">
-  <h2><div id="contador"></div></h2>
-
-</article>
-
-<input type="hidden" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
-<input type="hidden" name="respSeleccionada" id="respSeleccionada" />
-</form>
-<script type="text/javascript">
-  function vp(num) {
-    $selectAnswer = document.getElementById("respSeleccionada");
-    $selectAnswer.value = num;
-    switch (num) {
-      case 1:
-        alert ('Correcto!!');
-        break;
-      default:
-        alert ('Respuesta Incorrecta');
-        break;
-    }
-  }
-
-  function timer(){
-  var t=setTimeout("timer()",1000);
-  document.getElementById('contador').innerHTML = ''+i--+" ";
-  if (i==-1){
-    document.getElementById('contador').innerHTML = 'FIN';
-    clearTimeout(t);
-    alert('perdio');
-  }
-}
-i=2;
-
-
-//Disable right click script III- By Renigade (renigade@mediaone.net)
-//For full source code, visit http://www.dynamicdrive.com
-var message = "";
-
-function clickIE(){
-if (document.all){
-(message);
-return false;
-}
-}
-
-function clickNS(e){
-if (document.layers || (document.getElementById && !document.all)){
-if (e.which == 2 || e.which == 3){
-(message);
-return false;
-}
-}
-}
-
-if (document.layers){
-document.captureEvents(Event.MOUSEDOWN);
-document.onmousedown = clickNS;
-} else {
-document.onmouseup = clickNS;
-document.oncontextmenu = clickIE;
-}
-document.oncontextmenu = new Function("return false"
-
-
-</script>
 </body>
 </html>
-<?php
-}else{
-  header('location:../Vistas/formLogin.php?MSN=2');
-}
-?>

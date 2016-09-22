@@ -2,16 +2,18 @@
 
 session_start();
 include "../Conexion/config.php";
-if ($_SESSION['id_aprendiz'] > 0); {
+if ($_SESSION['id_aprendiz'] > 0) {
     $aprendiz = $_SESSION['id_aprendiz'];
 }
-function cerrarSesionEstado(){
-  include "../Conexion/config.php";
-  if ($_SESSION['id_usuario'] > 0); {
-      $usuarioSesion = $_SESSION['id_usuario'];
-  }
-  $consultaSesion="UPDATE usuario SET verificaSesion = 0 where id_usuario = $usuarioSesion";
-  $actualizaEstado=$conexion->query($consultaSesion);
+
+function cerrarSesionEstado()
+{
+    include "../Conexion/config.php";
+    if ($_SESSION['id_usuario'] > 0) {
+        $usuarioSesion = $_SESSION['id_usuario'];
+    }
+    $consultaSesion  = "UPDATE usuario SET verificaSesion = 0 where id_usuario = $usuarioSesion";
+    $actualizaEstado = $conexion->query($consultaSesion);
 }
 
 function randomNum()
@@ -70,20 +72,20 @@ function jugar($respuesta, $validarRes)
 
             while ($rowPuntaje = $resultadoIntento->fetch_array(MYSQLI_ASSOC)) {
 
-                $puntajes         = $rowPuntaje['puntajes'];
-                $record = $rowPuntaje['record'];
-                $nuevo            = $puntajes + 100; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
+                $puntajes = $rowPuntaje['puntajes'];
+                $record   = $rowPuntaje['record'];
+                $nuevo    = $puntajes + 100; // obtenemos el valor de 'puntajes' y le añadimos los puntos ganados
 
                 $actualizaPuntaje = "UPDATE puntaje SET puntajes =  '" . $nuevo . "' where id_aprendiz = $aprendiz";
                 $ejecutaSql       = $conexion->query($actualizaPuntaje);
 
                 // $puntajes         = $rowPuntaje['puntajes'];
-                var_dump($nuevo);
+                // var_dump($nuevo);
 
-                if($nuevo > $record){
-                  $recordNuevo            = $record + 100;
-                  $actualizaRecord= "UPDATE puntaje SET record =  '" . $recordNuevo . "' where id_aprendiz = $aprendiz";
-                  $ejecutaSqlRecord       = $conexion->query($actualizaRecord);
+                if ($nuevo > $record) {
+                    $recordNuevo      = $record + 100;
+                    $actualizaRecord  = "UPDATE puntaje SET record =  '" . $recordNuevo . "' where id_aprendiz = $aprendiz";
+                    $ejecutaSqlRecord = $conexion->query($actualizaRecord);
                 }
             }
 
@@ -96,8 +98,8 @@ function jugar($respuesta, $validarRes)
         }
 
     } else {
-      $actualizaPuntaje = "UPDATE puntaje SET puntajes = 0 where id_aprendiz = $aprendiz";
-      $ejecutaSql       = $conexion->query($actualizaPuntaje);
+        $actualizaPuntaje = "UPDATE puntaje SET puntajes = 0 where id_aprendiz = $aprendiz";
+        $ejecutaSql       = $conexion->query($actualizaPuntaje);
         return 0;
     }
     //Muestra pregunta al azar
@@ -121,28 +123,36 @@ function validaIntento()
     $consultaIntento = $conexion->query($intentos);
     $ValorEstado     = $consultaIntento->fetch_array(MYSQLI_ASSOC);
 
-
     //Fecha que esta guardada
     $ValorEstado['fecha'];
     //FECHA LOCAL DATE
-    $fechaActualizacion=date('Y-m-d');
+    $fechaActualizacion = date('Y-m-d');
 
     //Si la fecha guardada es diferente a la fecha de hoy actualiza intentos
-if($ValorEstado['fecha'] != $fechaActualizacion){
-  $actualizaFecha = "UPDATE puntaje SET fecha = '$fechaActualizacion', estado = 1 where id_aprendiz = $aprendiz";
-  $ejecutaActualizac=$conexion->query($actualizaFecha);
-}else{
-    if ($ValorEstado['estado'] <= 1 ) {
-        $nuevoEstado     = $ValorEstado['estado'] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
-        $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "' where id_aprendiz = $aprendiz";
-        $ejecutaSql      = $conexion->query($actualizaEstado);
-        // var_dump($ejecutaSql);exit();
-        return $ValorEstado['estado'];
+    if ($ValorEstado['fecha'] != $fechaActualizacion) {
+        $actualizaFecha    = "UPDATE puntaje SET fecha = '$fechaActualizacion', estado = 1, totalEstados = 1 where id_aprendiz = $aprendiz";
+        $ejecutaActualizac = $conexion->query($actualizaFecha);
+
+        //Incrementa total Estados
+        $nuevoTotalEstados = $ValorEstado['totalEstados'] + 1;
+        $actualizaTotalEst = "UPDATE puntaje SET totalEstados = '" . $nuevoTotalEstados . "' where id_aprendiz = $aprendiz";
+        $ejecutaSql        = $conexion->query($nuevoTotalEstados);
+
     } else {
-        // echo "perdiste ".$ValorEstado[0]." intenos";exit();
-        return $ValorEstado['estado'];
+        if ($ValorEstado['estado'] <= 1) {
+            //Total estados
+            $nuevoTotalEstados = $ValorEstado['totalEstados'] + 1;
+
+            $nuevoEstado     = $ValorEstado['estado'] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
+            $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "', totalEstados = '" . $nuevoTotalEstados . "'  where id_aprendiz = $aprendiz";
+            $ejecutaSql      = $conexion->query($actualizaEstado);
+            // var_dump($ejecutaSql);exit();
+            return $ValorEstado['estado'];
+        } else {
+            // echo "perdiste ".$ValorEstado[0]." intenos";exit();
+            return $ValorEstado['estado'];
+        }
     }
-  }
 }
 /*------------------------------------*/
 
@@ -153,7 +163,7 @@ if (isset($_POST['clicJugar'])) {
     if ($_POST['clicJugar'] == 1) {
         $clic = $_POST['clicJugar'];
     }
-}else {
+} else {
     $_POST['clicJugar'] = 0;
     header('location: ../Vistas/admin.php?MSN=4');
 }
@@ -174,6 +184,9 @@ if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada'])) {
     $valor            = 0;
     $validarRespuesta = 0;
 }
+
+
+
 
 $valor = jugar($cargarLaPregunta, $validarRespuesta);
 
@@ -197,66 +210,66 @@ if ($valor > 0) {
     $resultadoGanador = $conexion->query($controlGanador);
 
     //Si ya hay un ganador y el aprendiz logueado es el ganador
-    if ($resultadoGanador == true && $rowLimite >=15 ) {
-      //Actualiza todos los demas que esten jugando a cero y termina el juego
-      $reiniciaResCorrec="UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz != $aprendiz";
-      $ejecutaReinicio=$conexion->query($reiniciaResCorrec);
-      //Actualiza el puntaje a 0 para que no lleguen dos puntajes al tiempo
-      $actualizaPuntaje = "UPDATE puntaje SET puntajes =  0 where id_aprendiz != $aprendiz";
-      $ejecutaSql       = $conexion->query($actualizaPuntaje);
+    if ($resultadoGanador == true && $rowLimite >= 15) {
+        //Actualiza todos los demas que esten jugando a cero y termina el juego
+        $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz != $aprendiz";
+        $ejecutaReinicio   = $conexion->query($reiniciaResCorrec);
+        //Actualiza el puntaje a 0 para que no lleguen dos puntajes al tiempo
+        $actualizaPuntaje  = "UPDATE puntaje SET puntajes =  0 where id_aprendiz != $aprendiz";
+        $ejecutaSql        = $conexion->query($actualizaPuntaje);
     }
 
     //Verifica si hay algún ganador
-    if(mysqli_num_rows($resultadoGanador) > 0){
-      $_SESSION['verificaGanador']=1;
-      header("location: ../Vistas/admin.php?MSN=5");
-    }else{
-      $_SESSION['verificaGanador']=0;
+    if (mysqli_num_rows($resultadoGanador) > 0) {
+        $_SESSION['verificaGanador'] = 1;
+        header("location: ../Vistas/admin.php?MSN=5");
+    } else {
+        $_SESSION['verificaGanador'] = 0;
 
 
-    if ($resultado->num_rows > 0) {
-        $respuesta = "";
-        $preguntas = "";
+        if ($resultado->num_rows > 0) {
+            $respuesta = "";
+            $preguntas = "";
 
-        //==================
-        $cont         = 0;
-        $arrayNumeros = array();
-        $arrayNumeros = randomNum();
+            //==================
+            $cont         = 0;
+            $arrayNumeros = array();
+            $arrayNumeros = randomNum();
 
-        $arrayPregunta = array();
-        $arrayPregunta = randPregunta();
+            $arrayPregunta = array();
+            $arrayPregunta = randPregunta();
 
-        while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
-            $idRespuesta = $row["id_respuesta"];
+            while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
+                $idRespuesta = $row["id_respuesta"];
 
-            $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $row['preguntas'] . "</span><br>";
+                $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $row['preguntas'] . "</span><br>";
 
-            foreach ($arrayNumeros as $value) {
-                switch ($value) {
-                    case '1':
-                        $respuesta .= "<td><button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
-                        break;
-                    case '2':
-                        $respuesta .= " <td><button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
-                        break;
-                    case '3':
-                        $respuesta .= " <td><button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
-                        break;
-                    case '4':
-                        $respuesta .= "<td><button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
-                        break;
+                foreach ($arrayNumeros as $value) {
+                    switch ($value) {
+                        case '1':
+                            $respuesta .= "<td><button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
+                            break;
+                        case '2':
+                            $respuesta .= " <td><button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
+                            break;
+                        case '3':
+                            $respuesta .= " <td><button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
+                            break;
+                        case '4':
+                            $respuesta .= "<td><button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
+                            break;
+                    }
                 }
             }
+            header('location: ../Vistas/juego.php');
+        } else {
+            header('location: ../Vistas/admin.php?MSN=1');
         }
-        header('location: ../Vistas/juego.php');
-    } else {
-        header('location: ../Vistas/admin.php?MSN=1');
     }
-  }
 } else {
-  //Si se equivoca las resCorrectas vuelven a cero
-  $reiniciaResCorrec="UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz = $aprendiz";
-  $ejecutaReinicioi=$conexion->query($reiniciaResCorrec);
+    //Si se equivoca las resCorrectas vuelven a cero
+    $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz = $aprendiz";
+    $ejecutaReinicioi  = $conexion->query($reiniciaResCorrec);
 
     $_SESSION['jugar'] = 0;
     header('location: ../Vistas/finJuego.php');

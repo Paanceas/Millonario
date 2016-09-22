@@ -18,13 +18,29 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 <html>
   <head>
     <meta charset="utf-8">
+    <?php
+    // @include('modalinstrucc.php');
+
+    require('../Controlador/clases/mensajesRecuperarPass.php');
+
+     ?>
+     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+
+       <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <title>Nueva Clave</title>
   </head>
   <body>
+    <div class="container animated lightSpeedIn" style="width: 400px;">
+      <?php
+      if(isset($_GET["MSN"])){
+        mensajesRecuperarPass::recuperarPass($_GET["MSN"]);
+      }
+       ?>
+    </div>
     <form  action="../Controlador/recuperarPass.php" method="post">
       <input type="password" placeholder="Contraseña Nueva" name="clave" class="inp02" id="clave">
       <input type="password" placeholder="Confirme Contraseña" name="confirm" class="inp02" id="clave2">
-      <button type="submit" name="nuevaPass" class="botonRegistro"><span class="glyphicon glyphicon-user"> </span> Actualizar</button>
+      <button type="submit" name="nuevaPass" class="botonRegistro"><span class="glyphicon glyphicon-refresh"> </span> Actualizar</button>
     </form>
   </body>
 </html>

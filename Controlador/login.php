@@ -14,7 +14,7 @@ $sql       = "SELECT id_usuario, id_roll, correo, clave, verificaSesion FROM usu
 $resultado = mysqli_query($conexion, $sql);
 $row       = mysqli_fetch_array($resultado);
 if (mysqli_num_rows($resultado) > 0) {
-    // session_start();
+
 
     $_SESSION['id_usuario']     = $row['id_usuario'];
     $_SESSION['usuario']        = $usuario;
@@ -27,7 +27,7 @@ if (mysqli_num_rows($resultado) > 0) {
         $_SESSION['id_roll']    = 1;
         header("location:../Controlador/carga.php");
     } else if ($row['id_roll'] == 2) {
-        // session_start();
+
         $user = $_SESSION['id_usuario'];
 
         if ($row['verificaSesion'] == 0) {

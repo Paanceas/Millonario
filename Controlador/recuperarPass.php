@@ -21,7 +21,6 @@ if (isset($_POST['recuperar'])) {
     //Clave encliptada
     $claveEncriptada = md5($pass);
 
-
     if (isset($_POST['correo'])) {
         $correo = strtolower($_POST['correo']);
 
@@ -30,39 +29,39 @@ if (isset($_POST['recuperar'])) {
         $ejecutaSql = $conexion->query($sqlExiste);
 
         if (mysqli_num_rows($ejecutaSql) > 0) {
-            $actualizaClave = "UPDATE usuario SET clave = '$claveEncriptada', recuperar = 1 where correo = '$correo';";
-            $ejecutaSql     = $conexion->query($actualizaClave);
-            if ($ejecutaSql == true) {
 
-                /*function enviarEmail( $email, $link ){
                 $mensaje = '<html>
                 <head>
                 <title>Restablece tu contraseña</title>
                 </head>
                 <body>
                 <p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
-                <p>Si hiciste esta petición, haz clic en el siguiente enlace, si no hiciste esta petición puedes ignorar este correo.</p>
-                <p>
-                <strong>Enlace para restablecer tu contraseña</strong><br>
-                <a href="'.$link.'"> Restablecer contraseña </a>
-                </p>
+                <p>Tu nueva Contraseña es: '. $pass .'</p>
                 </body>
                 </html>';
 
                 $cabeceras = 'MIME-Version: 1.0' . "\r\n";
                 $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $cabeceras .= 'From: Codedrinks <mimail@codedrinks.com>' . "\r\n";
+                $cabeceras .= 'From: Codedrinks <ejemplo@misena.edu.co>' . "\r\n";
                 // Se envia el correo al usuario
-                mail($email, "Recuperar contraseña", $mensaje, $cabeceras);
-                }*/
+                mail($correo, "Recuperar contraseña", $mensaje, $cabeceras);
 
-
-                mail($correo, "Cambio de clave", "Estimado usuario su nueva clave es " . $pass);
-                // header("location: /Millonario/Vistas/formLogin.php?MSN=4");
-            } else {
-                header("location: /Millonario/Vistas/formLogin.php?MSN=5");
-            }
+                if(mail($correo, "Recuperar contraseña", $mensaje, $cabeceras)){
+                  $actualizaClave = "UPDATE usuario SET clave = '$claveEncriptada', recuperar = 1 where correo = '$correo';";
+                  $ejecutaSql     = $conexion->query($actualizaClave);
+                  if ($ejecutaSql == true) {
+                    //Ingresa
+                    header("location: ../Vistas/formLogin.php?MSN=7");
+                  }else{
+                    //No se pudo actualizar la clave
+                    header("location: ../Vistas/nuevaPass.php?MSN=3");
+                  }
+                }else {
+                  //NO SE PUDO ENVIAR EL CORREO
+                    header("location:../Vistas/formLogin.php?MSN=5");
+                }
         } else {
+          //El correo no existe
             header("location: /Millonario/Vistas/formLogin.php?MSN=6");
         }
     }
@@ -111,8 +110,6 @@ if (isset($_POST['recuperar'])) {
                 header("location: ../Vistas/nuevaPass.php?MSN=2");
             }
         }
-    } else {
-        header("location:../Vistas/nuevaPass.php?MSN=3");
     }
 } else {
     header("location: ../Vistas/formLogin.php");

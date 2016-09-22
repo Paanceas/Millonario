@@ -12,6 +12,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
         header("location: ../Vistas/nuevaPass.php");
     } else {
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,6 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 <?php
         include "../Controlador/adminController.php";
         require('../Controlador/clases/mensajeJuego.php');
-
 
 ?>
  <title>Inicio</title>
@@ -114,8 +114,23 @@ function anularBotonDerecho(e) {
           </form>
         </div>
       </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-5">
+        <table class="table ta  ble-striped table-hover" style="text-align:center">
+          <thead>
+            <tr class="success">
+              <th><center>Récord</center> </th>
+              <th><center>Nombres</center></th>
+              <th><center> Documento</center></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php echo ranking() ?>
+          </tbody>
+        </table>
+     </div>
+  </div>
 
-    </div>
   </div>
   <!-- fin contenido de la pagina -->
 

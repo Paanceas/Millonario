@@ -7,29 +7,34 @@ class MensajesLogin
         switch ($tipo) {
             case '1':
                 $men = "Verifica tus credenciales";
-                $tipoAlert="warning";
+                $tipoAlert="danger";
 
                 break;
                 case '2':
                     $men = "Por favor Inicia sesión";
-                    $tipoAlert="warning";
+                    $tipoAlert="danger";
                   break;
                     case '3':
                         $men = "Hay una sesión iniciado con este usuario";
-                        $tipoAlert="warning";
+                        $tipoAlert="danger";
                         break;
                         case '4':
                         $men = "Clave modificada con éxito";
                         $tipoAlert="info";
                           break;
                           case '5':
-                          $men = "No se pudo modificar la clave";
-                          $tipoAlert="warning";
+                          $men = "No se pudo enviar el correo";
+                          $tipoAlert="danger";
                             break;
                             case '6':
                             $men = "El correo ingresado no existe";
-                            $tipoAlert="warning";
+                            $tipoAlert="danger";
                               break;
+                              case '7':
+                              $men = "Confirma tu cuenta de correo electrónico";
+                              $tipoAlert="info";
+                                break;
+
         }
 
         if (!empty($men)) {
