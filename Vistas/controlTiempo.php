@@ -1,47 +1,34 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <script type="text/javascript">
-
+<head>
+   <meta charset="utf-8">
+   <title>Mostrar Ventane Modal de forma Automático</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+   <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+   <script>
+      $(document).ready(function()
+      {
+         $("#mostrarmodal").modal("show");
+      });
     </script>
-    <title></title>
-  </head>
-  <body>
-    <?php
-    date_default_timezone_set('UTC');
-
-    $es = gmdate('d m Y h', time());
-
-    $time = time();
-  echo "<br/>";
-
-  echo "<br/>";
-  echo date("d-m-Y (H:i:s)", -3600);
-  echo "<br/>";
-  echo date("d-m-Y (H:i:s)", 0);
-  echo "<br/>";
-  echo date("d-m-Y (H:i:s)", 3600);
-  echo "<br/>";
-  echo date("Y-m-d (H:i:s)", $time);
-  echo "<br/>";
-  echo date("Y-m-d ", $time);
-  echo "<br/>";
-  echo ("Según el servidor la hora actual es: ". date("H:i:s", $time));
-
-
-echo "------------------------------------------";
-setlocale(LC_ALL, 'nld_nld');
-
-/* Muestra: vrijdag 22 december 1978 */
-echo strftime("%A %d %B %Y", mktime(0, 0, 0, 12, 22, 1978));
-
-/* Probar diferentes nombres posibles de localismos para el alemán a partir de PHP 4.3.0 */
-// $loc_de = setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
- $loc_de=setlocale (LC_TIME, 'es_ES', 'es_ES');
-
-echo "El localismo preferido para el alemán en este sistema es '$loc_de'";
-
-     ?>
-  </body>
+</head>
+<body>
+   <div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3>Cabecera de la ventana</h3>
+           </div>
+           <div class="modal-body">
+              <h4>Texto de la ventana</h4>
+              Mas texto en la ventana.
+       </div>
+           <div class="modal-footer">
+          <a href="#" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
+           </div>
+      </div>
+   </div>
+</div>
+</body>
 </html>

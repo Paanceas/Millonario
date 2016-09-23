@@ -81,9 +81,6 @@ function anularBotonDerecho(e) {
     </div><!-- /.container-fluid -->
   </nav>
 <form class="" action="../Controlador/cargaPreguntas.php" method="post">
-
-
-
   <div class="contenidoPagJuego">
     <article class="gameTimeJuego">
       <img src="../source/img/pje1.png" class="picTimeJuego">

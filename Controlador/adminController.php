@@ -6,80 +6,94 @@ if (!isset($_SESSION)) {
 function ranking()
 {
     include "../Conexion/config.php";
+    mysqli_set_charset($conexion, "utf8");
+
     $aprendiz = $_SESSION['id_aprendiz'];
 
-    $consultaPosic = "select p.record, a.nombres, t.tipo_identificacion, a.documento, a.id_aprendiz from puntaje p
+    //Consulta el Top 5
+    $consultaTop = "select p.record, a.nombres, pr.programas, a.id_aprendiz, FIND_IN_SET(p.id_puntaje, (SELECT GROUP_CONCAT(p.id_puntaje ORDER by p.record desc, p.totalEstados asc) from puntaje p)) AS Puesto from puntaje p
     join aprendiz a ON a.id_aprendiz = p.id_aprendiz
-    join tipo_identificacion t ON t.id_tipo_identificacion = a.id_tipo_identificacion
-    ORDER BY p.record DESC, p.totalEstados ASC LIMIT 5";
+    join programa pr ON pr.id_programa = a.id_programa
+    ORDER BY p.record DESC, p.totalEstados ASC, p.puntajes LIMIT 5";
 
-    $resultadoPosic = $conexion->query($consultaPosic);
+    $resultadoTop = $conexion->query($consultaTop);
 
-    while ($row = $resultadoPosic->fetch_array()) {
-        $rows[] = $row;
+    while ($topMejores = $resultadoTop->fetch_array()) {
+        $totalRegistros[] = $topMejores;
     }
 
+    //-----------------
+    //Consulta de los que están fuera del Top 5
+    $unico = "select p.record, a.nombres, pr.programas, a.id_aprendiz, FIND_IN_SET(p.id_puntaje, (SELECT GROUP_CONCAT(p.id_puntaje ORDER by p.record desc, p.totalEstados asc) from puntaje p)) AS Puesto from puntaje p
+    join aprendiz a ON a.id_aprendiz = p.id_aprendiz
+    join programa pr ON pr.id_programa = a.id_programa
+    ORDER BY p.record DESC, p.totalEstados ASC LIMIT 5,10000";
 
-    foreach ($rows as $row) {
-        //Si el usuario logueado se encentra en el top 5 lo resalta de color azul
-        if ($aprendiz == $row[4]) {
+    $resUnico = $conexion->query($unico);
+
+    while ($consultaUnica = $resUnico->fetch_array()) {
+        $totalUnicos[] = $consultaUnica;
+    }
+
+    foreach ($totalRegistros as $topMejores) {
+
+        //Si el aprendiz logueado esta en el Top 5
+        if ($aprendiz == $topMejores[3]) {
             echo "<tr class='info'>";
             echo "<td>";
-            echo $row[0];
+            echo $topMejores[4];
             echo "</td>";
-
             echo "<td>";
-            echo $row[1];
+            echo $topMejores[0];
             echo "</td>";
-
             echo "<td>";
-            echo $row[2] . ": " . $row[3];
+            echo $topMejores[1];
+            echo "</td>";
+            echo "<td>";
+            echo $topMejores[2];
             echo "</td>";
             echo "</tr>";
-
-        }
-        //Sino lista los demás
+        } //Sino pinta los demás
         else {
             echo "<tr>";
             echo "<td>";
-            echo $row[0];
+            echo $topMejores[4];
             echo "</td>";
-
             echo "<td>";
-            echo $row[1];
+            echo $topMejores[0];
             echo "</td>";
-
             echo "<td>";
-            echo $row[2] . ": " . $row[3];
+            echo $topMejores[1];
+            echo "</td>";
+            echo "<td>";
+            echo $topMejores[2];
             echo "</td>";
             echo "</tr>";
         }
     }
-    //Consulta si el usuario logueado esta en el top 5
-    $unicoAfuera = "select p.record, a.nombres, t.tipo_identificacion, a.documento, a.id_aprendiz from puntaje p
-  join aprendiz a ON a.id_aprendiz = p.id_aprendiz
-  join tipo_identificacion t ON t.id_tipo_identificacion = a.id_tipo_identificacion where a.id_aprendiz = $aprendiz";
-
-    $resUnico = $conexion->query($unicoAfuera);
-
-    $filaUnico = $resUnico->fetch_array(MYSQLI_NUM);
-    //Si esta fuera del top lo resalta con color rojo
-    if ($aprendiz == $filaUnico[4]) {
-        echo "<tr class='danger'>";
-        echo "<td>";
-        echo $filaUnico[0];
-        echo "</td>";
-
-        echo "<td>";
-        echo $filaUnico[1];
-        echo "</td>";
-
-        echo "<td>";
-        echo $filaUnico[2] . ": " . $filaUnico[3];
-        echo "</td>";
-        echo "</tr>";
-
+    //Si esta fuera del los primeros 5 lo resalta de rojo
+    if($consultaUnica != null ){
+      foreach ($totalUnicos as $consultaUnica) {
+          if ($aprendiz == $consultaUnica[3]) {
+              echo "<tr class='danger'>";
+              echo "<td>";
+              echo $consultaUnica[4];
+              echo "</td>";
+              echo "<td>";
+              echo $consultaUnica[0];
+              echo "</td>";
+              echo "<td>";
+              echo $consultaUnica[1];
+              echo "</td>";
+              echo "<td>";
+              echo $consultaUnica[2];
+              echo "</td>";
+              echo "</tr>";
+          }
+      }
     }
+
 }
+
 
 ?>

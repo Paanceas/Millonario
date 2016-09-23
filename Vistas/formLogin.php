@@ -21,6 +21,11 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
       <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
 
     <script src="../source/js/validar.js"></script>
+
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
 <style>
 body{
   //background: #BDD3D9;
@@ -68,10 +73,7 @@ font-size: 28px;
      ?>
   </div>
   <div class="mitad_pa">
-    <!-- <img src="../source/img/pje1.png" alt="Personaje juego"> -->
-
-
-    <form action="../Controlador/login.php" method="post" role="form" class="form23 animated zoomInDown">
+        <form action="../Controlador/login.php" method="post" role="form" class="form23 animated zoomInDown">
 
           <div class="form-group">
             <div class="textoTitulo">¡Comienza acá!</div>
@@ -84,11 +86,10 @@ font-size: 28px;
                 <span class="glyphicon glyphicon-user"></span>Registrarse
               </button><br/>
 
-              <a style="font-size: 15px; color: #ffffff;" href="/Millonario/Vistas/recuperaPass.php" >
+              <a style="font-size: 15px; color: #ffffff;" href="" data-toggle="modal" data-target="#myModal" >
                 <span class="glyphicon glyphicon-lock"></span> Recupera tu contraseña
               </a>
             </center>
-
       </div>
 
 
@@ -96,6 +97,33 @@ font-size: 28px;
 
   </div>
 
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Recuperar Contraseña</h4>
+        </div>
+        <div class="modal-body">
+          <form action="../Controlador/recuperarPass.php" method="post">
+
+            <div class="form-group">
+              <label for="correo">Ingresa tu correo:</label>
+              <input type="email" name="correo" id="correo" placeholder="Correo (sena o misena)" class="form-control" >
+            </div>
+            <button type="submit" name="recuperar" class="btn btn-success">Enviar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
   </body>
 </html>
 <?php

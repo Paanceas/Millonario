@@ -21,8 +21,9 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
   <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
-
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+  
 <?php
         include "../Controlador/adminController.php";
         require('../Controlador/clases/mensajeJuego.php');
@@ -119,9 +120,10 @@ function anularBotonDerecho(e) {
         <table class="table ta  ble-striped table-hover" style="text-align:center">
           <thead>
             <tr class="success">
+              <th><center>Puesto</center> </th>
               <th><center>Récord</center> </th>
               <th><center>Nombres</center></th>
-              <th><center> Documento</center></th>
+              <th><center>Programa</center></th>
             </tr>
           </thead>
           <tbody>

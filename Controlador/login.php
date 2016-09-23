@@ -15,7 +15,6 @@ $resultado = mysqli_query($conexion, $sql);
 $row       = mysqli_fetch_array($resultado);
 if (mysqli_num_rows($resultado) > 0) {
 
-
     $_SESSION['id_usuario']     = $row['id_usuario'];
     $_SESSION['usuario']        = $usuario;
     $_SESSION['contrasena']     = $contrasena;

@@ -133,7 +133,6 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
             } else {
                 //Registra usuario
                 $clave              = md5($_POST['clave']);
-
                 $registroUsuario = "INSERT INTO usuario (id_roll, correo, clave) VALUES(2, '$correo', '$clave');";
             }
 
@@ -147,7 +146,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                 //Obtiene el id del ultimo usuario
                 $id_usuario       = $ultimoUsuario->fetch_array(MYSQLI_NUM);
                 $registroAprendiz = "INSERT INTO aprendiz (id_usuario, id_tipo_identificacion, id_programa, nombres, documento) VALUES ($id_usuario[0], '$tipoIdentificacion', '$programa', '$nombres', '$documento');";
-                // mysqli_set_charset($conexion, "utf8");
+
                 if (mysqli_query($conexion, $registroAprendiz)) {
                   //Consulta ultimo aprendiz registrado
                   $verificaAprendiz = "SELECT max(a.id_aprendiz) from aprendiz a";
