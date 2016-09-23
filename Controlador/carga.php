@@ -116,6 +116,6 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
         }
     }
 } else {
-    header('location:../Vistas/formLogin.php?MSN=2');
+    header('location:../Vistas/index.php?MSNLogin=2');
 }
 ?>

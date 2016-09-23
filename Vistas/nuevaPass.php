@@ -51,6 +51,6 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 } else {
     session_unset();
     session_destroy();
-    header("location:../Vistas/formLogin.php?MSN=3");
+    header("location:../Vistas/index.php?MSNLogin=3");
 }
 ?>

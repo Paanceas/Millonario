@@ -139,6 +139,6 @@ i=60;
 
 
 }else{
-  header('location:../Vistas/formLogin.php?MSN=2');
+  header('location:../Vistas/index.php?MSNLogin=2');
 }
 ?>

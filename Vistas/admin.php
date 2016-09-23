@@ -23,7 +23,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
-  
+
 <?php
         include "../Controlador/adminController.php";
         require('../Controlador/clases/mensajeJuego.php');
@@ -161,7 +161,7 @@ $(document).ready(function() {
 } else {
     session_unset();
     session_destroy();
-    header("location:../Vistas/formLogin.php?MSN=3");
+    header("location:../Vistas/index.php?MSNLogin=3");
 }
 
 ?>

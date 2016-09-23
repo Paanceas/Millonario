@@ -51,18 +51,18 @@ if (isset($_POST['recuperar'])) {
                   $ejecutaSql     = $conexion->query($actualizaClave);
                   if ($ejecutaSql == true) {
                     //Ingresa
-                    header("location: ../Vistas/formLogin.php?MSN=7");
+                    header("location: ../Vistas/index.php?MSNLogin=7");
                   }else{
                     //No se pudo actualizar la clave
                     header("location: ../Vistas/nuevaPass.php?MSN=3");
                   }
                 }else {
                   //NO SE PUDO ENVIAR EL CORREO
-                    header("location:../Vistas/formLogin.php?MSN=5");
+                    header("location:../Vistas/index.php?MSNLogin=5");
                 }
         } else {
           //El correo no existe
-            header("location: /Millonario/Vistas/formLogin.php?MSN=6");
+            header("location: /Millonario/Vistas/index.php?MSNLogin=6");
         }
     }
     //Si le da clic en nueva Clave-------
@@ -112,7 +112,7 @@ if (isset($_POST['recuperar'])) {
         }
     }
 } else {
-    header("location: ../Vistas/formLogin.php");
+    header("location: ../Vistas/index.php");
 }
 
 ?>

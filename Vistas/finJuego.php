@@ -131,7 +131,7 @@ position: relative;
 }
 }else{
   session_destroy();
-  header('location:../Vistas/formLogin.php?MSN=2');
+  header('location:../Vistas/index.php?MSNLogin=2');
 }
 
 ?>

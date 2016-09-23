@@ -45,7 +45,6 @@ body{
     background-size: 50%;
     margin: -155px 0px 0px 0px;
     padding: 27% 16% 16% 16%;
-
   }
   .form23{
     width: 50%;
@@ -62,6 +61,9 @@ font-size: 28px;
 </style>
   </head>
   <body>
+    <header class="header">
+      <img src="../source/img/header.jpg" width="100% "/>
+    </header>
   <div style="margin: 0px 25% 0% 32%">
     <img src="../source/img/banner.png" alt="banner juego autoevaluación" width="500"></div>
 

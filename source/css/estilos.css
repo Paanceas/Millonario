@@ -1,11 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
-@import url(https://fonts.googleapis.com/css?family=Oxygen+Mono);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,600,700i);
 body{
-  //background: #BDD3D9;
   background: url(../img/fondo.png) fixed;
-
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#bdd3d9+32,ffffff+100 */
-//background: #bdd3d9 fixed; /* Old browsers */
+  font-family: 'Raleway', sans-serif;
 }
 .contenidoPag{
   background: rgba(255, 255, 255, 0.53);
@@ -15,7 +11,30 @@ body{
   width: 80%;
 }
 
-
+.header{
+  background-color: #f1f1f1;
+  border-bottom: 5px solid #238276;
+  padding-top: 2px;
+  padding-right: 0;
+  padding-bottom: 0%;
+  padding-left: 30px;
+  width: 100%;
+}
+article.contenedor{
+  /*background: red;*/
+  display: flex;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+article.contenedor section.login{
+  padding: 30px;
+  width: 40%;
+}
+article.contenedor section.slider{
+  padding: 30px;
+  width: 60%;
+}
 
 .contenidoPregunta{
 background: rgba(255, 255, 255, 0.53);
@@ -147,21 +166,26 @@ ul li a{
   font-family: 'Open Sans', sans-serif;
   text-align:center;
 }
-footer {
-  background-color: #238276;
-  color: white;
-  text-align: center;
-  padding: 0;
-  position: absolute;
-  bottom: 0;
+/*Responsive desing for tablet*/
+@media screen and (max-width:1086px) {
+
 }
-footer a{
-  color: white;
-  text-decoration: none;
-  font-size: 2em;
-  padding: 3px 20px;
+@media screen and (max-width:900px) {
+
 }
-footer a:hover{
-  color: white;
-  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.74);
+@media screen and (max-width:800px) {
+  article.contenedor{
+    display: block;
+  }
+  article.contenedor section.login{
+    margin: 0;
+    width: 100%;
+  }
+  article.contenedor section.slider{
+    display: none;
+  }
+}
+/*Responsive desing for phone*/
+@media screen and (max-width:550px){
+
 }

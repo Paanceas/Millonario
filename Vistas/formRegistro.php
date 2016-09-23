@@ -8,7 +8,7 @@
       @include('modalinstrucc.php');//Diseño
       @include('../Conexion/config.php');//Conexion
       @include('../Controlador/registroPersona.php');
-			require('../Controlador/clases/mensajes.php');
+			@include('../Controlador/clases/mensajes.php');
 
     ?>
 	</head>
@@ -59,7 +59,7 @@
                 </select>
 
                 <input type="text" placeholder="Número Documento" name="documento" class="inp02" size="40">
-                <select name="programa" id ="programa" class="inp02" required="">
+                <select name="programa" id ="programa" class="inp02" required="true">
                   <option value="null">Seleccione programa</option>
                   <?php echo ProgramaFormacionCombobox(); ?>
                 </select>
@@ -68,7 +68,7 @@
                 <input type="password" placeholder="Contraseña" name="clave" class="inp02" id="clave">
                 <input type="password" placeholder="Confirme Contraseña" name="confirm" value="" class="inp02" id="clave2">
 								<button type="submit" name="registrarse" class="botonRegistro"><span class="glyphicon glyphicon-user"> </span> Registrate</button>
-								<button type="button" name="volver" onclick = "location='formLogin.php'" class="botonVolver"><span class="glyphicon glyphicon-arrow-left"> </span> Volver</button>
+								<button type="button" name="volver" onclick = "location='index.php'" class="botonVolver"><span class="glyphicon glyphicon-arrow-left"> </span> Volver</button>
 
             <br>
 

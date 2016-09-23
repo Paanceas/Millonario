@@ -1,4 +1,6 @@
 <?php
+
+
 require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
 
@@ -9,6 +11,7 @@ $conexion   = mysqli_connect($server, $usuario, $contrasena, $bd);
 $usuario    = mysqli_real_escape_string($conexion, $_POST['usuario']);
 $contrasena = mysqli_real_escape_string($conexion, $_POST['contrasena']);
 $clave      = md5($contrasena);
+
 
 $sql       = "SELECT id_usuario, id_roll, correo, clave, verificaSesion FROM usuario WHERE correo= '$usuario' AND clave = '$clave';";
 $resultado = mysqli_query($conexion, $sql);
@@ -28,7 +31,6 @@ if (mysqli_num_rows($resultado) > 0) {
     } else if ($row['id_roll'] == 2) {
 
         $user = $_SESSION['id_usuario'];
-
         if ($row['verificaSesion'] == 0) {
 
 
@@ -60,14 +62,14 @@ if (mysqli_num_rows($resultado) > 0) {
 
             $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 
-            header("location: ../Vistas/formLogin.php?MSN=3");
+            header("location: ../Vistas/index.php?MSNLogin=3");
         }
     }
 
 } else {
     session_unset();
     session_destroy();
-    header("location:../Vistas/formLogin.php?MSN=1");
+    header("location:../Vistas/index.php?MSNLogin=1");
 }
 
 mysqli_close($conexion);
