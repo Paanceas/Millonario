@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
     <link rel="stylesheet" href="../source/css/style.css" media="screen" title="no title">
+    <link rel="stylesheet" href="../source/css/sweetalert.css" media="screen" title="no title">
     <!-- <link rel="stylesheet" href="../source/css/reset.css" media="screen" title="no title"> -->
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
@@ -27,16 +28,7 @@
       <img src="../source/img/header.jpg" width="100% "/>
     </header>
     <div class="container animated lightSpeedIn" style="width: 400px;">
-      <?php
-      if(isset($_GET["MSNLogin"])){
-        MensajesLogin::mensajesIngreso($_GET["MSNLogin"]);
-      }
-      if(isset($_GET["MSN"])){
-        MensajesJuego::mensajesRegistroPersona($_GET["MSN"]);
-      }
-
-
-       ?>
+      <?php if(isset($_GET["MSN"])){MensajesJuego::mensajesRegistroPersona($_GET["MSN"]);} ?>
     </div>
     <article class="contenedor">
       <section class="login">
@@ -48,6 +40,9 @@
           </div>
           <div class="form">
             <h2>Ingresa con tu Cuenta</h2>
+            <?php if(isset($_GET["MSN"])){MensajesJuego::msnJuegoS($_GET["MSN"]);} ?>
+              <?php if(isset($_GET["MSN"])){Mensajes::mensajesRegistroPersona($_GET["MSN"]);} ?>
+            <?php if(isset($_GET["MSNLogin"])){MensajesLogin::mensajesIngreso($_GET["MSNLogin"]); }?>
             <form action="../Controlador/login.php" method="post" role="form" class="animated zoomInDown">
               <input type="text" name="usuario" placeholder="Correo misena o sena"/>
               <input type="password" name="contrasena" placeholder="Contraseña"/>
@@ -185,8 +180,16 @@
     <!-- Add fancyBox main JS and CSS files -->
     <script src="../Bootstrap/js/jquery-1.10.2.min.js"></script>
     <script src="../Bootstrap/js/bootstrap.min.js"></script>
+    <script src="../source/js/bootstrap-notify.min.js"></script>
+    <script src="../source/js/sweetalert.min.js"></script>
       <!-- <script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script> -->
     <script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
     <script type="text/javascript" src="../source/js/index.js"></script>
+
+
+
+
+
+
   </body>
 </html>

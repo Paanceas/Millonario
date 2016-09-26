@@ -38,8 +38,9 @@ class MensajesLogin
         }
 
         if (!empty($men)) {
-          echo '<div style="font-size: 18px; font-family: sans-serif" class="alert alert-dismissible alert-'.$tipoAlert.'" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+          // echo 'swal("Good job!", "'.$men.'", "success");';
+          echo '<div style="font-size: 12px;" class="alert alert-dismissible alert-'.$tipoAlert.'" role="alert">
+          <a type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"> &times;</span></a>
           <strong>Ooops<br></strong>' . $men . '
           </div>';
         }
