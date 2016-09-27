@@ -71,8 +71,31 @@ function ranking()
             echo "</tr>";
         }
     }
+
+
+    if(mysqli_num_rows($resUnico) > 0){
     //Si esta fuera del los primeros 5 lo resalta de rojo
     if($consultaUnica != null ){
+      var_dump($totalUnicos);exit();
+      foreach ($totalUnicos as $consultaUnica) {
+          if ($aprendiz == $consultaUnica[3]) {
+              echo "<tr class='danger'>";
+              echo "<td>";
+              echo $consultaUnica[4];
+              echo "</td>";
+              echo "<td>";
+              echo $consultaUnica[0];
+              echo "</td>";
+              echo "<td>";
+              echo $consultaUnica[1];
+              echo "</td>";
+              echo "<td>";
+              echo $consultaUnica[2];
+              echo "</td>";
+              echo "</tr>";
+          }
+      }
+    }else{
       foreach ($totalUnicos as $consultaUnica) {
           if ($aprendiz == $consultaUnica[3]) {
               echo "<tr class='danger'>";
@@ -92,6 +115,10 @@ function ranking()
           }
       }
     }
+  }else{
+    echo "Hay menos de 6 participantes";
+  }
+
 
 }
 

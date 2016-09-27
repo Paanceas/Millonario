@@ -256,7 +256,7 @@ if ($valor > 0) {
                             $respuesta .= " <td><button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
                             break;
                         case '4':
-                            $respuesta .= "<td><button class='opcion encorefois'  name='r4'id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
+                            $respuesta .= "<td><button class='opcion encorefois'  name='r4' id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
                             break;
                     }
                 }

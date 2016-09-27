@@ -33,6 +33,7 @@ include "modalinstrucc.php";
 	<title>Inicio</title>
 </head>
 <!--Deshabiilita inspeccionar elemento <body> -->
+
 <script type="text/javascript">
 
 //Deshabiilita clic derecho de toda la pagina
