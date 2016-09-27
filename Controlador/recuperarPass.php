@@ -21,11 +21,13 @@ if (isset($_POST['recuperar'])) {
     //Clave encliptada
     $claveEncriptada = md5($pass);
 
-    if (isset($_POST['correo'])) {
+    if (isset($_POST['correo']) && isset($_POST['documento'])) {
         $correo = strtolower($_POST['correo']);
+        $documento = $_POST['documento'];
 
         //Verifica si el correo ingresado existe
-        $sqlExiste  = "SELECT id_usuario, correo FROM usuario where correo= '$correo';";
+        $sqlExiste  = "SELECT u.id_usuario, u.correo, a.documento FROM usuario u JOIN aprendiz a ON a.id_usuario = u.id_usuario
+        where correo = '$correo' and documento = '$documento';";
         $ejecutaSql = $conexion->query($sqlExiste);
 
         if (mysqli_num_rows($ejecutaSql) > 0) {
@@ -36,15 +38,16 @@ if (isset($_POST['recuperar'])) {
                 </head>
                 <body>
                 <p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
-                <p>Tu nueva Contraseña es: '. $pass .'</p>
+                <p>Tu nueva Contraseña es: <h2>'. $pass .'</h2> </p>
+
+                Por favor no responda a este correo.
                 </body>
                 </html>';
 
                 $cabeceras = 'MIME-Version: 1.0' . "\r\n";
                 $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $cabeceras .= 'From: Codedrinks <ejemplo@misena.edu.co>' . "\r\n";
+                $cabeceras .= 'From: Recuperación Clave <ejemplo@misena.edu.co>' . "\r\n";
                 // Se envia el correo al usuario
-                mail($correo, "Recuperar contraseña", $mensaje, $cabeceras);
 
                 if(mail($correo, "Recuperar contraseña", $mensaje, $cabeceras)){
                   $actualizaClave = "UPDATE usuario SET clave = '$claveEncriptada', recuperar = 1 where correo = '$correo';";

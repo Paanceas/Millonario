@@ -1,3 +1,11 @@
+<?php
+session_start();
+// var_dump($_SESSION['verificaSesion']);
+if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
+
+  header('location: admin.php');
+}else {
+ ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -27,9 +35,7 @@
     <header class="header">
       <img src="../source/img/header.jpg" width="100% "/>
     </header>
-    <div class="container animated lightSpeedIn" style="width: 400px;">
-      <?php if(isset($_GET["MSN"])){MensajesJuego::mensajesRegistroPersona($_GET["MSN"]);} ?>
-    </div>
+
     <article class="contenedor">
       <section class="login">
 
@@ -40,13 +46,13 @@
           </div>
           <div class="form">
             <h2>Ingresa con tu Cuenta</h2>
-            <?php if(isset($_GET["MSN"])){MensajesJuego::msnJuegoS($_GET["MSN"]);} ?>
-              <?php if(isset($_GET["MSN"])){Mensajes::mensajesRegistroPersona($_GET["MSN"]);} ?>
+            <?php if(isset($_GET["MSN"])){MensajesJuego::mensajesRegistroPersona($_GET["MSN"]);} ?>
+
             <?php if(isset($_GET["MSNLogin"])){MensajesLogin::mensajesIngreso($_GET["MSNLogin"]); }?>
             <form action="../Controlador/login.php" method="post" role="form" class="animated zoomInDown">
               <input type="text" name="usuario" placeholder="Correo misena o sena"/>
               <input type="password" name="contrasena" placeholder="Contraseña"/>
-              <button>Login</button>
+              <button>Ingresar <span class="glyphicon glyphicon-log-in" style="font-size: 15px;"></button>
             </form>
           </div>
           <div class="form">
@@ -68,10 +74,10 @@
                 <input type="email" placeholder="Correo Sena" name="correo" id="correo" required="true">
                 <input type="password" placeholder="Contraseña" name="clave" id="clave" required="true">
                 <input type="password" placeholder="Confirme Contraseña" name="confirm" value="" id="clave2" required="true">
-								<button type="submit" name="registrarse" class="botonRegistro">Registrar <span class="glyphicon glyphicon-user">
+								<button type="submit" name="registrarse" class="botonRegistro">Registrarse <span class="glyphicon glyphicon-user">
             </form>
           </div>
-          <div class="cta"><a href="#" data-toggle="modal" data-target="#myModal">Olvidó su contraseña?</a></div>
+          <div class="cta"><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign" style="font-size: 13px;"></span> Olvidó su contraseña?</a></div>
         </div>
       </section>
       <section class="slider">
@@ -162,12 +168,14 @@
 
               <div class="form-group">
                 <label for="correo">Ingresa tu correo:</label>
-                <input type="email" name="correo" id="correo" placeholder="Correo (sena o misena)" class="form-control" >
+                <input type="email" name="correo" id="correo" placeholder="Correo (sena o misena)" class="form-control" ></br>
+                <label for="documento">Ingresa tu documento:</label>
+                <input type="password" name="documento" id="documento" placeholder="Documento de identificación" class="form-control" >
               </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" name="recuperar" class="btn btn-lg btn-success">Enviar</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="submit" name="recuperar" class="btn btn-success"><span class="glyphicon glyphicon-envelope" style="font-size: 15px;"></span> Enviar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"> <span class="glyphicon glyphicon-remove-circle" style="font-size: 15px;"></span> Cerrar</button>
           </div>
         </div>
 
@@ -187,9 +195,25 @@
     <script type="text/javascript" src="../source/js/index.js"></script>
 
 
+    <?php
+    if (isset($_GET["MSN"]) && $_GET["MSN"] == "ok") {
+      echo "<script type='text/javascript'>";
+      MensajesJuego::exito();
+      echo "</script>";
+   }
+   if (isset($_GET["MSNLogin"]) && $_GET["MSNLogin"] == "7") {
+     echo "<script type='text/javascript'>";
+     MensajesLogin::exitoCorreoEnvio();
+     echo "</script>";
+   }
 
+
+     ?>
 
 
 
   </body>
 </html>
+<?php session_destroy();
+
+}  ?>

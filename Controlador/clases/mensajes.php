@@ -2,6 +2,24 @@
 
 class MensajesJuego
 {
+    public static function exito(){
+      // if ($tipo == 'ok') {
+        echo 'swal({
+  title: "Espera Un Momento",
+  text: "Estamos creando tu cuenta",
+  type: "info",
+  showCancelButton: false,
+  showConfirmButton:false,
+  closeOnConfirm: false,
+  timer:1000,
+  showLoaderOnConfirm: true
+}, function () {
+  setTimeout(function () {
+    swal("Cuenta creada exitosamente ¡Ingresa!");
+  }, 2000);
+});';
+      // }
+    }
     public static function mensajesRegistroPersona($tipo)
     {
         switch ($tipo) {
@@ -62,14 +80,8 @@ class MensajesJuego
 
         if (!empty($men)) {
           echo '<div style="font-size: 20px; font-family: sans-serif" class="alert alert-dismissible alert-danger">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <a type="button" class="close" data-dismiss="alert">&times;</a>
           <strong>Ooops<br></strong>' . $men . '
-          </div>';
-        }
-        if ($tipo == 'ok') {
-          echo '<div class="alert alert-dismissible alert-success">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Genial!!<br></strong> Se registro el Aprediz exitosamente
           </div>';
         }
     }

@@ -3,6 +3,16 @@ body{
   background: url(../img/fondo.png) fixed;
   font-family: 'Raleway', sans-serif;
 }
+.formRecuperar{
+  padding: 30px;
+  background: white;
+  margin: 20px;
+}
+.margenes{
+  margin: 50px 0;
+}
+
+
 .contenidoPag{
   background: rgba(255, 255, 255, 0.53);
   border-radius: 20px;

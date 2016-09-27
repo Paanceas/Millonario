@@ -2,6 +2,22 @@
 
 class MensajesLogin
 {
+  public static function exitoCorreoEnvio(){
+    echo 'swal({
+  title: "Espera Un Momento",
+  text: "Estamos enviando tu nueva clave",
+  type: "info",
+  showCancelButton: false,
+  showConfirmButton:false,
+  closeOnConfirm: false,
+  timer:1000,
+  showLoaderOnConfirm: true
+  }, function () {
+  setTimeout(function () {
+  swal("¡Correo enviado! Verifica tu correo");
+  }, 2000);
+  });';
+  }
     public static function mensajesIngreso($tipo)
     {
         switch ($tipo) {
@@ -27,13 +43,10 @@ class MensajesLogin
                           $tipoAlert="danger";
                             break;
                             case '6':
-                            $men = "El correo ingresado no existe";
+                            $men = "El correo o documento son incorrectos";
                             $tipoAlert="danger";
                               break;
-                              case '7':
-                              $men = "Confirma tu cuenta de correo electrónico";
-                              $tipoAlert="info";
-                                break;
+
 
         }
 

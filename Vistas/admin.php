@@ -161,7 +161,7 @@ $(document).ready(function() {
 } else {
     session_unset();
     session_destroy();
-    header("location:../Vistas/index.php?MSNLogin=3");
+    header("location:../Vistas/index.php?MSNLogin=2");
 }
 
 ?>

@@ -4,10 +4,10 @@
  */
 class mensajesRecuperarPass
 {
-
+  
   public static function recuperarPass($tipo)
-
   {
+
     switch ($tipo) {
       case '1':
           $men = "Llene el campo clave";
@@ -15,6 +15,7 @@ class mensajesRecuperarPass
           break;
       case '1.1':
           $men = "Clave incorrecta, debe tener mínimo 6 caracteres";
+          $tipoAlert="warning";
           break;
         case '2':
           $men= "Las claves no coinciden";
@@ -26,13 +27,13 @@ class mensajesRecuperarPass
             break;
 
 
-          if (!empty($men)) {
-            echo '<div style="font-size: 18px; font-family: sans-serif" class="alert alert-dismissible alert-'.$tipoAlert.'" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          }
+            if (!empty($men)) {
+            echo '<div style="font-size: 12px; font-family: sans-serif" class="alert alert-dismissible alert-'.$tipoAlert.'" role="alert">
+            <a type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></a>
             <strong>Ooops<br></strong>' . $men . '
             </div>';
           }
-    }
   }
 }
 
