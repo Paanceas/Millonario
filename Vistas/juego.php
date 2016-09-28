@@ -2,8 +2,14 @@
 
 if (isset($_GET['r']) && $_GET['r'] == "ok" ) {
   $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
+}else if (isset($_GET['r']) && $_GET['r'] == "mal" ){
+  $bien = 'swal("Respuesta Incorrecta", "será a la próxima!", "error");';
+
 }
 
+if (isset($_GET['t']) && $_GET['t'] == "off" ) {
+  $bien = 'swal("Tiempo Fuera", "se acabó el tiempo!", "error");';
+}
 
 require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
@@ -157,6 +163,7 @@ function anularBotonDerecho(e) {
   function vp(num) {
     $selectAnswer = document.getElementById("respSeleccionada");
     $selectAnswer.value = num;
+
     // switch (num) {
     //   case 1:
     //     swal("Respuesta Correcta", "continua jugando!", "success");
@@ -168,7 +175,7 @@ function anularBotonDerecho(e) {
   }
 
   function timer(){
-  var t=setTimeout("timer()",1000);
+  var t=setTimeout("timer()",900);
   document.getElementById('contador').innerHTML = ''+i--+" ";
 
   if (i==-1){

@@ -55,8 +55,8 @@ function jugar($respuesta, $validarRes)
     $consultaResCorrectas = "SELECT * FROM evaluacion_aprendiz where id_aprendiz = $aprendiz";
     $resContador          = $conexion->query($consultaResCorrectas);
 
-    $filaDondeVa=$resContador->fetch_array();
-    $dondeVa=$filaDondeVa['resCorrectas'];
+    // $filaDondeVa=$resContador->fetch_array();
+    // $dondeVa=$filaDondeVa['resCorrectas'];
     //Si no hay realiza el registro
     if (mysqli_num_rows($resContador) <= 0) {
 
@@ -263,11 +263,18 @@ if ($valor > 0) {
                     }
                 }
             }
-            header('location: ../Vistas/juego.php?r=ok');
+            if($validarRespuesta == 1){
+              header('location: ../Vistas/juego.php?r=ok');
+            }else if ($validarRespuesta > 1) {
+              header('location: ../Vistas/juego.php?r=mal');
         } else {
-            header('location: ../Vistas/admin.php?MSN=1');
+            header('location: ../Vistas/juego.php');
         }
-    }
+      }else{
+        header('location: ../Vistas/admin.php');
+
+      }
+}
 } else {
     //Si se equivoca las resCorrectas vuelven a cero
     $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz = $aprendiz";
