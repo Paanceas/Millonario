@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include "../Conexion/config.php";
 if ($_SESSION['id_aprendiz'] > 0) {
@@ -56,6 +55,8 @@ function jugar($respuesta, $validarRes)
     $consultaResCorrectas = "SELECT * FROM evaluacion_aprendiz where id_aprendiz = $aprendiz";
     $resContador          = $conexion->query($consultaResCorrectas);
 
+    $filaDondeVa=$resContador->fetch_array();
+    $dondeVa=$filaDondeVa['resCorrectas'];
     //Si no hay realiza el registro
     if (mysqli_num_rows($resContador) <= 0) {
 
@@ -163,6 +164,7 @@ if (isset($_POST['clicJugar'])) {
     if ($_POST['clicJugar'] == 1) {
         $clic = $_POST['clicJugar'];
     }
+    header('location: ../Vistas/juego.php');
 } else {
     $_POST['clicJugar'] = 0;
     header('location: ../Vistas/admin.php?MSN=4');
@@ -247,21 +249,21 @@ if ($valor > 0) {
                 foreach ($arrayNumeros as $value) {
                     switch ($value) {
                         case '1':
-                            $respuesta .= "<td><button class='opcion encorefois' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
+                            $respuesta .= "<td><button class='btn-juego' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
                             break;
                         case '2':
-                            $respuesta .= " <td><button class='opcion encorefois' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
+                            $respuesta .= " <td><button class='btn-juego' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
                             break;
                         case '3':
-                            $respuesta .= " <td><button class='opcion encorefois'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
+                            $respuesta .= " <td><button class='btn-juego'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
                             break;
                         case '4':
-                            $respuesta .= "<td><button class='opcion encorefois'  name='r4' id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
+                            $respuesta .= "<td><button class='btn-juego'  name='r4' id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
                             break;
                     }
                 }
             }
-            header('location: ../Vistas/juego.php');
+            header('location: ../Vistas/juego.php?r=ok');
         } else {
             header('location: ../Vistas/admin.php?MSN=1');
         }
@@ -270,7 +272,6 @@ if ($valor > 0) {
     //Si se equivoca las resCorrectas vuelven a cero
     $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz = $aprendiz";
     $ejecutaReinicioi  = $conexion->query($reiniciaResCorrec);
-
     $_SESSION['jugar'] = 0;
     header('location: ../Vistas/finJuego.php');
 }

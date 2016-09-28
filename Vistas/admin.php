@@ -16,11 +16,13 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 <!DOCTYPE html>
 <html>
 <head>
-  <meta content="charset=utf-8"/>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <title>Autoevaluación</title>
   <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
+        <link rel="stylesheet" href="../source/css/style.css" media="screen" title="no title">
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
 
@@ -29,60 +31,68 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
         require('../Controlador/clases/mensajeJuego.php');
 
 ?>
- <title>Inicio</title>
 </head>
 <!--Deshabiilita inspeccionar elemento <body> -->
-<script type="text/javascript">
-document.oncontextmenu=inhabilitar;
+<!-- <script type="text/javascript">
+// document.oncontextmenu=inhabilitar;
 //Deshabiilita clic derecho de toda la pagina
-document.onmousedown=anularBotonDerecho;
-document.oncontextmenu=new Function("return false");
-function inhabilitar(){
-       alert ("Esta función está inhabilitada.\n\nPerdonen las molestias.")
-       return false
+// document.onmousedown=anularBotonDerecho;
+// document.oncontextmenu=new Function("return false");
+// function inhabilitar(){
+//        alert ("Esta función está inhabilitada.\n\nPerdonen las molestias.")
+//        return false
+// }
+// function anularBotonDerecho(e) {
+//  if (navigator.appName == 'Netscape'
+//        && (e.which == 3 || e.which == 2)){
+//    alert(sMensaje);
+//    return false;
+//  } else if (navigator.appName == 'Microsoft Internet Explorer'
+//        && (event.button == 2)) {
+//    alert(sMensaje);
+//  }
 }
-function anularBotonDerecho(e) {
- if (navigator.appName == 'Netscape'
-       && (e.which == 3 || e.which == 2)){
-   alert(sMensaje);
-   return false;
- } else if (navigator.appName == 'Microsoft Internet Explorer'
-       && (event.button == 2)) {
-   alert(sMensaje);
- }
-}
-</script>
-<body onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"">
+</script> -->
+<body>
+<!-- onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"" -->
+<!-- barra de navegacion -->
+<nav class="navbar navbar-inverse navbar-juego">
+<div class="container-fluid">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="admin.php" style="padding:0;">
+        <img alt="sena" src="../source/img/logo_sena.png" height="90%" width="52px"/>
+      </a>
+    </div>
+  </div>
 
-  <!-- header barra de navegacion -->
-  <nav class="navbar" style="background:#238276">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="admin.php" style="padding:0;">
-          <img alt="sena" src="../source/img/logo_sena.png" height="110%" width="62px"/>
-        </a>
-      </div>
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li> <a>   Bienvenid@: <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
-        echo $_SESSION['nombreAprendiz'];
+  <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+    <ul class="nav navbar-nav">
+      <li> <a>   Bienvenid@: <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
+    echo $_SESSION['nombreAprendiz'];
 ?></a> </li>
-          <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
-        echo $_SESSION['programaAprendiz'];
+      <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
+    echo $_SESSION['programaAprendiz'];
 ?> </a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <form class="navbar-form navbar-left" action="../Controlador/logout.php">
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <form class="navbar-form navbar-left" action="../Controlador/logout.php">
 
-           <button type="submit" class="btn btn-success" >
-            Salir <span class="glyphicon glyphicon-log-out"></span>
-           </button>
-         </form>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
+       <button type="submit" class="btn btn-success" >
+        Salir <span class="glyphicon glyphicon-log-out"></span>
+       </button>
+     </form>
+    </ul>
+  </div>
+</div>
+</nav>
+
   <!-- fin barra de navegacion -->
   <div class="container animated flipInX">
     <?php
@@ -117,33 +127,58 @@ function anularBotonDerecho(e) {
       </div>
       <div class="col-md-1"></div>
       <div class="col-md-5">
-        <table class="table ta  ble-striped table-hover" style="text-align:center">
-          <thead>
-            <tr class="success">
-              <th><center>Puesto</center> </th>
-              <th><center>Récord</center> </th>
-              <th><center>Nombres</center></th>
-              <th><center>Programa</center></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php echo ranking() ?>
-          </tbody>
-        </table>
+        <h3>Ranking</h3>
+        <div class="table-responsive">
+          <table class="table table-hover" style="text-align:center">
+            <thead>
+              <tr class="success">
+                <th><center>Puesto</center> </th>
+                <th><center>Récord</center> </th>
+                <th><center>Nombres</center></th>
+                <th><center>Programa</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php echo ranking() ?>
+            </tbody>
+          </table>
+        </div>
      </div>
   </div>
 
   </div>
   <!-- fin contenido de la pagina -->
 
+  <footer class="footer-distributed">
 
-<footer class="footer">
-  <a class="fancybox" href="#inline1" title="Instrucciones">Instrucciones</a>
-  <div id="inline1" style="width:800px;display: none;">
-  <h3>Instrucciones</h3>
-  <img src="../source/img/instrucciones.png" width="800px"/>
-  </div>
-</footer>
+
+    <div class="footer-left">
+
+      <p class="footer-links">
+        <a href="#">Inicio</a>
+        ·
+        <a class="fancybox" href="#inline1" title="Instrucciones">Instrucciones</a>
+        ·
+        <a href="#">Créditos</a>
+      </p>
+
+      <p>SENA &copy; 2016</p>
+    </div>
+
+
+          <div class="footer-right">
+
+            <a href="#"><img src="../source/img/footer/icontecA.png" width="61" height="107"/></a>
+            <a href="#"><img src="../source/img/footer/icontecB.png" width="79" height="106"/></a>
+            <a href="#"><img src="../source/img/footer/icontecC.png" width="61" height="107"/></a>
+            <a href="#"><img src="../source/img/footer/icontecD.png" width="79" height="106"/></a>
+
+          </div>
+          <div id="inline1" style="width:800px;display: none;">
+          <h3>Instrucciones</h3>
+          <img src="../source/img/instrucciones.png" width="800px"/>
+          </div>
+  </footer>
 <!-- Add fancyBox main JS and CSS files -->
 <script src="../Bootstrap/js/jquery-1.10.2.min.js"></script>
 <script src="../Bootstrap/js/bootstrap.min.js"></script>

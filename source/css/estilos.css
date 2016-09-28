@@ -11,12 +11,82 @@ body{
 .margenes{
   margin: 50px 0;
 }
+.finDelJuego{
+  display: flex;
+}
+.finDelJuego a p{
+  text-align: center;
+  font-size: 16px;
+}
+.vistaJuego{
+  display: flex;
+  margin-left: 10%;
+  width: 80%;
+}
+.tiempoJuego{
+  width: 30%;
+  height: 100px;
+  overflow: hidden;
+}
+.tiempoJuego .titulo{
+  border: 3px solid black;
+  width: 80px;
+  height: 80px;
+  background: white;
+  color: black;
+  padding: 20px 1px ;
+  margin-left: 15%;
+  text-align: center;
+  border-radius: 50%;
+}
+.btn-juego{
+  color: white;
+  border: 3px solid #238276;
+  box-shadow: 2px 2px 1px #0d4a42;
+  background-color: #238276;
+  padding: 15px;
+  width: 50%;
+}
+.btn-juego:hover{
+  background: white;
+  color: black;
+}
+.pregunta{
+  background: #238276;
+  color: white;
+  font-size: 3em;
+padding-top: 70px;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 20px;
+  height: 300px;
+}
 
+
+.tiempoJuego img{
+  width: 50%;
+}
+.navbar-juego{
+  color: white;
+  border-color: #238276;
+  background:#238276;
+}
+.navbar-juego .navbar-collapse ul li a{
+  color: white;
+}
+.navbar-inverse .navbar-toggle{
+  border-color: white;
+}
+.navbar-inverse .navbar-toggle:focus,
+.navbar-inverse .navbar-toggle:hover{
+  background-color: #84e6d9;
+}
 
 .contenidoPag{
-  background: rgba(255, 255, 255, 0.53);
+  background: rgb(255, 255, 255);
   border-radius: 20px;
   margin-left: 10%;
+  margin-bottom: 40px;
   padding: 20px;
   width: 80%;
 }
@@ -69,7 +139,7 @@ ul li a{
 
 .opcion{
   display: block;
-  width:356px;
+  width:90%;
   height: 100px;
   float: left;
   color: #fff;
@@ -87,13 +157,13 @@ ul li a{
 .opcion{
   position: relative;
   display: block;
-  width:306px;
+  width:90%;
   height: 100px;
   float: left;
   margin: 20px 40px 0 25px ;
   background: #238276;
   /*box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);*/
-  border-radius: 0;
+  border-radius: 15px;
   box-sizing: border-box;
   text-decoration: none;
   padding:20px;
@@ -114,7 +184,7 @@ ul li a{
   height: 700px;
   float: left;
 }
-.opcion:before {
+/*.opcion:before {
    width: 0;
    height: 0;
    content: "";
@@ -136,7 +206,7 @@ ul li a{
    border-bottom: 50px solid transparent;
    border-right: 25px solid #238276;
 
-}
+}*/
 .opcion:hover{
   filter:hue-rotate(40deg);
   -webkit-filter:hue-rotate(40deg);

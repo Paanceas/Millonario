@@ -1,6 +1,6 @@
 
 
-<link href="../source/css/global.css" rel="stylesheet">
+<!-- <link href="../source/css/global.css" rel="stylesheet"> -->
 
 
 <script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script>
