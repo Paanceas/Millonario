@@ -34,6 +34,6 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
  </body>
 </html>
 <?php } else {
-    header('location:../Vistas/index.php');
+    header('location:../Vistas/index');
     $_SESSION['MSNLogin']=2;
 } ?>

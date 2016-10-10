@@ -29,7 +29,7 @@ if (mysqli_num_rows($resultado) > 0) {
         $_SESSION['id_usuario'] = $row['id_usuario'];
         $_SESSION['validacion'] = 1;
         $_SESSION['id_roll']    = 1;
-        header("location:../Vistas/cargaMasiva.php");
+        header("location:../Vistas/cargaMasiva");
     } else if ($row['id_roll'] == 2) {
       mysqli_set_charset($conexion, "utf-8");
 
@@ -59,7 +59,7 @@ if (mysqli_num_rows($resultado) > 0) {
 
             $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 
-            header("location:../Vistas/admin.php");
+            header("location:../Vistas/admin");
         } else {
           //Consulta el id_aprendiz que se loguea
           $sql             = "SELECT a.id_aprendiz FROM aprendiz a WHERE a.id_usuario = $user;";
@@ -77,15 +77,15 @@ if (mysqli_num_rows($resultado) > 0) {
 
             $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 
-            header("location: ../Vistas/index.php");
+            header("location: ../Vistas/index");
             $_SESSION['MSNLogin']=3;
         }
     }
 
 } else {
     session_unset();
-    
-    header("location:../Vistas/index.php");
+
+    header("location:../Vistas/index");
     $_SESSION['MSNLogin']=1;
 }
 

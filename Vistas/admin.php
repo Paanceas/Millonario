@@ -1,9 +1,12 @@
 <?php
+
+
+
 require('../Controlador/clases/consultasAvanzadas.php');
+
 session_start();
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);
-
 
 
 if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
@@ -11,7 +14,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
     //Si el usuario esta en recuperar pass no lo deja salir de esa vista
 
     if ($_SESSION['recuperar'] == 1) {
-        header("location: ../Vistas/nuevaPass.php");
+        header("location: ../Vistas/nuevaPass");
     } else {
 ?>
 
@@ -72,7 +75,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
       <span class="icon-bar"></span>
     </button>
     <div class="navbar-header">
-      <a class="navbar-brand" href="admin.php" style="padding:0;">
+      <a class="navbar-brand" href="admin" style="padding:0;">
         <img alt="sena" src="../source/img/logo_sena.png" height="90%" width="52px"/>
       </a>
     </div>
@@ -170,6 +173,7 @@ $(document).ready(function() {
 }
 
 </script>
+
 <footer class="footer-distributed">
 
 
@@ -194,15 +198,14 @@ $(document).ready(function() {
                 </div>
         </footer>
 
-  </footer>
+
 </body>
 </html>
 <?php
     }
 } else {
     session_unset();
-    session_destroy();
-    header("location:../Vistas/index.php");
+    header("location:index");
     $_SESSION['MSNLogin']=2;
 }
 

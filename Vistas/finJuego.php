@@ -10,7 +10,7 @@ $usuario=$_SESSION['id_usuario'];
 $_SESSION['clicJugarSess'] = 0;
 
 if ($_SESSION['recuperar'] == 1) {
-    header("location: ../Vistas/nuevaPass.php");
+    header("location: ../Vistas/nuevaPass");
 } else {
  ?>
 <!DOCTYPE html>
@@ -128,7 +128,7 @@ position: relative;
           <span class="icon-bar"></span>
         </button>
         <div class="navbar-header">
-          <a class="navbar-brand" href="admin.php" style="padding:0;">
+          <a class="navbar-brand" href="admin" style="padding:0;">
             <img alt="sena" src="../source/img/logo_sena.png" height="90%" width="52px"/>
           </a>
         </div>
@@ -164,7 +164,7 @@ position: relative;
           <img src="<?php echo $path . $img ?>" alt="" style="    width: 72%; height: 311px; position: static; margin: 0% 31% 29% 15%; border-radius: 10px;"/>
         </div>
         <div class="finDelJuego" style="display:flex">
-          <a href="../Vistas/admin.php" class="opcion encorefois">
+          <a href="../Vistas/admin" class="opcion encorefois">
             <p class="endTitle">
                 Ver Puntaje
             </p>
@@ -228,8 +228,8 @@ position: relative;
 <?php
 }
 }else{
-  session_destroy();
-  header('location:../Vistas/index.php?MSNLogin=2');
+  header('location:../Vistas/index');
+  $_SESSION["MSNLogin"]=2;
 }
 
 ?>

@@ -57,10 +57,11 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 
         <div class="formRecuperar">
           <?php
-          if(isset($_GET["MSN"])){
-            mensajesRecuperarPass::recuperarPass($_GET["MSN"]);
+          if(isset($_SESSION["MSN"])){
+            mensajesRecuperarPass::recuperarPass($_SESSION["MSN"]);
           }
            ?>
+
           <form  action="../Controlador/recuperarPass.php" method="post" class="animated zoomIn">
             <input type="password" class="form-control" placeholder="Contraseña Nueva" name="clave" class="inp02" id="clave" required="true">
             <input type="password" class="form-control" placeholder="Confirme Contraseña" name="confirm" class="inp02" id="clave2" required="true">
@@ -86,20 +87,16 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
           <a href="#">Créditos</a>
         </p>
 
-        <p>SENA &copy; 2016</p>
+
       </div>
-
-
-            <div class="footer-right">
-
-              <a href="#"><img src="../source/img/footer/icontecA.png" width="61" height="107"/></a>
-              <a href="#"><img src="../source/img/footer/icontecB.png" width="79" height="106"/></a>
-              <a href="#"><img src="../source/img/footer/icontecC.png" width="61" height="107"/></a>
-              <a href="#"><img src="../source/img/footer/icontecD.png" width="79" height="106"/></a>
-
-            </div>
-
-    </footer>
+        <div class="footer-left">
+                <p class="footer-links">SENA - Centro de Gestión de Mercados, Logística y TI, Distrito Capital</p>
+              </div>
+                    <div id="inline1" style="width:800px;display: none;">
+                    <h3>Instrucciones</h3>
+                    <img src="../source/img/instrucciones.png" width="800px"/>
+                    </div>
+            </footer>
 
 
     <!-- Add fancyBox main JS and CSS files -->
@@ -114,12 +111,12 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 </html>
 <?php
     } else {
-        header("location: admin.php");
+        header("location: admin");
     }
 } else {
     session_unset();
     session_destroy();
-    header("location:../Vistas/index.php");
+    header("location:../Vistas/index");
     $_SESSION['MSNLogin']=2;
 }
 ?>

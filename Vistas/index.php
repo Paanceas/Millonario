@@ -3,7 +3,7 @@ session_start();
 // var_dump($_SESSION['verificaSesion']);
 if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
-  header('location: admin.php');
+  header('location: admin');
 }else {
  ?>
 <!DOCTYPE html>

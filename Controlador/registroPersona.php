@@ -56,36 +56,36 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
 
     //Valida todos lo campos
     if (empty($nombres) && empty($documento) && empty($correo) && !empty($tipoIdentificacion) && empty($programa) && empty($clave) && empty($confirm)) {
-        header("location:../Vistas/index.php");
+        header("location:../Vistas/index");
         $_SESSION['MSN']=1;
     }
     //Valida nombre
     elseif (!preg_match($patronNombres, $nombres)) {
         if (empty($nombres)) {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=2;
         } else {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=21;
         }
     }
     //Valida TI
         elseif (!preg_match($patronTI, $tipoIdentificacion)) {
         if (empty($tipoIdentificacion)) {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=9;
         } else {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=91;
         }
     }
     //Valida documento
         elseif (!preg_match($patronDocumento, $documento)) {
         if (empty($documento)) {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=3;
         } else {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=31;
 
         }
@@ -93,40 +93,40 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
     //Valida TI
         elseif (!preg_match($patronPrograma, $programa)) {
         if (empty($programa)) {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=10;
         } else {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=101;
         }
     }
     //Valida correo
         elseif (!preg_match($patronCorreo, $correo)) {
         if (empty($correo) || $correo == "") {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=4;
         } else {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=41;
         }
     }
     //Valida clave
         elseif (!preg_match($patronClave, $clave)) {
         if (empty($clave)) {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=5;
         } else {
-            header("location:../Vistas/index.php?");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=51;
         }
     }
     //Valida confirm
         elseif (!preg_match($patronClave, $confirm)) {
         if (empty($confirm)) {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=5;
         } else {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=51;
         }
     }
@@ -139,7 +139,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
             $verificarUsuario   = "SELECT correo FROM usuario WHERE correo ='$correo'";
             $verificaExistencia = mysqli_query($conexion, $verificarUsuario);
             if (mysqli_num_rows($verificaExistencia) > 0) {
-                header("location:../Vistas/index.php");
+                header("location:../Vistas/index");
                 $_SESSION['MSN']=7;
             }
 
@@ -147,7 +147,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
             $verificarDocumento = "SELECT documento FROM aprendiz WHERE documento ='$documento'";
             $verificaDocumento  = mysqli_query($conexion, $verificarDocumento);
             if (mysqli_num_rows($verificaDocumento) > 0) {
-                header("location:../Vistas/index.php");
+                header("location:../Vistas/index");
                 $_SESSION['MSN']=8;
             } else {
                 //Registra usuario
@@ -179,17 +179,17 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
 
                   $registroPuntaje=$conexion->query($validaPuntaje);
 
-                  header("location:../Vistas/index.php");
+                  header("location:../Vistas/index");
                   $_SESSION['ok']=123;
                 } else {
-                    header("location:../Vistas/index.php");
+                    header("location:../Vistas/index");
                     $_SESSION['MSN']='error';
                 }
             } else {
                 die("Fallo en la inserción de Datos." . mysqli_error($conexion));
             }
         } else {
-            header("location:../Vistas/index.php");
+            header("location:../Vistas/index");
             $_SESSION['MSN']=6;
         }
         mysqli_close($conexion);

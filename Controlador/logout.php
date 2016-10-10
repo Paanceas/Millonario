@@ -18,7 +18,7 @@ $ejecutaReinicioi=$conexion->query($reiniciaResCorrec);
 $actualizaPuntaje = "UPDATE puntaje SET puntajes =  0 where id_aprendiz = $aprendizSession";
 $ejecutaSql       = $conexion->query($actualizaPuntaje);
 
-header("location:../Vistas/index.php");
+header("location:../Vistas/index");
 
 exit();
 ?>

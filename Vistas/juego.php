@@ -7,11 +7,8 @@
 //
 // }
 
-if (isset($_GET['t']) && $_GET['t'] == "off" ) {
-  $bien = 'swal("Tiempo Fuera", "se acabó el tiempo!", "error");';
-}
-
 require('../Controlador/clases/consultasAvanzadas.php');
+
 session_start();
 
 if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
@@ -24,7 +21,7 @@ if($_SESSION['validacion']==1 && $_SESSION['id_usuario'] > 0 && $_SESSION['verif
 $usuario=$_SESSION['id_usuario'];
 //Clic en jugar
 if($_SESSION['clicJugarSess'] != 1){
-  header('location:../Vistas/admin.php');
+  header('location:../Vistas/admin');
   $_SESSION['MSN']=4;
 }
 
@@ -73,7 +70,7 @@ include "modalinstrucc.php";
 //  }
 // }
 
-setTimeout ("location.href='finJuego.php'", 30000);
+setTimeout ("location.href='finJuego'", 30000);
 
 
 </script>
@@ -90,7 +87,7 @@ setTimeout ("location.href='finJuego.php'", 30000);
         <span class="icon-bar"></span>
       </button>
       <div class="navbar-header">
-        <a class="navbar-brand" href="admin.php" style="padding:0;">
+        <a class="navbar-brand" href="admin" style="padding:0;">
           <img alt="sena" src="../source/img/logo_sena.png" height="90%" width="52px"/>
         </a>
       </div>
@@ -185,7 +182,7 @@ setTimeout ("location.href='finJuego.php'", 30000);
   if (i==-1){
     document.getElementById('contador').innerHTML = 'FIN';
     clearTimeout(t);
-    location.href='finJuego.php';
+    location.href='finJuego';
     <?php $_SESSION['resCor']=2; ?>
   }
 
@@ -218,7 +215,7 @@ i=30;
  <div>
    <div>
  <script type="text/javascript">
- setTimeout ("location.href='finJuego.php'", 29999);
+ setTimeout ("location.href='finJuego'", 29999);
 
  </script>
 </div>
@@ -228,13 +225,13 @@ i=30;
 <?php
 
   }else {
-      header('location:../Vistas/admin.php');
+      header('location:../Vistas/admin');
       $_SESSION['MSN']=2;
   }
 
 
 }else{
-  header('location:../Vistas/index.php');
+  header('location:../Vistas/index');
   $_SESSION['MSNLogin']=2;
 }
 ?>

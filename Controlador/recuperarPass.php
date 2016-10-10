@@ -55,21 +55,21 @@ if (isset($_POST['recuperar'])) {
                   $ejecutaSql     = $conexion->query($actualizaClave);
                   if ($ejecutaSql == true) {
                     //Ingresa
-                    header("location: ../Vistas/index.php");
+                    header("location: ../Vistas/index");
                     $_SESSION['MSNLogin']=7;
                   }else{
                     //No se pudo actualizar la clave
-                    header("location: ../Vistas/nuevaPass.php");
+                    header("location: ../Vistas/nuevaPass");
                     $_SESSION['MSNLogin']=3;
                   }
                 }else {
                   //NO SE PUDO ENVIAR EL CORREO
-                    header("location:../Vistas/index.php");
+                    header("location:../Vistas/index");
                     $_SESSION['MSNLogin']=5;
                 }
         } else {
           //El correo no existe
-            header("location: /Millonario/Vistas/index.php");
+            header("location: /Millonario/Vistas/index");
             $_SESSION['MSNLogin']=6;
         }
     }
@@ -83,22 +83,29 @@ if (isset($_POST['recuperar'])) {
         $patronClave = "/^[^ ][0-9a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.,¡!¿?\s]{5,60}+$/";
 
         if (empty($clave) && empty($confirm) || $clave == '' && $confirm == '') {
-            header("location:../Vistas/nuevaPass.php?MSN=3");
+            header("location:../Vistas/nuevaPass");
+            $_SESSION['MSN']=3;
         }
         //Valida clave
         elseif (!preg_match($patronClave, $clave)) {
             if (empty($clave)) {
-                header("location:../Vistas/nuevaPass.php?MSN=1");
+                header("location:../Vistas/nuevaPass");
+                $_SESSION['MSN']=1;
             } else {
-                header("location:../Vistas/nuevaPass.php?MSN=1.1");
+                header("location:../Vistas/nuevaPass");
+                $_SESSION['MSN']=11;
+
             }
         }
         //Valida confirm
             elseif (!preg_match($patronClave, $confirm)) {
             if (empty($confirm)) {
-                header("location:../Vistas/nuevaPass.php?MSN=1");
+                header("location:../Vistas/nuevaPass");
+                $_SESSION['MSN']=1;
             } else {
-                header("location:../Vistas/nuevaPass.php?MSN=1.1");
+                header("location:../Vistas/nuevaPass");
+                $_SESSION['MSN']=11;
+
             }
         }
         //Termina Validacion de campos y expresiones regulares
@@ -115,14 +122,15 @@ if (isset($_POST['recuperar'])) {
                 //Actualiza la clave a la del usuario y el estado a cero
                 $sql        = "UPDATE usuario SET clave = '$clave', recuperar = 0 where id_usuario = $usuarioSesion";
                 $ejecutaSql = $conexion->query($sql);
-                header("location: ../Vistas/admin.php");
+                header("location: ../Vistas/admin");
             } else {
-                header("location: ../Vistas/nuevaPass.php?MSN=2");
+                header("location: ../Vistas/nuevaPass");
+                $_SESSION['MSN']=2;
             }
         }
     }
 } else {
-    header("location: ../Vistas/index.php");
+    header("location: ../Vistas/index");
 }
 
 ?>

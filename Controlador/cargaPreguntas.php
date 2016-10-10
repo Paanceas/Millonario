@@ -177,10 +177,10 @@ if (isset($_POST['clicJugar'])) {
     if ($_POST['clicJugar'] == 1) {
         $clic = $_POST['clicJugar'];
     }
-    header('location: ../Vistas/juego.php');
+    header('location: ../Vistas/juego');
 } else {
     $_POST['clicJugar'] = 0;
-    header('location: ../Vistas/admin.php');
+    header('location: ../Vistas/admin');
     $_SESSION['MSN']=4;
 }
 
@@ -244,7 +244,7 @@ if ($valor > 0) {
     //Verifica si hay algún ganador
     if (mysqli_num_rows($resultadoGanador) > 0) {
         $_SESSION['verificaGanador'] = 1;
-        header("location: ../Vistas/admin.php");
+        header("location: ../Vistas/admin");
         $_SESSION['MSN']=5;
     } else {
         $_SESSION['verificaGanador'] = 0;
@@ -295,17 +295,17 @@ if ($valor > 0) {
                 }
             }
             if ($validarRespuesta == 1) {
-                header('location: ../Vistas/juego.php');
+                header('location: ../Vistas/juego');
                 $_SESSION['resCor']=1;
             } else if ($validarRespuesta > 1) {
-                header('location: ../Vistas/finJuego.php');
+                header('location: ../Vistas/finJuego');
                 $_SESSION['resCor']=2;
             } else {
-                header('location: ../Vistas/juego.php');
+                header('location: ../Vistas/juego');
                 $_SESSION['resCor']=3;
             }
         } else {
-            header('location: ../Vistas/admin.php');
+            header('location: ../Vistas/admin');
         }
     }
 } else {
@@ -313,7 +313,7 @@ if ($valor > 0) {
     $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz = $aprendiz";
     $ejecutaReinicioi  = $conexion->query($reiniciaResCorrec);
     $_SESSION['jugar'] = 0;
-    header('location: ../Vistas/finJuego.php');
+    header('location: ../Vistas/finJuego');
 }
 
 ?>

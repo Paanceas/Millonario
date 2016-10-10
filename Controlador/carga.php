@@ -92,9 +92,12 @@
 
             //cerramos la lectura del archivo "abrir archivo" con un "cerrar archivo"
             fclose($handle);
+            header("location:../Vistas/cargaMasiva");
+            
             echo "<br>Importación exitosa!";
         } else {
             //si aparece esto es posible que el archivo no tenga el formato adecuado, inclusive cuando es cvs, revisarlo para             //ver si esta separado por " , "
+            header("location:../Vistas/cargaMasiva");
             echo "Archivo invalido!";
         }
     }

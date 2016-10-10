@@ -4,7 +4,7 @@
  */
 class mensajesRecuperarPass
 {
-  
+
   public static function recuperarPass($tipo)
   {
 
@@ -13,7 +13,7 @@ class mensajesRecuperarPass
           $men = "Llene el campo clave";
           $tipoAlert="warning";
           break;
-      case '1.1':
+      case '11':
           $men = "Clave incorrecta, debe tener mínimo 6 caracteres";
           $tipoAlert="warning";
           break;
