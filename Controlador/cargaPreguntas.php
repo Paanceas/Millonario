@@ -25,7 +25,7 @@ function randomNum()
     return $posiciones;
 }
 
-Function randPregunta()
+function randPregunta()
 {
     include "../Conexion/config.php";
 
@@ -33,14 +33,27 @@ Function randPregunta()
     $resulCantPreg  = $conexion->query($cantPreguntas);
     $numeroPregunta = $resulCantPreg->fetch_array(MYSQLI_NUM);
 
-    $num = range(1, $numeroPregunta[0]);
+    //Genera el número rand
+    $aleatorio = rand(1, $numeroPregunta[0]);
+    // echo "----> Aleatorio: ".$aleatorio."<br>";
+    //Acá va a almacenar el primero aleatorio que salga
+    $arrayPreguntas[]=$aleatorio;
 
-    shuffle($num);
+    for ($i=0; $i < 20; $i++) {
 
-    foreach ($num as $val) {
-        $posiciones[] = $val;
+      $aleatorio=rand(1, $numeroPregunta[0]);
+      // echo "* Aleatorio: ".$aleatorio."<br>";
+
+      //Si el número rand dentro del for ya está almacenado en el array vuelve a hacer el rand
+      while(in_array($aleatorio,$arrayPreguntas)) { //buscamos que no este repetido
+        $aleatorio=rand(1, $numeroPregunta[0]);
+        // echo "+ Aleatorio: ".$aleatorio."<br>";
+      }
+
+      $usados[] = $aleatorio;    //No esta repetido, luego guardamos el aleatorio
+
     }
-    return $posiciones;
+    return $usados;
 
 }
 
@@ -48,18 +61,18 @@ Function randPregunta()
 function jugar($respuesta, $validarRes)
 {
     include "../Conexion/config.php";
+
     if ($_SESSION['id_aprendiz'] > 0); {
         $aprendiz = $_SESSION['id_aprendiz'];
     }
+
+    // //Si no hay realiza el registro
+    // var_dump($consultaAGanar);exit();
     //Consulta si ya hay un registro del usuario
     $consultaResCorrectas = "SELECT * FROM evaluacion_aprendiz where id_aprendiz = $aprendiz";
     $resContador          = $conexion->query($consultaResCorrectas);
 
-    // $filaDondeVa=$resContador->fetch_array();
-    // $dondeVa=$filaDondeVa['resCorrectas'];
-    //Si no hay realiza el registro
     if (mysqli_num_rows($resContador) <= 0) {
-
         $registroHas  = "INSERT INTO evaluacion_aprendiz(id_respuesta, id_aprendiz, resCorrectas) VALUES ($respuesta, $aprendiz, 1);";
         $resultadoHas = $conexion->query($registroHas);
     }
@@ -167,7 +180,8 @@ if (isset($_POST['clicJugar'])) {
     header('location: ../Vistas/juego.php');
 } else {
     $_POST['clicJugar'] = 0;
-    header('location: ../Vistas/admin.php?MSN=4');
+    header('location: ../Vistas/admin.php');
+    $_SESSION['MSN']=4;
 }
 
 
@@ -187,7 +201,13 @@ if (isset($_POST['respCorrec']) && isset($_POST['respSeleccionada'])) {
     $validarRespuesta = 0;
 }
 
-
+//Información en pleno juego al usuario cuantas le faltan para ganar
+$consultaAGanar = "SELECT resCorrectas FROM evaluacion_aprendiz where id_aprendiz = $aprendiz";
+$resFaltantes          = $conexion->query($consultaAGanar);
+$filaResCorr=$resFaltantes->fetch_array();
+//Resultado que está guardado en la BD
+$aGanar=$filaResCorr['resCorrectas'];
+$resultadoAGanar=20-$aGanar;
 
 
 $valor = jugar($cargarLaPregunta, $validarRespuesta);
@@ -208,11 +228,11 @@ if ($valor > 0) {
     $rowLimite        = $resPCorrecLimite['resCorrectas'];
 
     //Control Si hay un jugador con cantidad respondidas correctas 15 gana y nadie mas puede jugar
-    $controlGanador   = "SELECT * FROM evaluacion_aprendiz where resCorrectas >= 15";
+    $controlGanador   = "SELECT * FROM evaluacion_aprendiz where resCorrectas >= 20";
     $resultadoGanador = $conexion->query($controlGanador);
 
     //Si ya hay un ganador y el aprendiz logueado es el ganador
-    if ($resultadoGanador == true && $rowLimite >= 15) {
+    if ($resultadoGanador == true && $rowLimite >= 20) {
         //Actualiza todos los demas que esten jugando a cero y termina el juego
         $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz != $aprendiz";
         $ejecutaReinicio   = $conexion->query($reiniciaResCorrec);
@@ -224,10 +244,10 @@ if ($valor > 0) {
     //Verifica si hay algún ganador
     if (mysqli_num_rows($resultadoGanador) > 0) {
         $_SESSION['verificaGanador'] = 1;
-        header("location: ../Vistas/admin.php?MSN=5");
+        header("location: ../Vistas/admin.php");
+        $_SESSION['MSN']=5;
     } else {
         $_SESSION['verificaGanador'] = 0;
-
 
         if ($resultado->num_rows > 0) {
             $respuesta = "";
@@ -238,43 +258,56 @@ if ($valor > 0) {
             $arrayNumeros = array();
             $arrayNumeros = randomNum();
 
-            $arrayPregunta = array();
+            // $arrayPregunta = array();
             $arrayPregunta = randPregunta();
 
             while ($row = $resultado->fetch_array(MYSQLI_ASSOC)) {
-                $idRespuesta = $row["id_respuesta"];
+                $idRespuesta    = $row["id_respuesta"];
+                $key            = ''; // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                // echo "ID". $row["id_respuesta"];
 
-                $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $row['preguntas'] . "</span><br>";
+                $preguntaDesenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['preguntas']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+                $preguntas .= " <span value='" . $row['id_pregunta'] . "'>" . $preguntaDesenc . "</span><br>";
 
                 foreach ($arrayNumeros as $value) {
                     switch ($value) {
                         case '1':
-                            $respuesta .= "<td><button class='btn-juego' name='r1' id='r1' onclick='vp(1)'><p>" . $row['respuesta1'] . "</p></button> </td>";
+                            $key        = ''; // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                            $res1Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta1']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+                            $respuesta .= "<td><button class='btn-juego' name='r1' id='r1' onclick='vp(1)'><p>" . $res1Desenc . "</p></button> </td>";
                             break;
+
                         case '2':
-                            $respuesta .= " <td><button class='btn-juego' name='r2' id='r2' onclick='vp(2)'>" . $row['respuesta2'] . "</button> </td>";
+                            $res2Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta2']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+                            $respuesta .= " <td><button class='btn-juego' name='r2' id='r2' onclick='vp(2)'>" . $res2Desenc . "</button> </td>";
                             break;
+
                         case '3':
-                            $respuesta .= " <td><button class='btn-juego'  name='r3' id='r3' onclick='vp(3)'>" . $row['respuesta3'] . "</button></td> ";
+                            $res3Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta3']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+                            $respuesta .= " <td><button class='btn-juego'  name='r3' id='r3' onclick='vp(3)'>" . $res3Desenc . "</button></td> ";
                             break;
+
                         case '4':
-                            $respuesta .= "<td><button class='btn-juego'  name='r4' id='r4' onclick='vp(4)'>" . $row['respuesta4'] . "</button> </td>";
+                            $res4Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta4']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+                            $respuesta .= "<td><button class='btn-juego'  name='r4' id='r4' onclick='vp(4)'>" . $res4Desenc . "</button> </td>";
                             break;
                     }
                 }
             }
-            if($validarRespuesta == 1){
-              header('location: ../Vistas/juego.php?r=ok');
-            }else if ($validarRespuesta > 1) {
-              header('location: ../Vistas/juego.php?r=mal');
+            if ($validarRespuesta == 1) {
+                header('location: ../Vistas/juego.php');
+                $_SESSION['resCor']=1;
+            } else if ($validarRespuesta > 1) {
+                header('location: ../Vistas/finJuego.php');
+                $_SESSION['resCor']=2;
+            } else {
+                header('location: ../Vistas/juego.php');
+                $_SESSION['resCor']=3;
+            }
         } else {
-            header('location: ../Vistas/juego.php');
+            header('location: ../Vistas/admin.php');
         }
-      }else{
-        header('location: ../Vistas/admin.php');
-
-      }
-}
+    }
 } else {
     //Si se equivoca las resCorrectas vuelven a cero
     $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz = $aprendiz";

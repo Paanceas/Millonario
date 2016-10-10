@@ -3,6 +3,9 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0) {
+    $usuario = $_SESSION['id_usuario'];
+
 function ranking()
 {
     include "../Conexion/config.php";
@@ -27,7 +30,7 @@ function ranking()
     $unico = "select p.record, a.nombres, pr.programas, a.id_aprendiz, FIND_IN_SET(p.id_puntaje, (SELECT GROUP_CONCAT(p.id_puntaje ORDER by p.record desc, p.totalEstados asc) from puntaje p)) AS Puesto from puntaje p
     join aprendiz a ON a.id_aprendiz = p.id_aprendiz
     join programa pr ON pr.id_programa = a.id_programa
-    ORDER BY p.record DESC, p.totalEstados ASC LIMIT 5,10000";
+    ORDER BY p.record DESC, p.totalEstados ASC, p.puntajes LIMIT 5,10000";
 
     $resUnico = $conexion->query($unico);
 
@@ -75,8 +78,9 @@ function ranking()
 
     if(mysqli_num_rows($resUnico) > 0){
     //Si esta fuera del los primeros 5 lo resalta de rojo
+
     if($consultaUnica != null ){
-      var_dump($totalUnicos);exit();
+
       foreach ($totalUnicos as $consultaUnica) {
           if ($aprendiz == $consultaUnica[3]) {
               echo "<tr class='danger'>";
@@ -119,8 +123,12 @@ function ranking()
     echo "Hay menos de 6 participantes";
   }
 
-
 }
+} else {
+    header('location:../Vistas/index.php');
+    $_SESSION['MSNLogin']=2;
+}
+
 
 
 ?>

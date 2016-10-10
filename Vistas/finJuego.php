@@ -1,13 +1,10 @@
 
 <?php
 
-if (isset($_GET['t']) && $_GET['t'] == "off") {
-  $timeOff = 'swal("Se agoto el tiempo", "Vuelve a jugando!", "error");';
-}
-
-
-
 session_start();
+if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 2 ) {
+  $timeOff = 'swal("Se agotó el tiempo", "Vuelve a intentarlo!", "error");';
+}
 if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
 $usuario=$_SESSION['id_usuario'];
 $_SESSION['clicJugarSess'] = 0;
@@ -184,10 +181,10 @@ position: relative;
     </section>
 
 
-    <footer class="footer-distributed">
-
+    <!-- <footer class="footer-distributed">
 
       <div class="footer-left">
+
 
         <p class="footer-links">
           <a href="#">Inicio</a>
@@ -197,23 +194,16 @@ position: relative;
           <a href="#">Créditos</a>
         </p>
 
-        <p>SENA &copy; 2016</p>
+
       </div>
-
-
-            <div class="footer-right">
-
-              <a href="#"><img src="../source/img/footer/icontecA.png" width="61" height="107"/></a>
-              <a href="#"><img src="../source/img/footer/icontecB.png" width="79" height="106"/></a>
-              <a href="#"><img src="../source/img/footer/icontecC.png" width="61" height="107"/></a>
-              <a href="#"><img src="../source/img/footer/icontecD.png" width="79" height="106"/></a>
-
-            </div>
+      <div class="footer-left">
+        <p class="footer-links">SENA - Centro de Gestión de Mercados, Logística y TI, Distrito Capital</p>
+      </div>
             <div id="inline1" style="width:800px;display: none;">
             <h3>Instrucciones</h3>
             <img src="../source/img/instrucciones.png" width="800px"/>
             </div>
-    </footer>
+    </footer> -->
 
 
     <!-- Add fancyBox main JS and CSS files -->

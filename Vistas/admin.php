@@ -4,6 +4,8 @@ session_start();
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);
 
+
+
 if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
     $_SESSION['clicJugarSess'] = 0;
     //Si el usuario esta en recuperar pass no lo deja salir de esa vista
@@ -16,8 +18,10 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8"/>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Autoevaluación</title>
   <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
@@ -31,6 +35,8 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
         require('../Controlador/clases/mensajeJuego.php');
 
 ?>
+<link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
+
 </head>
 <!--Deshabiilita inspeccionar elemento <body> -->
 <!-- <script type="text/javascript">
@@ -85,7 +91,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
       <form class="navbar-form navbar-left" action="../Controlador/logout.php">
 
        <button type="submit" class="btn btn-success" >
-        Salir <span class="glyphicon glyphicon-log-out"></span>
+        SALIR <span class="glyphicon glyphicon-log-out"></span>
        </button>
      </form>
     </ul>
@@ -96,8 +102,8 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
   <!-- fin barra de navegacion -->
   <div class="container animated flipInX">
     <?php
-        if (isset($_GET["MSN"])) {
-            mensajeJuego::msnJuego($_GET["MSN"]);
+        if (isset($_SESSION["MSN"])) {
+            mensajeJuego::msnJuego($_SESSION["MSN"]);
         }
 ?>
  </div>
@@ -127,8 +133,8 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
       </div>
       <div class="col-md-1"></div>
       <div class="col-md-5">
-        <h3>Ranking</h3>
-        <div class="table-responsive">
+        <h3 style="margin-top:-5px; text-align:center;">Ranking</h3>
+        <div class="table-responsive" style="font-size:13px;">
           <table class="table table-hover" style="text-align:center">
             <thead>
               <tr class="success">
@@ -149,36 +155,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
   </div>
   <!-- fin contenido de la pagina -->
 
-  <footer class="footer-distributed">
 
-
-    <div class="footer-left">
-
-      <p class="footer-links">
-        <a href="#">Inicio</a>
-        ·
-        <a class="fancybox" href="#inline1" title="Instrucciones">Instrucciones</a>
-        ·
-        <a href="#">Créditos</a>
-      </p>
-
-      <p>SENA &copy; 2016</p>
-    </div>
-
-
-          <div class="footer-right">
-
-            <a href="#"><img src="../source/img/footer/icontecA.png" width="61" height="107"/></a>
-            <a href="#"><img src="../source/img/footer/icontecB.png" width="79" height="106"/></a>
-            <a href="#"><img src="../source/img/footer/icontecC.png" width="61" height="107"/></a>
-            <a href="#"><img src="../source/img/footer/icontecD.png" width="79" height="106"/></a>
-
-          </div>
-          <div id="inline1" style="width:800px;display: none;">
-          <h3>Instrucciones</h3>
-          <img src="../source/img/instrucciones.png" width="800px"/>
-          </div>
-  </footer>
 <!-- Add fancyBox main JS and CSS files -->
 <script src="../Bootstrap/js/jquery-1.10.2.min.js"></script>
 <script src="../Bootstrap/js/bootstrap.min.js"></script>
@@ -188,7 +165,36 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 $(document).ready(function() {
               $('.fancybox').fancybox();
 });
+
+
+}
+
 </script>
+<footer class="footer-distributed">
+
+
+  <div class="footer-left">
+
+    <p class="footer-links">
+      <a href="#">Inicio</a>
+      ·
+      <a href="#">Instrucciones</a>
+      ·
+      <a href="#">Créditos</a>
+    </p>
+
+
+  </div>
+    <div class="footer-left">
+            <p class="footer-links">SENA - Centro de Gestión de Mercados, Logística y TI, Distrito Capital</p>
+          </div>
+                <div id="inline1" style="width:800px;display: none;">
+                <h3>Instrucciones</h3>
+                <img src="../source/img/instrucciones.png" width="800px"/>
+                </div>
+        </footer>
+
+  </footer>
 </body>
 </html>
 <?php
@@ -196,7 +202,8 @@ $(document).ready(function() {
 } else {
     session_unset();
     session_destroy();
-    header("location:../Vistas/index.php?MSNLogin=2");
+    header("location:../Vistas/index.php");
+    $_SESSION['MSNLogin']=2;
 }
 
 ?>

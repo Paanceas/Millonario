@@ -1,39 +1,3 @@
-<?php
-session_start();
-if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id_roll'] == 1) {
-    $usuario = $_SESSION['id_usuario'];
-?>
-<!DOCTYPE html>
-<head>
-<meta charset="utf-8">
-<link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
-
-<link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
-
-<title>Carga Preguntas</title>
-
-</head>
-
-  <body>
-    <form class="navbar-form navbar-left" action="logout.php">
-
-     <button type="submit" class="btn btn-success" >
-      Salir <span class="glyphicon glyphicon-log-out"></span>
-     </button>
-    </form>
-<div style="margin-top: 120px;">
-  <center><h1>Importando archivo CSV</h1></center><br>
-  <form action='<?php
-    echo $_SERVER["PHP_SELF"];
-?>' method='post' enctype="multipart/form-data">
-   <br><center>Importar Archivo :<br> <input type='file' name='sel_file' size='20'><br>
-   <input type='submit' name='submit' value='submit'></center>
-
- </div>
-  </form>
-
- </body>
-</html>
 
 <?php
 
@@ -60,7 +24,9 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
               if($id_pregunta[0]==null){
                 $id_pregunta[0]=1;
               }
-                $sql = "INSERT into millonario.pregunta(id_pregunta, preguntas) values($id_pregunta[0], '$data[0]')";
+              $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+              $preguntaEncrip = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $data[0], MCRYPT_MODE_CBC, md5(md5($key))));
+                $sql = "INSERT into millonario.pregunta(id_pregunta, preguntas) values($id_pregunta[0], '$preguntaEncrip')";
                 //Insertamos los datos con los valores...
 
                 if ($data[0] == '') {
@@ -88,8 +54,25 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
                             // $id_respuesta       = $resUltmaRespuesta->fetch_array(MYSQLI_NUM);
                             $id_respuesta[0] = 1;
                         }
+                        //Encripción de respuestas
+                        $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                        $res1Encrip = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $data[1], MCRYPT_MODE_CBC, md5(md5($key))));
+                        //-------------------------------
 
-                        $sqlRespuesta = "INSERT into millonario.respuesta(id_respuesta, id_pregunta, respuesta1, respuesta2, respuesta3, respuesta4) values($id_respuesta[0], $id_pregunta[0], '$data[1]', '$data[2]', '$data[3]', '$data[4]')";
+                        $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                        $res2Encrip = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $data[2], MCRYPT_MODE_CBC, md5(md5($key))));
+                        //-------------------------------
+
+                        $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                        $res3Encrip = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $data[3], MCRYPT_MODE_CBC, md5(md5($key))));
+                        //-------------------------------
+
+                        $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                        $res4Encrip = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $data[4], MCRYPT_MODE_CBC, md5(md5($key))));
+                        //-------------------------------
+
+
+                        $sqlRespuesta = "INSERT into millonario.respuesta(id_respuesta, id_pregunta, respuesta1, respuesta2, respuesta3, respuesta4) values($id_respuesta[0], $id_pregunta[0], '$res1Encrip', '$res2Encrip', '$res3Encrip', '$res4Encrip')";
                         //Si hay una respuesta vacía borra la pregunta y la respuesta no se guarda
                         if($data[1]=='' || $data[2]=='' || $data[3]=='' || $data[4]==''){
                           $eliminaUltResp = "DELETE FROM respuesta where id_pregunta='$id_pregunta[0]'";
@@ -115,7 +98,5 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['id
             echo "Archivo invalido!";
         }
     }
-} else {
-    header('location:../Vistas/index.php?MSNLogin=2');
-}
+
 ?>

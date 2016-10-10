@@ -41,6 +41,8 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 
        <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <title>Nueva Clave</title>
+    <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
+
   </head>
   <body>
     <header class="header">
@@ -117,6 +119,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 } else {
     session_unset();
     session_destroy();
-    header("location:../Vistas/index.php?MSNLogin=2");
+    header("location:../Vistas/index.php");
+    $_SESSION['MSNLogin']=2;
 }
 ?>

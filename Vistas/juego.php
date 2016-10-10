@@ -1,11 +1,11 @@
 <?php
 
-if (isset($_GET['r']) && $_GET['r'] == "ok" ) {
-  $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
-}else if (isset($_GET['r']) && $_GET['r'] == "mal" ){
-  $bien = 'swal("Respuesta Incorrecta", "será a la próxima!", "error");';
-
-}
+// if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
+//   $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
+// }else if (isset($_GET['r']) && $_GET['r'] == "mal" ){
+//   $bien = 'swal("Respuesta Incorrecta", "será a la próxima!", "error");';
+//
+// }
 
 if (isset($_GET['t']) && $_GET['t'] == "off" ) {
   $bien = 'swal("Tiempo Fuera", "se acabó el tiempo!", "error");';
@@ -13,13 +13,19 @@ if (isset($_GET['t']) && $_GET['t'] == "off" ) {
 
 require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
+
+if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
+$bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
+}
+
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
-// var_dump($_SESSION['verificaSesion']);
+
 if($_SESSION['validacion']==1 && $_SESSION['id_usuario'] > 0 && $_SESSION['verificaSesion'] == 1){
 $usuario=$_SESSION['id_usuario'];
 //Clic en jugar
 if($_SESSION['clicJugarSess'] != 1){
-  header('location:../Vistas/admin.php?MSN=4');
+  header('location:../Vistas/admin.php');
+  $_SESSION['MSN']=4;
 }
 
 
@@ -31,7 +37,7 @@ if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
 <html>
 <head>
   <meta content="charset=utf-8"/>
-
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
@@ -45,27 +51,34 @@ include "modalinstrucc.php";
 @include('../Controlador/cargaPreguntas.php');
 ?>
 	<title>Inicio</title>
+  <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
+
 </head>
 <!--Deshabiilita inspeccionar elemento <body> -->
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 
 //Deshabiilita clic derecho de toda la pagina
-document.onmousedown=anularBotonDerecho;
-document.oncontextmenu=new Function("return false");
+// document.onmousedown=anularBotonDerecho;
+// document.oncontextmenu=new Function("return false");
+//
+// function anularBotonDerecho(e) {
+//  if (navigator.appName == 'Netscape'
+//        && (e.which == 3 || e.which == 2)){
+//    alert(sMensaje);
+//    return false;
+//  } else if (navigator.appName == 'Microsoft Internet Explorer'
+//        && (event.button == 2)) {
+//    alert(sMensaje);
+//  }
+// }
 
-function anularBotonDerecho(e) {
- if (navigator.appName == 'Netscape'
-       && (e.which == 3 || e.which == 2)){
-   alert(sMensaje);
-   return false;
- } else if (navigator.appName == 'Microsoft Internet Explorer'
-       && (event.button == 2)) {
-   alert(sMensaje);
- }
-}
-</script> -->
+setTimeout ("location.href='finJuego.php'", 30000);
+
+
+</script>
 <body onLoad="timer()">
+
 <!--  onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"" -->
   <nav class="navbar navbar-inverse navbar-juego">
   <div class="container-fluid">
@@ -92,35 +105,33 @@ function anularBotonDerecho(e) {
       echo $_SESSION['programaAprendiz'];
   ?> </a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <form class="navbar-form navbar-left" action="../Controlador/logout.php">
 
-         <button type="submit" class="btn btn-success" >
-          Salir <span class="glyphicon glyphicon-log-out"></span>
-         </button>
-       </form>
-      </ul>
     </div>
   </div>
   </nav>
 
 <form class="" action="../Controlador/cargaPreguntas.php" method="post">
+
   <div class="vistaJuego">
     <div class="tiempoJuego">
       <h2 class="titulo"><div id="contador"></div><h2>
     </div>
+    <div style="font-size: 33px;">
+    <?php echo $resultadoAGanar; ?>
+  </div>
     <div class="pregunta">
-      <?php echo $preguntas; ?>
+      <?php echo utf8_encode($preguntas); ?>
     </div>
   </div>
   <div class="vistaJuego">
-    <?php echo $respuesta; ?>
+    <?php echo utf8_encode($respuesta); ?>
   </div>
 
 
 
 <input type="hidden" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
 <input type="hidden" name="respSeleccionada" id="respSeleccionada" />
+
 </form>
 
 
@@ -130,33 +141,26 @@ function anularBotonDerecho(e) {
 
   <div class="footer-left">
 
-    <p class="footer-links">
-      <a href="#">Inicio</a>
-      ·
-      <a class="fancybox" href="#inline1" title="Instrucciones">Instrucciones</a>
-      ·
-      <a href="#">Créditos</a>
-    </p>
 
-    <p>SENA &copy; 2016</p>
-  </div>
+      <p class="footer-links">
+        <a href="#">Inicio</a>
+        ·
+        <a class="fancybox" href="#inline1" title="Instrucciones">Instrucciones</a>
+        ·
+        <a href="#">Créditos</a>
+      </p>
 
 
-        <div class="footer-right">
+    </div>
 
-          <a href="#"><img src="../source/img/footer/icontecA.png" width="61" height="107"/></a>
-          <a href="#"><img src="../source/img/footer/icontecB.png" width="79" height="106"/></a>
-          <a href="#"><img src="../source/img/footer/icontecC.png" width="61" height="107"/></a>
-          <a href="#"><img src="../source/img/footer/icontecD.png" width="79" height="106"/></a>
-
-        </div>
-        <div id="inline1" style="width:800px;display: none;">
-        <h3>Instrucciones</h3>
-        <img src="../source/img/instrucciones.png" width="800px"/>
-        </div>
-</footer>
-
-
+    <div class="footer-left">
+            <p class="footer-links">SENA - Centro de Gestión de Mercados, Logística y TI, Distrito Capital</p>
+          </div>
+                <div id="inline1" style="width:800px;display: none;">
+                <h3>Instrucciones</h3>
+                <img src="../source/img/instrucciones.png" width="800px"/>
+                </div>
+        </footer>
 
 
 <script type="text/javascript">
@@ -181,11 +185,12 @@ function anularBotonDerecho(e) {
   if (i==-1){
     document.getElementById('contador').innerHTML = 'FIN';
     clearTimeout(t);
-    location.href='finJuego.php?t=off';
+    location.href='finJuego.php';
+    <?php $_SESSION['resCor']=2; ?>
   }
 
 }
-i=20;
+i=30;
 
 
 </script>
@@ -208,17 +213,28 @@ i=20;
     echo $imprimir;
     echo "</script>";
   }
+  $_SESSION['r1']=0;
  ?>
+ <div>
+   <div>
+ <script type="text/javascript">
+ setTimeout ("location.href='finJuego.php'", 29999);
+
+ </script>
+</div>
+ </div>
 </body>
 </html>
 <?php
 
   }else {
-      header('location:../Vistas/admin.php?MSN=2');
+      header('location:../Vistas/admin.php');
+      $_SESSION['MSN']=2;
   }
 
 
 }else{
-  header('location:../Vistas/index.php?MSNLogin=2');
+  header('location:../Vistas/index.php');
+  $_SESSION['MSNLogin']=2;
 }
 ?>

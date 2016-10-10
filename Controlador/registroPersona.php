@@ -1,6 +1,6 @@
 <?php
 include "../Conexion/config.php";
-
+session_start();
 function TipoIdentificacionCombobox(){
   //Carga select tipo identificacion
 include "../Conexion/config.php";
@@ -22,6 +22,7 @@ function ProgramaFormacionCombobox(){
 
   include "../Conexion/config.php";
 $sql       = "SELECT * from programa order by programas asc";
+$acentos = $conexion->query("SET NAMES 'utf8'");
 $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
     $programaFormacionSelect = "";
@@ -55,62 +56,78 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
 
     //Valida todos lo campos
     if (empty($nombres) && empty($documento) && empty($correo) && !empty($tipoIdentificacion) && empty($programa) && empty($clave) && empty($confirm)) {
-        header("location:../Vistas/index.php?MSN=1");
+        header("location:../Vistas/index.php");
+        $_SESSION['MSN']=1;
     }
     //Valida nombre
     elseif (!preg_match($patronNombres, $nombres)) {
         if (empty($nombres)) {
-            header("location:../Vistas/index.php?MSN=2");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=2;
         } else {
-            header("location:../Vistas/index.php?MSN=2.1");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=21;
         }
     }
     //Valida TI
         elseif (!preg_match($patronTI, $tipoIdentificacion)) {
         if (empty($tipoIdentificacion)) {
-            header("location:../Vistas/index.php?MSN=9");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=9;
         } else {
-            header("location:../Vistas/index.php?MSN=9.1");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=91;
         }
     }
     //Valida documento
         elseif (!preg_match($patronDocumento, $documento)) {
         if (empty($documento)) {
-            header("location:../Vistas/index.php?MSN=3");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=3;
         } else {
-            header("location:../Vistas/index.php?MSN=3.1");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=31;
+
         }
     }
     //Valida TI
         elseif (!preg_match($patronPrograma, $programa)) {
         if (empty($programa)) {
-            header("location:../Vistas/index.php?MSN=10");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=10;
         } else {
-            header("location:../Vistas/index.php?MSN=10.1");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=101;
         }
     }
     //Valida correo
         elseif (!preg_match($patronCorreo, $correo)) {
         if (empty($correo) || $correo == "") {
-            header("location:../Vistas/index.php?MSN=4");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=4;
         } else {
-            header("location:../Vistas/index.php?MSN=4.1");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=41;
         }
     }
     //Valida clave
         elseif (!preg_match($patronClave, $clave)) {
         if (empty($clave)) {
-            header("location:../Vistas/index.php?MSN=5");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=5;
         } else {
-            header("location:../Vistas/index.php?MSN=5.1");
+            header("location:../Vistas/index.php?");
+            $_SESSION['MSN']=51;
         }
     }
     //Valida confirm
         elseif (!preg_match($patronClave, $confirm)) {
         if (empty($confirm)) {
-            header("location:../Vistas/index.php?MSN=5");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=5;
         } else {
-            header("location:../Vistas/index.php?MSN=5.1");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=51;
         }
     }
     //Termina Validacion de campos y expresiones regulares
@@ -122,17 +139,21 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
             $verificarUsuario   = "SELECT correo FROM usuario WHERE correo ='$correo'";
             $verificaExistencia = mysqli_query($conexion, $verificarUsuario);
             if (mysqli_num_rows($verificaExistencia) > 0) {
-                header("location:../Vistas/index.php?MSN=7");
+                header("location:../Vistas/index.php");
+                $_SESSION['MSN']=7;
             }
 
             //Consulta si ya hay un documento en la BD
             $verificarDocumento = "SELECT documento FROM aprendiz WHERE documento ='$documento'";
             $verificaDocumento  = mysqli_query($conexion, $verificarDocumento);
             if (mysqli_num_rows($verificaDocumento) > 0) {
-                header("location:../Vistas/index.php?MSN=8");
+                header("location:../Vistas/index.php");
+                $_SESSION['MSN']=8;
             } else {
                 //Registra usuario
-                $clave              = md5($_POST['clave']);
+                $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                $claveEncrip = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $_POST['clave'], MCRYPT_MODE_CBC, md5(md5($key))));
+                $clave              = $claveEncrip;
                 $registroUsuario = "INSERT INTO usuario (id_roll, correo, clave) VALUES(2, '$correo', '$clave');";
             }
 
@@ -158,16 +179,18 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
 
                   $registroPuntaje=$conexion->query($validaPuntaje);
 
-                  header("location:../Vistas/index.php?MSN=ok");
+                  header("location:../Vistas/index.php");
+                  $_SESSION['ok']=123;
                 } else {
-                    header("location:../Vistas/index.php?MSN=error");
-
+                    header("location:../Vistas/index.php");
+                    $_SESSION['MSN']='error';
                 }
             } else {
                 die("Fallo en la inserción de Datos." . mysqli_error($conexion));
             }
         } else {
-            header("location:../Vistas/index.php?MSN=6");
+            header("location:../Vistas/index.php");
+            $_SESSION['MSN']=6;
         }
         mysqli_close($conexion);
     }

@@ -11,6 +11,7 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="UTF-8"/>
+
     <title>Autoevaluación</title>
     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
@@ -30,6 +31,7 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
       require('../Controlador/clases/mensajes.php');
 
      ?>
+     <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
   </head>
   <body>
     <header class="header">
@@ -46,12 +48,12 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
           </div>
           <div class="form">
             <h2>Ingresa con tu Cuenta</h2>
-            <?php if(isset($_GET["MSN"])){MensajesJuego::mensajesRegistroPersona($_GET["MSN"]);} ?>
+            <?php if(isset($_SESSION["MSN"])){MensajesJuego::mensajesRegistroPersona($_SESSION["MSN"]);} ?>
 
-            <?php if(isset($_GET["MSNLogin"])){MensajesLogin::mensajesIngreso($_GET["MSNLogin"]); }?>
+            <?php if(isset($_SESSION["MSNLogin"])){MensajesLogin::mensajesIngreso($_SESSION["MSNLogin"]); }?>
             <form action="../Controlador/login.php" method="post" role="form" class="animated zoomInDown">
-              <input type="text" name="usuario" placeholder="Correo misena o sena"/>
-              <input type="password" name="contrasena" placeholder="Contraseña"/>
+              <input type="text" name="usuario" placeholder="Correo misena o sena" required="true"/>
+              <input type="password" name="contrasena" placeholder="Contraseña" required="true"/>
               <button>Ingresar <span class="glyphicon glyphicon-log-in" style="font-size: 15px;"></button>
             </form>
           </div>
@@ -86,27 +88,22 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
             <ol class="carousel-indicators">
               <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
               <li data-target="#myCarousel" data-slide-to="1"></li>
-              <li data-target="#myCarousel" data-slide-to="2"></li>
-              <li data-target="#myCarousel" data-slide-to="3"></li>
+              <!-- <li data-target="#myCarousel" data-slide-to="2"></li>
+              <li data-target="#myCarousel" data-slide-to="3"></li> -->
             </ol>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
+
+
+              <div class="item ">
+                <img src="../source/img/slider/3.jpg" alt="Chania" style="height: 422px; width: 100%;">
+              </div>
+
               <div class="item active">
-                <img src="../source/img/slider/1.jpg" alt="Chania">
+                <img src="../source/img/slider/ingles.png" alt="Chania" style="height: 422px;">
               </div>
 
-              <div class="item">
-                <img src="../source/img/slider/2.jpg" alt="Chania">
-              </div>
-
-              <div class="item">
-                <img src="../source/img/slider/1.jpg" alt="Chania">
-              </div>
-
-              <div class="item">
-                <img src="../source/img/slider/2.jpg" alt="Chania">
-              </div>
             </div>
 
             <!-- Left and right controls -->
@@ -124,33 +121,32 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
 
 
-		<footer class="footer-distributed">
+    <!-- <footer class="footer-distributed">
 
 
-			<div class="footer-left">
+  			<div class="footer-left">
 
-				<p class="footer-links">
-					<a href="#">Inicio</a>
-					·
-					<a href="#">Instrucciones</a>
-					·
-					<a href="#">Créditos</a>
-				</p>
-
-				<p>SENA &copy; 2016</p>
-			</div>
+  				<p class="footer-links">
+  					<a href="#">Inicio</a>
+  					·
+  					<a href="#">Instrucciones</a>
+  					·
+  					<a href="#">Créditos</a>
+  				</p>
 
 
-      			<div class="footer-right">
+  			</div>
 
-      				<a href="#"><img src="../source/img/footer/icontecA.png" width="61" height="107"/></a>
-      				<a href="#"><img src="../source/img/footer/icontecB.png" width="79" height="106"/></a>
-      				<a href="#"><img src="../source/img/footer/icontecC.png" width="61" height="107"/></a>
-      				<a href="#"><img src="../source/img/footer/icontecD.png" width="79" height="106"/></a>
+        <div class="footer-left">
+                <p class="footer-links">SENA - Centro de Gestión de Mercados, Logística y TI, Distrito Capital</p>
+              </div>
+              <div id="inline1" style="width:800px;display: none;">
+              <h3>Instrucciones</h3>
+              <img src="../source/img/instrucciones.png" width="800px"/>
+              </div>
 
-      			</div>
+  		</footer> -->
 
-		</footer>
 
 
     <!-- Modal -->
@@ -168,9 +164,9 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
               <div class="form-group">
                 <label for="correo">Ingresa tu correo:</label>
-                <input type="email" name="correo" id="correo" placeholder="Correo (sena o misena)" class="form-control" ></br>
+                <input type="email" name="correo" id="correo" placeholder="Correo (sena o misena)" class="form-control" required="true"></br>
                 <label for="documento">Ingresa tu documento:</label>
-                <input type="password" name="documento" id="documento" placeholder="Documento de identificación" class="form-control" >
+                <input type="password" name="documento" id="documento" placeholder="Documento de identificación" class="form-control" required="true">
               </div>
           </div>
           <div class="modal-footer">
@@ -196,12 +192,12 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
 
     <?php
-    if (isset($_GET["MSN"]) && $_GET["MSN"] == "ok") {
+    if (isset($_SESSION['ok']) && $_SESSION['ok'] == 123) {
       echo "<script type='text/javascript'>";
       MensajesJuego::exito();
       echo "</script>";
    }
-   if (isset($_GET["MSNLogin"]) && $_GET["MSNLogin"] == "7") {
+   if (isset($_SESSION["MSNLogin"]) && $_SESSION["MSNLogin"] == "7") {
      echo "<script type='text/javascript'>";
      MensajesLogin::exitoCorreoEnvio();
      echo "</script>";

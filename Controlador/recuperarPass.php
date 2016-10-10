@@ -19,7 +19,8 @@ if (isset($_POST['recuperar'])) {
     echo $pass;
 
     //Clave encliptada
-    $claveEncriptada = md5($pass);
+    $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+    $claveEncriptada = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $pass, MCRYPT_MODE_CBC, md5(md5($key))));
 
     if (isset($_POST['correo']) && isset($_POST['documento'])) {
         $correo = strtolower($_POST['correo']);
@@ -54,18 +55,22 @@ if (isset($_POST['recuperar'])) {
                   $ejecutaSql     = $conexion->query($actualizaClave);
                   if ($ejecutaSql == true) {
                     //Ingresa
-                    header("location: ../Vistas/index.php?MSNLogin=7");
+                    header("location: ../Vistas/index.php");
+                    $_SESSION['MSNLogin']=7;
                   }else{
                     //No se pudo actualizar la clave
-                    header("location: ../Vistas/nuevaPass.php?MSN=3");
+                    header("location: ../Vistas/nuevaPass.php");
+                    $_SESSION['MSNLogin']=3;
                   }
                 }else {
                   //NO SE PUDO ENVIAR EL CORREO
-                    header("location:../Vistas/index.php?MSNLogin=5");
+                    header("location:../Vistas/index.php");
+                    $_SESSION['MSNLogin']=5;
                 }
         } else {
           //El correo no existe
-            header("location: /Millonario/Vistas/index.php?MSNLogin=6");
+            header("location: /Millonario/Vistas/index.php");
+            $_SESSION['MSNLogin']=6;
         }
     }
     //Si le da clic en nueva Clave-------
@@ -103,7 +108,9 @@ if (isset($_POST['recuperar'])) {
 
             //Confirma clave
             if ($clave == $confirm) {
-                $clave = md5($_POST['clave']);
+              $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+              $clave = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $_POST['clave'], MCRYPT_MODE_CBC, md5(md5($key))));
+
 
                 //Actualiza la clave a la del usuario y el estado a cero
                 $sql        = "UPDATE usuario SET clave = '$clave', recuperar = 0 where id_usuario = $usuarioSesion";
