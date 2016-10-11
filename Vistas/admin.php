@@ -1,10 +1,14 @@
 <?php
 
 
-
+$_COOKIE['ID'] = session_id();
+if($_COOKIE['ID'] != session_id()){
+  header("location:index");
+}
 require('../Controlador/clases/consultasAvanzadas.php');
 
 session_start();
+
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);
 
@@ -174,7 +178,7 @@ $(document).ready(function() {
 
 </script>
 
-<footer class="footer-distributed">
+<!-- <footer class="footer-distributed">
 
 
   <div class="footer-left">
@@ -196,7 +200,7 @@ $(document).ready(function() {
                 <h3>Instrucciones</h3>
                 <img src="../source/img/instrucciones.png" width="800px"/>
                 </div>
-        </footer>
+        </footer> -->
 
 
 </body>

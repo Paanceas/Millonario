@@ -2,9 +2,11 @@
 <?php
 
 session_start();
+
 if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 2 ) {
   $timeOff = 'swal("Se agotó el tiempo", "Vuelve a intentarlo!", "error");';
 }
+
 if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
 $usuario=$_SESSION['id_usuario'];
 $_SESSION['clicJugarSess'] = 0;
@@ -212,15 +214,14 @@ position: relative;
       <!-- <script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script> -->
     <script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
     <script src="../source/js/sweetalert.min.js"></script>
-    <?php
 
+    <?php
     echo '<script type="text/javascript">';
         if (isset($timeOff)) {
           echo $timeOff;
         }else {
-          echo 'swal("Respuesta Incorrecta", "Vuelve a jugando!", "error");';
+          echo 'swal("Respuesta Incorrecta!", "vuelve a intentarlo!", "error");';
         }
-
       echo "</script>";
       ?>
   </body>

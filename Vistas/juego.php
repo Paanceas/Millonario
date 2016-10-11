@@ -1,16 +1,12 @@
 <?php
-
-// if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
-//   $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
-// }else if (isset($_GET['r']) && $_GET['r'] == "mal" ){
-//   $bien = 'swal("Respuesta Incorrecta", "será a la próxima!", "error");';
-//
-// }
-
 require('../Controlador/clases/consultasAvanzadas.php');
 
 session_start();
 
+$_COOKIE['ID'] = session_id();
+if($_COOKIE['ID'] != session_id()){
+  header("location:index");
+}
 if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
 $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
 }
@@ -126,8 +122,8 @@ setTimeout ("location.href='finJuego'", 30000);
 
 
 
-<input type="hidden" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
-<input type="hidden" name="respSeleccionada" id="respSeleccionada" />
+<input type="text" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
+<input type="text" name="respSeleccionada" id="respSeleccionada" />
 
 </form>
 
