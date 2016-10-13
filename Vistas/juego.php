@@ -10,6 +10,13 @@ if($_COOKIE['ID'] != session_id()){
 if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
 $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
 }
+//Si refresca la página pierde
+if ($_SESSION['respuestaSelecciionada'] == 0) {
+  $_SESSION['resCor']=4;
+  echo '<script type="text/javascript">';
+      echo "location.href='finJuego';";
+    echo '</script>';
+}
 
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 
@@ -21,9 +28,9 @@ if($_SESSION['clicJugarSess'] != 1){
   $_SESSION['MSN']=4;
 }
 
-
 //Valida intentos
 if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
+
 
  ?>
 <!DOCTYPE html>
@@ -48,7 +55,11 @@ include "modalinstrucc.php";
 
 </head>
 <!--Deshabiilita inspeccionar elemento <body> -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+</script>
 
+<div>
+  <div>
 <script type="text/javascript">
 
 //Deshabiilita clic derecho de toda la pagina
@@ -68,8 +79,9 @@ include "modalinstrucc.php";
 
 setTimeout ("location.href='finJuego'", 30000);
 
-
 </script>
+</div>
+</div>
 <body onLoad="timer()">
 
 <!--  onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"" -->
@@ -103,6 +115,7 @@ setTimeout ("location.href='finJuego'", 30000);
   </div>
   </nav>
 
+
 <form class="" action="../Controlador/cargaPreguntas.php" method="post">
 
   <div class="vistaJuego">
@@ -120,21 +133,14 @@ setTimeout ("location.href='finJuego'", 30000);
     <?php echo utf8_encode($respuesta); ?>
   </div>
 
-
-
-<input type="text" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
-<input type="text" name="respSeleccionada" id="respSeleccionada" />
+<input type="hidden" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
+<input type="hidden" name="respSeleccionada" id="respSeleccionada" />
 
 </form>
 
-
 <br><br>
 <footer class="footer-distributed">
-
-
   <div class="footer-left">
-
-
       <p class="footer-links">
         <a href="#">Inicio</a>
         ·
@@ -142,9 +148,7 @@ setTimeout ("location.href='finJuego'", 30000);
         ·
         <a href="#">Créditos</a>
       </p>
-
-
-    </div>
+  </div>
 
     <div class="footer-left">
             <p class="footer-links">SENA - Centro de Gestión de Mercados, Logística y TI, Distrito Capital</p>
@@ -155,20 +159,13 @@ setTimeout ("location.href='finJuego'", 30000);
                 </div>
         </footer>
 
-
+<div>
+  <div>
 <script type="text/javascript">
+
   function vp(num) {
     $selectAnswer = document.getElementById("respSeleccionada");
     $selectAnswer.value = num;
-
-    // switch (num) {
-    //   case 1:
-    //     swal("Respuesta Correcta", "continua jugando!", "success");
-    //     break;
-    //   default:
-    //     swal("Respuesta Incorrecta", "Vuelve a jugando!", "error");
-    //     break;
-    // }
   }
 
   function timer(){
@@ -181,12 +178,12 @@ setTimeout ("location.href='finJuego'", 30000);
     location.href='finJuego';
     <?php $_SESSION['resCor']=2; ?>
   }
-
 }
 i=30;
 
-
 </script>
+</div>
+</div>
 <!-- Add fancyBox main JS and CSS files -->
 <script src="../Bootstrap/js/jquery-1.10.2.min.js"></script>
 <script src="../Bootstrap/js/bootstrap.min.js"></script>
@@ -196,6 +193,7 @@ i=30;
 <script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
 
 <?php
+
   if (isset($bien)||isset($mal)) {
     if (isset($bien)) {
       $imprimir = $bien;
@@ -216,15 +214,21 @@ i=30;
  </script>
 </div>
  </div>
+
 </body>
+
+</div>
 </html>
 <?php
+//Apenas ingresa la convierte a cero sesión de recarga
+if($_SESSION['respuestaSelecciionada'] == 2 ) {
+  $_SESSION['respuestaSelecciionada'] =0;
+}
 
   }else {
       header('location:../Vistas/admin');
       $_SESSION['MSN']=2;
   }
-
 
 }else{
   header('location:../Vistas/index');

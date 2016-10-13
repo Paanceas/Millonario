@@ -14,7 +14,7 @@ class MensajesLogin
   showLoaderOnConfirm: true
   }, function () {
   setTimeout(function () {
-  swal("¡Correo enviado! Verifica tu correo");
+  swal("¡Clave enviada!", "Verifica tu cuenta");
   }, 2000);
   });';
   }

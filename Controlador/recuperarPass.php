@@ -16,8 +16,6 @@ if (isset($_POST['recuperar'])) {
     }
     //CLAVE RANDOM-------- que envia al correro
 
-    echo $pass;
-
     //Clave encliptada
     $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
     $claveEncriptada = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $pass, MCRYPT_MODE_CBC, md5(md5($key))));

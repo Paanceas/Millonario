@@ -29,6 +29,9 @@ if (mysqli_num_rows($resultado) > 0) {
         $_SESSION['id_usuario'] = $row['id_usuario'];
         $_SESSION['validacion'] = 1;
         $_SESSION['id_roll']    = 1;
+        //Cambia estado bool inicio de sesion
+        $iniciaSessionAdmin = "UPDATE usuario SET verificaSesion = 1 where id_usuario = ".$_SESSION['id_usuario']."";
+        $verificaSesion      = $conexion->query($iniciaSessionAdmin);
         header("location:../Vistas/cargaMasiva");
     } else if ($row['id_roll'] == 2) {
       mysqli_set_charset($conexion, "utf-8");
@@ -43,6 +46,15 @@ if (mysqli_num_rows($resultado) > 0) {
             $aprendizSession = mysqli_fetch_array($resultado);
             // fin de la consulta del aprendiz
             mysqli_set_charset($conexion, "utf-8");
+
+            //Mostrar fecha última vez jugado
+            $sqlFecha             = "SELECT fecha FROM puntaje p INNER JOIN aprendiz a on a.id_aprendiz = p.id_aprendiz join usuario u on u.id_usuario = a.id_usuario WHERE u.id_usuario = $user;";
+
+            $resultadoFecha       = mysqli_query($conexion, $sqlFecha);
+            $aprendizPuntaje = mysqli_fetch_array($resultadoFecha);
+
+            $nuevaFecha = date("d/M/y H:i", strtotime($aprendizPuntaje['fecha']));
+            $_SESSION['fecha']=$nuevaFecha;
 
             // asignacion de valores de la cosulta del aprendiz
             $_SESSION['id_aprendiz']      = $aprendizSession['id_aprendiz'];
@@ -67,10 +79,17 @@ if (mysqli_num_rows($resultado) > 0) {
           $aprendizSession = $resultado->fetch_array(MYSQLI_NUM);
 
           $id_aprendizSess=$aprendizSession[0];
+          //Consulta antes de ingresar
+          $consultaAntesDeEntrar="SELECT id_aprendiz, resCorrectas from evaluacion_aprendiz where id_aprendiz = $id_aprendizSess;";
+          $ejecutaSql=$conexion->query($consultaAntesDeEntrar);
 
+          $fila=$ejecutaSql->fetch_array(MYSQLI_NUM);
+
+          if ($fila[1] <= 19) {
           //Si intenta entrar al mismo tiempo con dos usuarios le reinicia el puntaje a cero
             $reiniciaSql="UPDATE puntaje p, evaluacion_aprendiz e set e.resCorrectas = 0, p.puntajes = 0 where p.id_aprendiz = $id_aprendizSess and e.id_aprendiz = $id_aprendizSess";
             $reiniciaPuntaje=$conexion->query($reiniciaSql);
+          }
             //Cierra sesión booleano
             $iniciaSessionVerify = "UPDATE usuario SET verificaSesion = 0 where id_usuario = $user";
             $verificaSesion      = $conexion->query($iniciaSessionVerify);

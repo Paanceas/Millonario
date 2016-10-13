@@ -15,7 +15,7 @@ class MensajesJuego
   showLoaderOnConfirm: true
 }, function () {
   setTimeout(function () {
-    swal("Cuenta creada exitosamente ¡Ingresa!");
+    swal("Cuenta creada exitosamente", "¡Puedes Ingresar!");
   }, 2000);
 });';
       // }

@@ -52,7 +52,7 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
             <?php if(isset($_SESSION["MSNLogin"])){MensajesLogin::mensajesIngreso($_SESSION["MSNLogin"]); }?>
             <form action="../Controlador/login.php" method="post" role="form" class="animated zoomInDown">
-              <input type="text" name="usuario" placeholder="Correo misena o sena" required="true"/>
+              <input type="email" name="usuario" placeholder="Correo misena o sena" required="true"/>
               <input type="password" name="contrasena" placeholder="Contraseña" required="true"/>
               <button>Ingresar <span class="glyphicon glyphicon-log-in" style="font-size: 15px;"></button>
             </form>
@@ -203,11 +203,7 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
      echo "</script>";
    }
 
-
      ?>
-
-
-
   </body>
 </html>
 <?php session_destroy();

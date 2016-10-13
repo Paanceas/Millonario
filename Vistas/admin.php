@@ -11,6 +11,7 @@ session_start();
 
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);
+// var_dump($_SESSION['clicJugarSess']);
 
 
 if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
@@ -93,6 +94,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
       <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
     echo $_SESSION['programaAprendiz'];
 ?> </a></li>
+<li> <a> Último juego: <?php echo $_SESSION['fecha']; ?> </a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <form class="navbar-form navbar-left" action="../Controlador/logout.php">
@@ -172,9 +174,6 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 $(document).ready(function() {
               $('.fancybox').fancybox();
 });
-
-
-}
 
 </script>
 

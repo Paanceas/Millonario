@@ -141,32 +141,35 @@ function validaIntento()
     $ValorEstado     = $consultaIntento->fetch_array(MYSQLI_ASSOC);
 
     //Fecha que esta guardada
-    $ValorEstado['fecha'];
+    $fechaLarga=$ValorEstado['fecha'];
+    $fechaConvertidaCorta = date("Y-m-d", strtotime($fechaLarga));
+
     //FECHA LOCAL DATE
     $fechaActualizacion = date('Y-m-d');
+    $fechaCompleta = date('Y-m-d H:i:s');
+
+
+    //Incrementa total Estados
+    $nuevoTotalEstados = $ValorEstado['totalEstados'] + 1;
 
     //Si la fecha guardada es diferente a la fecha de hoy actualiza intentos
-    if ($ValorEstado['fecha'] != $fechaActualizacion) {
-        $actualizaFecha    = "UPDATE puntaje SET fecha = '$fechaActualizacion', estado = 1, totalEstados = 1 where id_aprendiz = $aprendiz";
+    if ($fechaConvertidaCorta != $fechaActualizacion) {
+      //Le actualiza el primer intento del dìa a 1 y se incrementa el total de todos los intentos
+        $actualizaFecha    = "UPDATE puntaje SET fecha = '$fechaCompleta', estado = 1, totalEstados = '$nuevoTotalEstados' where id_aprendiz = $aprendiz";
+
+
         $ejecutaActualizac = $conexion->query($actualizaFecha);
-
-        //Incrementa total Estados
-        $nuevoTotalEstados = $ValorEstado['totalEstados'] + 1;
-        $actualizaTotalEst = "UPDATE puntaje SET totalEstados = '" . $nuevoTotalEstados . "' where id_aprendiz = $aprendiz";
-        $ejecutaSql        = $conexion->query($nuevoTotalEstados);
-
-    } else {
-        if ($ValorEstado['estado'] <= 1) {
+    } else {//Si la fecha que esta en la BD es igual a la de hoy
+        if ($ValorEstado['estado'] <= 1) {//Y Todavia tiene intentos
             //Total estados
             $nuevoTotalEstados = $ValorEstado['totalEstados'] + 1;
 
             $nuevoEstado     = $ValorEstado['estado'] + 1; // obtenemos el valor de 'estado' y le añadimos un intento
-            $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "', totalEstados = '" . $nuevoTotalEstados . "'  where id_aprendiz = $aprendiz";
+            $actualizaEstado = "UPDATE puntaje SET estado =  '" . $nuevoEstado . "', totalEstados = '" . $nuevoTotalEstados . "', fecha = '$fechaCompleta'  where id_aprendiz = $aprendiz";
             $ejecutaSql      = $conexion->query($actualizaEstado);
 
             return $ValorEstado['estado'];
         } else {
-
             return $ValorEstado['estado'];
         }
     }
@@ -180,7 +183,22 @@ if (isset($_POST['clicJugar'])) {
     if ($_POST['clicJugar'] == 1) {
         $clic = $_POST['clicJugar'];
     }
+    $consultaAntesDeJugar="SELECT id_aprendiz, resCorrectas from evaluacion_aprendiz where id_aprendiz = $aprendiz;";
+
+    $ejecutaConsulta=$conexion->query($consultaAntesDeJugar);
+    $fila=$ejecutaConsulta->fetch_array(MYSQLI_ASSOC);
+
+    if ($fila['resCorrectas'] <= 19) {
+    $reiniciaSql="UPDATE puntaje p, evaluacion_aprendiz e set e.resCorrectas = 0, p.puntajes = 0 where p.id_aprendiz = $aprendiz and e.id_aprendiz = $aprendiz";
+    $reiniciaPuntaje=$conexion->query($reiniciaSql);
+
     header('location: ../Vistas/juego');
+
+  }else{
+    header('location: ../Vistas/admin');
+    $_SESSION['MSN']=1;
+  }
+
 } else {
     $_POST['clicJugar'] = 0;
     header('location: ../Vistas/admin');
@@ -250,19 +268,21 @@ if ($valor > 0) {
 
     //Si ya hay un ganador y el aprendiz logueado es el ganador
     if ($resultadoGanador == true && $rowLimite >= 20) {
-        //Actualiza todos los demas que esten jugando a cero y termina el juego
-        $reiniciaResCorrec = "UPDATE evaluacion_aprendiz SET resCorrectas = 0 where id_aprendiz != $aprendiz";
-        $ejecutaReinicio   = $conexion->query($reiniciaResCorrec);
+        //Actualiza todos los demas que estén jugando a cero y termina el juego
         //Actualiza el puntaje a 0 para que no lleguen dos puntajes al tiempo
-        $actualizaPuntaje  = "UPDATE puntaje SET puntajes =  0 where id_aprendiz != $aprendiz";
-        $ejecutaSql        = $conexion->query($actualizaPuntaje);
+        $reiniciaResCorrec = "UPDATE puntaje p, evaluacion_aprendiz e SET e.resCorrectas = 0, p.puntajes = 0 where e.id_aprendiz != $aprendiz and p.id_aprendiz != $aprendiz";
+        $ejecutaReinicio   = $conexion->query($reiniciaResCorrec);
     }
 
     //Verifica si hay algún ganador
     if (mysqli_num_rows($resultadoGanador) > 0) {
         $_SESSION['verificaGanador'] = 1;
         header("location: ../Vistas/admin");
-        $_SESSION['MSN']=5;
+        if ($rowLimite >= 20) {
+          $_SESSION['MSN']=1;
+        }else {
+          $_SESSION['MSN']=5;
+        }
     } else {
         $_SESSION['verificaGanador'] = 0;
 
@@ -291,8 +311,9 @@ if ($valor > 0) {
                             $key        = ''; // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
                             $vector[0]=randomNumPregunta($vector);
                             $res1Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta1']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-                            $respuesta .= "<td><button class='btn-juego' onclick='vp($vector[0])'><p>" . $res1Desenc . "</p></button> </td>";
+                            $respuesta .= "<td><button class='btn-juego' onclick='vp($vector[0]);'><p>" . $res1Desenc . "</p></button> </td>";
                             $_SESSION["numeroCorrecto"]=$vector[0];
+                            $_SESSION['respuestaSelecciionada']=1;
                             break;
 
                         case '2':
@@ -317,6 +338,7 @@ if ($valor > 0) {
             }
             if ($validarRespuesta == 1) {
               //respuesta correcta
+              $_SESSION['respuestaSelecciionada']=1;
                 header('location: ../Vistas/juego');
                 $_SESSION['resCor']=1;
             }
@@ -329,6 +351,8 @@ if ($valor > 0) {
             else {
                 header('location: ../Vistas/juego');
                 $_SESSION['resCor']=3;
+                $_SESSION['clicJugarSess'] = 1;
+                $_SESSION['respuestaSelecciionada']=2;
             }
         } else {
             header('location: ../Vistas/admin');

@@ -1,11 +1,10 @@
-
 <?php
-
 session_start();
 
 if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 2 ) {
   $timeOff = 'swal("Se agotó el tiempo", "Vuelve a intentarlo!", "error");';
 }
+
 
 if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
 $usuario=$_SESSION['id_usuario'];
@@ -149,7 +148,7 @@ position: relative;
           <form class="navbar-form navbar-left" action="../Controlador/logout.php">
 
            <button type="submit" class="btn btn-success" >
-            Salir <span class="glyphicon glyphicon-log-out"></span>
+            SALIR <span class="glyphicon glyphicon-log-out"></span>
            </button>
          </form>
         </ul>
@@ -167,12 +166,12 @@ position: relative;
         </div>
         <div class="finDelJuego" style="display:flex">
           <a href="../Vistas/admin" class="opcion encorefois">
-            <p class="endTitle">
+            <p class="endTitle"><span class="glyphicon glyphicon-play" aria-hidden="true"></span>
                 Ver Puntaje
             </p>
           </a>
           <a href="../Controlador/logout.php" class="opcion encorefois">
-            <p class="endTitle"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Salir</p>
+            <p class="endTitle"> Salir <span class="glyphicon glyphicon-log-out"></span></p>
           </a>
         </div>
       </div>
@@ -214,14 +213,16 @@ position: relative;
       <!-- <script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script> -->
     <script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
     <script src="../source/js/sweetalert.min.js"></script>
-
     <?php
+
     echo '<script type="text/javascript">';
         if (isset($timeOff)) {
           echo $timeOff;
-        }else {
+        }
+        else {
           echo 'swal("Respuesta Incorrecta!", "vuelve a intentarlo!", "error");';
         }
+
       echo "</script>";
       ?>
   </body>
