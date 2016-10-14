@@ -33,6 +33,10 @@ function randomNumPregunta($vector)
     }
     return $num;
 }
+//Verifica si hay preguntas en la BD
+$verificaPreguntas="SELECT id_respuesta from respuesta;";
+$ejecutaSql=$conexion->query($verificaPreguntas);
+if($ejecutaSql->num_rows > 0){
 
 function randPregunta()
 {
@@ -155,7 +159,6 @@ function validaIntento()
     //Si la fecha guardada es diferente a la fecha de hoy actualiza intentos
     if ($fechaConvertidaCorta != $fechaActualizacion) {
       //Le actualiza el primer intento del dìa a 1 y se incrementa el total de todos los intentos
-        $actualizaFecha    = "UPDATE puntaje SET fecha = '$fechaCompleta', estado = 1, totalEstados = '$nuevoTotalEstados' where id_aprendiz = $aprendiz";
 
 
         $ejecutaActualizac = $conexion->query($actualizaFecha);
@@ -247,6 +250,8 @@ $resultadoAGanar=20-$aGanar;
 $valor = jugar($cargarLaPregunta, $validarRespuesta);
 $vector=array();
 
+
+
 if ($valor > 0) {
     $consultaRespuesta = "SELECT * from respuesta r JOIN pregunta p ON p.id_pregunta = r.id_pregunta where id_respuesta=$valor";
 
@@ -286,7 +291,7 @@ if ($valor > 0) {
     } else {
         $_SESSION['verificaGanador'] = 0;
 
-        if ($resultado->num_rows > 0) {
+
             $respuesta = "";
             $preguntas = "";
 
@@ -354,9 +359,7 @@ if ($valor > 0) {
                 $_SESSION['clicJugarSess'] = 1;
                 $_SESSION['respuestaSelecciionada']=2;
             }
-        } else {
-            header('location: ../Vistas/admin');
-        }
+
     }
 } else {
     //Si se equivoca las resCorrectas vuelven a cero
@@ -365,5 +368,8 @@ if ($valor > 0) {
     $_SESSION['jugar'] = 0;
     header('location: ../Vistas/finJuego');
 }
-
+} else {
+    header('location: ../Vistas/admin');
+    $_SESSION['MSN']=3;
+}
 ?>

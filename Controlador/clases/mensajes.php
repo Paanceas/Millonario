@@ -3,7 +3,6 @@
 class MensajesJuego
 {
     public static function exito(){
-      // if ($tipo == 'ok') {
         echo 'swal({
   title: "Espera Un Momento",
   text: "Estamos creando tu cuenta",
@@ -18,7 +17,7 @@ class MensajesJuego
     swal("Cuenta creada exitosamente", "¡Puedes Ingresar!");
   }, 2000);
 });';
-      // }
+    
     }
     public static function mensajesRegistroPersona($tipo)
     {

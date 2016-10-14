@@ -16,6 +16,7 @@ if ($_SESSION['respuestaSelecciionada'] == 0) {
   echo '<script type="text/javascript">';
       echo "location.href='finJuego';";
     echo '</script>';
+    exit();
 }
 
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);

@@ -174,7 +174,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                   $ultimoAprendiz    = mysqli_query($conexion, $verificaAprendiz);
                   $id_aprendiz       = $ultimoAprendiz->fetch_array(MYSQLI_NUM);
                   //Registra el puntaje
-                  $fecha=date('Y-m-d');
+                  $fecha=date('Y-m-d H:m');
                   $validaPuntaje="INSERT INTO puntaje (id_aprendiz, puntajes, estado, record, fecha) VALUES($id_aprendiz[0], 0, 0, 0, '$fecha')";
 
                   $registroPuntaje=$conexion->query($validaPuntaje);
@@ -189,7 +189,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                 die("Fallo en la inserción de Datos." . mysqli_error($conexion));
             }
         } else {
-            header("location:../Vistas/index");
+            header("location:../Vistas/index.php");
             $_SESSION['MSN']=6;
         }
         mysqli_close($conexion);

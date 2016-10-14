@@ -13,11 +13,11 @@ class mensajeJuego
         $tipoAlert ="success";
         break;
       case '2':
-        $men="No Tienes mas intentos";
+        $men="No tienes mas intentos";
         $tipoAlert ="warning";
         break;
         case '3':
-          $men="Menos una vida";
+          $men="No hay preguntas por el momento";
           $tipoAlert ="warning";
           break;
           case '4':

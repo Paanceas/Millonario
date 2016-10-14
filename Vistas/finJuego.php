@@ -3,6 +3,8 @@ session_start();
 
 if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 2 ) {
   $timeOff = 'swal("Se agotó el tiempo", "Vuelve a intentarlo!", "error");';
+}elseif (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 4 ) {
+  $recarga = 'swal("No recargues la página", "Menos un intento!", "error");';
 }
 
 
@@ -218,6 +220,8 @@ position: relative;
     echo '<script type="text/javascript">';
         if (isset($timeOff)) {
           echo $timeOff;
+        }else if (isset($recarga)){
+        echo $recarga;
         }
         else {
           echo 'swal("Respuesta Incorrecta!", "vuelve a intentarlo!", "error");';

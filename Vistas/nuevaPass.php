@@ -1,7 +1,7 @@
 <?php
 require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
-include "../Conexion/config.php";
+
 
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);

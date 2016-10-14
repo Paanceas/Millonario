@@ -118,7 +118,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
  </div>
   <!-- contenido de la pagina -->
   <div class="contenidoPag">
-    <h1> Quién quiere ser Millonario </h1>
+    <h1> Quién quiere ser Ganador </h1>
     <div class="row">
       <div class="col-md-7">
         <div class="well bs-component">

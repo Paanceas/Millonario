@@ -30,7 +30,7 @@ function ranking()
     $unico = "select p.record, a.nombres, pr.programas, a.id_aprendiz, FIND_IN_SET(p.id_puntaje, (SELECT GROUP_CONCAT(p.id_puntaje ORDER by p.record desc, p.totalEstados asc) from puntaje p)) AS Puesto from puntaje p
     join aprendiz a ON a.id_aprendiz = p.id_aprendiz
     join programa pr ON pr.id_programa = a.id_programa
-    ORDER BY p.record DESC, p.totalEstados ASC, p.puntajes LIMIT 5,10000";
+    ORDER BY p.record DESC, p.totalEstados ASC, p.puntajes, p.id_puntaje desc LIMIT 5,10000";
 
     $resUnico = $conexion->query($unico);
 

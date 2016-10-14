@@ -31,7 +31,7 @@ class MensajesLogin
                     $tipoAlert="danger";
                   break;
                     case '3':
-                        $men = "Hay una sesión iniciado con este usuario";
+                        $men = "Hay una sesión iniciada con este usuario, vuelve a ingresar";
                         $tipoAlert="danger";
                         break;
                         case '4':

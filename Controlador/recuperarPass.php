@@ -130,5 +130,5 @@ if (isset($_POST['recuperar'])) {
 } else {
     header("location: ../Vistas/index");
 }
-
+mysqli_close($conexion);
 ?>
