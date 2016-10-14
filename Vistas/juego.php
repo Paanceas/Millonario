@@ -43,8 +43,22 @@ if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
     <link rel="stylesheet" href="../source/css/style.css" media="screen" title="no title">
-      <link rel="stylesheet" href="../source/css/sweetalert.css" media="screen" title="no title">
-
+    <link rel="stylesheet" href="../source/css/sweetalert.css" media="screen" title="no title">
+    <link rel="stylesheet" href="../source/css/font-awesome.min.css" media="screen" title="no title">
+    <style media="screen">
+    .estrellas{
+      background-color: rgba(36, 147, 109, 0.52);
+      border-radius: 30px;
+      margin: 5px 10% 10px 10%;
+      padding: 5px;
+      width: 80%;
+    }
+    .estrellas .fa{
+      color: rgb(0, 255, 140);
+      font-size: 3em;
+      width: 5%;
+    }
+    </style>
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
 <?php
@@ -60,6 +74,7 @@ include "modalinstrucc.php";
 </script>
 
 <div>
+  <div>
   <div>
 <script type="text/javascript">
 
@@ -78,11 +93,13 @@ include "modalinstrucc.php";
 //  }
 // }
 
-setTimeout ("location.href='finJuego'", 30000);
+setTimeout ("location.href='finJuego'", 300000);
 
 </script>
 </div>
 </div>
+</div>
+
 <body onLoad="timer()">
 
 <!--  onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"" -->
@@ -115,16 +132,25 @@ setTimeout ("location.href='finJuego'", 30000);
     </div>
   </div>
   </nav>
+  <div class="estrellas">
+<?php
+    $cont = 20 - $resultadoAGanar;
+    for ($i=0; $i < $cont; $i++) {
+      echo '<i class="fa fa-check-circle-o animated zoomInRight" aria-hidden="true"></i>';
+    }
+    for ($i=0; $i < $resultadoAGanar; $i++) {
+      echo '<i class="fa fa-circle-o animated zoomInRight" aria-hidden="true"></i>';
+    }
+ ?>
+</div>
 
 
 <form class="" action="../Controlador/cargaPreguntas.php" method="post">
-
   <div class="vistaJuego">
     <div class="tiempoJuego">
       <h2 class="titulo"><div id="contador"></div><h2>
     </div>
     <div style="font-size: 33px;">
-    <?php echo $resultadoAGanar; ?>
   </div>
     <div class="pregunta">
       <?php echo utf8_encode($preguntas); ?>
@@ -140,6 +166,17 @@ setTimeout ("location.href='finJuego'", 30000);
 </form>
 
 <br><br>
+<div>
+  <div>
+    <div>
+
+<script type="text/javascript">
+setTimeout ("location.href='finJuego'", 29999);
+
+</script>
+</div>
+</div>
+</div>
 <footer class="footer-distributed">
   <div class="footer-left">
       <p class="footer-links">
@@ -209,12 +246,15 @@ i=30;
  ?>
  <div>
    <div>
+     <div>
+
  <script type="text/javascript">
  setTimeout ("location.href='finJuego'", 29999);
 
  </script>
 </div>
  </div>
+</div>
 
 </body>
 
