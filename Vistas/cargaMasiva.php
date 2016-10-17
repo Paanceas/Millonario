@@ -22,6 +22,7 @@ if ($_SESSION['verificaSesion'] == 1 && $_SESSION['validacion'] == 1 && $_SESSIO
 
 <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
 
+<title>Administración</title>
 
 <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
 
