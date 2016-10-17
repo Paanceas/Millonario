@@ -1,7 +1,9 @@
 <?php
 require('../Controlador/clases/consultasAvanzadas.php');
 
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 $_COOKIE['ID'] = session_id();
 if($_COOKIE['ID'] != session_id()){
@@ -11,7 +13,7 @@ if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
 $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
 }
 //Si refresca la página pierde
-if ($_SESSION['respuestaSelecciionada'] == 0) {
+if (isset($_SESSION['respuestaSelecciionada']) && $_SESSION['respuestaSelecciionada'] == 0) {
   $_SESSION['resCor']=4;
   echo '<script type="text/javascript">';
       echo "location.href='finJuego';";
@@ -45,6 +47,7 @@ if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
     <link rel="stylesheet" href="../source/css/style.css" media="screen" title="no title">
     <link rel="stylesheet" href="../source/css/sweetalert.css" media="screen" title="no title">
     <link rel="stylesheet" href="../source/css/font-awesome.min.css" media="screen" title="no title">
+    <script src="../source/js/got.js"></script>
     <style media="screen">
     .estrellas{
       background-color: rgba(36, 147, 109, 0.52);
@@ -72,7 +75,14 @@ include "modalinstrucc.php";
 <!--Deshabiilita inspeccionar elemento <body> -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
 </script>
-
+<div>
+<script type="text/javascript">
+setTimeout('tr()', 30001);
+function tr(){
+ location.href='finJuego';
+}
+</script>
+</div>
 <div>
   <div>
   <div>
@@ -93,7 +103,7 @@ include "modalinstrucc.php";
 //  }
 // }
 
-setTimeout ("location.href='finJuego'", 300000);
+
 
 </script>
 </div>
@@ -121,10 +131,10 @@ setTimeout ("location.href='finJuego'", 300000);
 
     <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
       <ul class="nav navbar-nav">
-        <li> <a>   Bienvenid@: <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
+        <li> <a>   <b>Bienvenid@:</b> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
       echo $_SESSION['nombreAprendiz'];
   ?></a> </li>
-        <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
+        <li> <a> <b>Programa: </b><span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
       echo $_SESSION['programaAprendiz'];
   ?> </a></li>
       </ul>
@@ -166,17 +176,7 @@ setTimeout ("location.href='finJuego'", 300000);
 </form>
 
 <br><br>
-<div>
-  <div>
-    <div>
 
-<script type="text/javascript">
-setTimeout ("location.href='finJuego'", 29999);
-
-</script>
-</div>
-</div>
-</div>
 <footer class="footer-distributed">
   <div class="footer-left">
       <p class="footer-links">
@@ -220,6 +220,7 @@ setTimeout ("location.href='finJuego'", 29999);
 i=30;
 
 </script>
+
 </div>
 </div>
 <!-- Add fancyBox main JS and CSS files -->
@@ -244,17 +245,25 @@ i=30;
   }
   $_SESSION['r1']=0;
  ?>
+
+
+ <div>
  <div>
    <div>
      <div>
-
- <script type="text/javascript">
- setTimeout ("location.href='finJuego'", 29999);
-
+     <div>
+ <script>
+    setTimeout('tr()', 30001);
+  function tr(){
+      location.href='finJuego';
+    }
  </script>
-</div>
  </div>
 </div>
+</div>
+</div>
+</div>
+
 
 </body>
 

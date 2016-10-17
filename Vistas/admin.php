@@ -1,23 +1,17 @@
 <?php
-
-
-$_COOKIE['ID'] = session_id();
-if($_COOKIE['ID'] != session_id()){
-  header("location:index");
-}
 require('../Controlador/clases/consultasAvanzadas.php');
-
 session_start();
 
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);
-// var_dump($_SESSION['clicJugarSess']);
-
 
 if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
     $_SESSION['clicJugarSess'] = 0;
+    
+    if ($_SESSION['id_roll'] == 1) {
+      header("location: cargaMasiva");
+    }
     //Si el usuario esta en recuperar pass no lo deja salir de esa vista
-
     if ($_SESSION['recuperar'] == 1) {
         header("location: ../Vistas/nuevaPass");
     } else {
@@ -88,20 +82,21 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 
   <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
     <ul class="nav navbar-nav">
-      <li> <a>   Bienvenid@: <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
+      <li> <a>   <b>Bienvenid@:</b> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
     echo $_SESSION['nombreAprendiz'];
 ?></a> </li>
-      <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
+      <li> <a> <b>Programa: </b><span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
     echo $_SESSION['programaAprendiz'];
 ?> </a></li>
-<li> <a> Último juego: <?php echo $_SESSION['fecha']; ?> </a></li>
+<li> <a> <b>Último juego:</b> <?php echo $_SESSION['fecha']; ?> </a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <form class="navbar-form navbar-left" action="../Controlador/logout.php">
-
-       <button type="submit" class="btn btn-success" >
-        SALIR <span class="glyphicon glyphicon-log-out"></span>
-       </button>
+        <center>
+          <button type="submit" class="btn btn-success" >
+            SALIR <span class="glyphicon glyphicon-log-out"></span>
+          </button>
+      </center>
      </form>
     </ul>
   </div>

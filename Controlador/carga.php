@@ -98,6 +98,52 @@
             header("location:../Vistas/cargaMasiva");
             echo "Archivo invalido!";
         }
+    }else if (isset($_POST['submitProgramas'])) {
+        //Aquí es donde seleccionamos nuestro csv
+        $fname = $_FILES['sel_file']['name'];
+
+        echo 'Cargando nombre del archivo: ' . $fname . ' ';
+        $chk_ext = explode(".", $fname);
+
+        if (strtolower(end($chk_ext)) == "csv") {
+            //si es correcto, entonces damos permisos de lectura para subir
+            $filename = $_FILES['sel_file']['tmp_name'];
+
+            $handle = fopen($filename, "r");
+
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+              $consultaUltPr="SELECT max(p.id_programa)+1 from programa p";
+
+              $resUltPr= $conexion->query($consultaUltPr);
+
+              $id_pr=$resUltPr->fetch_array(MYSQLI_NUM);
+
+              if($id_pr[0]==null){
+                $id_pr[0]=1;
+              }
+                $sql = "INSERT into millonario.programa(id_programa, programas) values($id_pr[0], '$data[0]')";
+                //Insertamos los datos con los valores...
+
+                $ejecutaSql=mysqli_query($conexion, $sql);
+                // var_dump($sql);exit();
+
+
+                if ($data[0] == '') {
+                    echo "CAMPO programa VACIO";
+                }
+              }
+
+            //cerramos la lectura del archivo "abrir archivo" con un "cerrar archivo"
+            fclose($handle);
+            header("location:../Vistas/cargaMasiva");
+
+            echo "<br>Importación exitosa!";
+        } else {
+            //si aparece esto es posible que el archivo no tenga el formato adecuado, inclusive cuando es cvs, revisarlo para             //ver si esta separado por " , "
+            header("location:../Vistas/cargaMasiva");
+            echo "Archivo invalido!";
+        }
     }
+    // header("location:../Vistas/cargaMasiva");
 
 ?>

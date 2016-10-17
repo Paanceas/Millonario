@@ -34,6 +34,14 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
      <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
   </head>
   <body>
+    <style type="text/css">
+      input {
+        border-radius:10px;
+      }
+      button {
+        border-radius:5px;
+      }
+    </style>
     <header class="header">
       <img src="../source/img/header.jpg" width="100% "/>
     </header>
@@ -52,9 +60,9 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
             <?php if(isset($_SESSION["MSNLogin"])){MensajesLogin::mensajesIngreso($_SESSION["MSNLogin"]); }?>
             <form action="../Controlador/login.php" method="post" role="form" class="animated zoomInDown">
-              <input type="email" name="usuario" placeholder="Correo misena o sena" required="true"/>
+              <input type="email" name="usuario" placeholder="Correo misena o sena" required="true" />
               <input type="password" name="contrasena" placeholder="Contraseña" required="true"/>
-              <button>Ingresar <span class="glyphicon glyphicon-log-in" style="font-size: 15px;"></button>
+              <button>INGRESAR <span class="glyphicon glyphicon-log-in" style="font-size: 15px;"></button>
             </form>
           </div>
           <div class="form">
@@ -74,12 +82,12 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
                 </select>
                 <br/>
                 <input type="email" placeholder="Correo Sena" name="correo" id="correo" required="true">
-                <input type="password" placeholder="Contraseña" name="clave" id="clave" required="true">
-                <input type="password" placeholder="Confirme Contraseña" name="confirm" value="" id="clave2" required="true">
-								<button type="submit" name="registrarse" class="botonRegistro">Registrarse <span class="glyphicon glyphicon-user">
+                <!-- <input type="password" placeholder="Contraseña" name="clave" id="clave" required="true"> -->
+                <!-- <input type="password" placeholder="Confirme Contraseña" name="confirm" value="" id="clave2" required="true"> -->
+								<button type="submit" name="registrarse" class="botonRegistro">REGISTRARSE <span class="glyphicon glyphicon-user">
             </form>
           </div>
-          <div class="cta"><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign" style="font-size: 13px;"></span> Olvidó su contraseña?</a></div>
+          <div class="cta"><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign" style="font-size: 13px;"></span> ¿Olvidó su contraseña?</a></div>
         </div>
       </section>
       <section class="slider">

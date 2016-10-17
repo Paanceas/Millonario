@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 include "../Conexion/config.php";
 //Si le da clic en recuperar-------
 if (isset($_POST['recuperar'])) {
@@ -14,61 +16,70 @@ if (isset($_POST['recuperar'])) {
         $aleatorio = rand(1, $longitudCadena);
         $pass .= substr($cadena, $aleatorio, 1);
     }
-    //CLAVE RANDOM-------- que envia al correro
 
     //Clave encliptada
-    $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+    $key             = ''; // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
     $claveEncriptada = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $pass, MCRYPT_MODE_CBC, md5(md5($key))));
 
     if (isset($_POST['correo']) && isset($_POST['documento'])) {
-        $correo = strtolower($_POST['correo']);
+        $correo    = strtolower($_POST['correo']);
         $documento = $_POST['documento'];
+
+        $verificaRol="SELECT r.id_roll FROM roll r JOIN usuario u on u.id_roll = r.id_roll WHERE u.correo = '$correo';";
+        $ejecutaVerifica=mysqli_query($conexion, $verificaRol);
+        $filaRoll=mysqli_fetch_array($ejecutaVerifica);
+
+        if ($filaRoll[0] == 1) {
+          $sqlExisteAdm  = "SELECT u.id_usuario, u.correo FROM usuario u WHERE correo = '$correo'";
+          $ejecutaSql = $conexion->query($sqlExisteAdm);
+        }else {
 
         //Verifica si el correo ingresado existe
         $sqlExiste  = "SELECT u.id_usuario, u.correo, a.documento FROM usuario u JOIN aprendiz a ON a.id_usuario = u.id_usuario
         where correo = '$correo' and documento = '$documento';";
         $ejecutaSql = $conexion->query($sqlExiste);
+      }
 
         if (mysqli_num_rows($ejecutaSql) > 0) {
 
-                $mensaje = '<html>
+            $mensaje = '<html>
                 <head>
                 <title>Restablece tu contraseña</title>
                 </head>
                 <body>
                 <p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
-                <p>Tu nueva Contraseña es: <h2>'. $pass .'</h2> </p>
+                <p>Tu nueva Contraseña es: <h2>' . $pass . '</h2> </p>
 
                 Por favor no responda a este correo.
                 </body>
                 </html>';
 
-                $cabeceras = 'MIME-Version: 1.0' . "\r\n";
-                $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $cabeceras .= 'From: Recuperación Clave <ejemplo@misena.edu.co>' . "\r\n";
-                // Se envia el correo al usuario
+            $cabeceras = 'MIME-Version: 1.0' . "\r\n";
+            $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+            $cabeceras .= 'From: Recuperación Clave <ejemplo@misena.edu.co>' . "\r\n";
+            // Se envia el correo al usuario
 
-                if(mail($correo, "Recuperar contraseña", $mensaje, $cabeceras)){
-                  $actualizaClave = "UPDATE usuario SET clave = '$claveEncriptada', recuperar = 1 where correo = '$correo';";
-                  $ejecutaSql     = $conexion->query($actualizaClave);
-                  if ($ejecutaSql == true) {
+            if (mail($correo, "Recuperar contraseña", $mensaje, $cabeceras)) {
+                $actualizaClave = "UPDATE usuario SET clave = '$claveEncriptada', recuperar = 1 where correo = '$correo';";
+                $ejecutaSql     = $conexion->query($actualizaClave);
+                if ($ejecutaSql == true) {
                     //Ingresa
                     header("location: ../Vistas/index");
-                    $_SESSION['MSNLogin']=7;
-                  }else{
+                    $_SESSION['MSNLogin'] = 7;
+                } else {
                     //No se pudo actualizar la clave
                     header("location: ../Vistas/nuevaPass");
-                    $_SESSION['MSNLogin']=3;
-                  }
-                }else {
-                  //NO SE PUDO ENVIAR EL CORREO
-                    header("location:../Vistas/index");
-                    $_SESSION['MSNLogin']=5;
+                    $_SESSION['MSNLogin'] = 3;
                 }
+            } else {
+                //NO SE PUDO ENVIAR EL CORREO
+                header("location:../Vistas/index");
+                $_SESSION['MSNLogin'] = 5;
+            }
         } else {
-          //El correo no existe
-            header("location: /Millonario/Vistas/index");
-            $_SESSION['MSNLogin']=6;
+            //El correo o documento no existe
+            header("location: ../Vistas/index");
+            $_SESSION['MSNLogin'] = 6;
         }
     }
     //Si le da clic en nueva Clave-------
@@ -82,27 +93,26 @@ if (isset($_POST['recuperar'])) {
 
         if (empty($clave) && empty($confirm) || $clave == '' && $confirm == '') {
             header("location:../Vistas/nuevaPass");
-            $_SESSION['MSN']=3;
+            $_SESSION['MSN'] = 3;
         }
         //Valida clave
         elseif (!preg_match($patronClave, $clave)) {
             if (empty($clave)) {
                 header("location:../Vistas/nuevaPass");
-                $_SESSION['MSN']=1;
+                $_SESSION['MSN'] = 1;
             } else {
                 header("location:../Vistas/nuevaPass");
-                $_SESSION['MSN']=11;
-
+                $_SESSION['MSN'] = 11;
             }
         }
         //Valida confirm
             elseif (!preg_match($patronClave, $confirm)) {
             if (empty($confirm)) {
                 header("location:../Vistas/nuevaPass");
-                $_SESSION['MSN']=1;
+                $_SESSION['MSN'] = 1;
             } else {
                 header("location:../Vistas/nuevaPass");
-                $_SESSION['MSN']=11;
+                $_SESSION['MSN'] = 11;
 
             }
         }
@@ -113,17 +123,20 @@ if (isset($_POST['recuperar'])) {
 
             //Confirma clave
             if ($clave == $confirm) {
-              $key='';  // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
-              $clave = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $_POST['clave'], MCRYPT_MODE_CBC, md5(md5($key))));
-
+                $key   = ''; // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                $clave = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $_POST['clave'], MCRYPT_MODE_CBC, md5(md5($key))));
 
                 //Actualiza la clave a la del usuario y el estado a cero
                 $sql        = "UPDATE usuario SET clave = '$clave', recuperar = 0 where id_usuario = $usuarioSesion";
                 $ejecutaSql = $conexion->query($sql);
+                if($filaRoll[0] == 1){
+                  header("location: ../Vistas/cargaMasiva");
+                }else{
                 header("location: ../Vistas/admin");
+              }
             } else {
                 header("location: ../Vistas/nuevaPass");
-                $_SESSION['MSN']=2;
+                $_SESSION['MSN'] = 2;
             }
         }
     }

@@ -8,7 +8,7 @@ if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 2 ) {
 }
 
 
-if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0){
+if($_SESSION['validacion']==1 && $_SESSION['id_usuario']>0 && $_SESSION['id_roll'] == 2){
 $usuario=$_SESSION['id_usuario'];
 $_SESSION['clicJugarSess'] = 0;
 
@@ -139,10 +139,10 @@ position: relative;
 
       <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
         <ul class="nav navbar-nav">
-          <li> <a>   Bienvenid@: <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
+          <li> <a>   <b>Bienvenid@: </b><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
         echo $_SESSION['nombreAprendiz'];
     ?></a> </li>
-          <li> <a> Programa: <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
+          <li> <a> <b>Programa:</b> <span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
         echo $_SESSION['programaAprendiz'];
     ?> </a></li>
         </ul>

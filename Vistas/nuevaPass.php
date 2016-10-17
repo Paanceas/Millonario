@@ -1,7 +1,7 @@
 <?php
 require('../Controlador/clases/consultasAvanzadas.php');
 session_start();
-
+include "../Conexion/config.php";
 
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuario']);
@@ -74,29 +74,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
     </article>
 
 
-    <footer class="footer-distributed">
 
-
-      <div class="footer-left">
-
-        <p class="footer-links">
-          <a href="#">Inicio</a>
-          ·
-          <a href="#">Instrucciones</a>
-          ·
-          <a href="#">Créditos</a>
-        </p>
-
-
-      </div>
-        <div class="footer-left">
-                <p class="footer-links">SENA - Centro de Gestión de Mercados, Logística y TI, Distrito Capital</p>
-              </div>
-                    <div id="inline1" style="width:800px;display: none;">
-                    <h3>Instrucciones</h3>
-                    <img src="../source/img/instrucciones.png" width="800px"/>
-                    </div>
-            </footer>
 
 
     <!-- Add fancyBox main JS and CSS files -->
