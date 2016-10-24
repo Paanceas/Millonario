@@ -15,7 +15,7 @@ class MensajesJuego
           showLoaderOnConfirm: true
         }, function () {
           setTimeout(function () {
-            swal("Cuenta creada exitosamente", "¡Ingresa a tu correo para verificar tu contraseña!");
+            swal("Cuenta creada exitosamente", "¡ Ingresa a tu correo para verificar tu contraseña !");
           }, 1500);
         });';
     }
@@ -73,6 +73,15 @@ class MensajesJuego
                 break;
             case '101':
                 $men = "Seleccione Programa";
+                break;
+                case '11':
+                $men="Llene el campo fecha de nacimiento";
+                break;
+            case '110':
+                $men="Fecha de nacimiento no puede ser mayor o igual a la de hoy";
+                break;
+            case '111':
+                $men="Fecha de nacimiento incorrecta";
                 break;
         }
 

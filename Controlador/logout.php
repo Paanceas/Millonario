@@ -15,7 +15,7 @@ $ejecutaReinicio = $conexion->query($actualizaBool);
 if ($rol['id_roll'] == 1) {
     session_destroy();
 
-    header("location:../Vistas/index");
+    header("location:/Vistas/index");
 } else {
 
     if ($_SESSION['id_usuario'] > 0) {

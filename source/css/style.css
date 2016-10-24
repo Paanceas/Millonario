@@ -193,13 +193,14 @@ body {
 	color: #ffffff;
 	text-align: center;
 	line-height: 35px;
-
 	margin-left: 3px;
 }
 
 /* If you don't want the footer to be responsive, remove these media queries */
 @media (max-width: 600px) {
-
+  .footer-distributed{
+    display: none;
+  }
 	.footer-distributed .footer-left,
 	.footer-distributed .footer-right{
 		text-align: center;

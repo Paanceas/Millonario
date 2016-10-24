@@ -6,19 +6,20 @@ if (!isset($_SESSION)) {
 if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0) {
     $usuario = $_SESSION['id_usuario'];
 
-    function sesiones(){
-      include "../Conexion/config.php";
-      mysqli_set_charset($conexion, "utf8");
-      $sql="SELECT count(id_usuario) FROM usuario where verificaSesion = 1";
-      $ejecuta=mysqli_query($conexion, $sql);
-      $sesiones=$ejecuta->fetch_array();
-      $sesionesOn=$sesiones[0];
-      return $sesionesOn;
+    function sesiones()
+    {
+        require("../Conexion/config.php");
+        mysqli_set_charset($conexion, "utf8");
+        $sql        = "SELECT count(id_usuario) FROM usuario where verificaSesion = 1 and id_roll = 2";
+        $ejecuta    = mysqli_query($conexion, $sql);
+        $sesiones   = $ejecuta->fetch_array();
+        $sesionesOn = $sesiones[0];
+        return $sesionesOn;
     }
 
     function listado()
     {
-        include "../Conexion/config.php";
+        require("../Conexion/config.php");
         mysqli_set_charset($conexion, "utf8");
 
         $consultaListado = "select p.record, a.nombres, pr.programas, a.id_aprendiz, FIND_IN_SET(p.id_puntaje, (SELECT GROUP_CONCAT(p.id_puntaje ORDER by p.record desc, p.totalEstados asc) from puntaje p)) AS Puesto, a.documento, t.tipo_identificacion, u.correo, p.totalEstados, p.fecha from puntaje p
@@ -61,14 +62,12 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0) {
                 echo "</td>";
                 echo "</tr>";
             }
-        } else {
-            echo "No hay registros";
-        }
+        } 
     }
 
     function ranking()
     {
-        include "../Conexion/config.php";
+        require("../Conexion/config.php");
         mysqli_set_charset($conexion, "utf8");
 
         $aprendiz = $_SESSION['id_aprendiz'];
@@ -110,6 +109,7 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0) {
                 echo $topMejores[0];
                 echo "</td>";
                 echo "<td>";
+
                 echo $topMejores[1];
                 echo "</td>";
                 echo "<td>";

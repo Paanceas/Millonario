@@ -41,23 +41,26 @@ function ProgramaFormacionCombobox()
 }
 
 /*----------------------------------------------------------------------------*/
-if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['correo']) && isset($_POST['tipoIdentificacion']) && isset($_POST['programa'])) {
+if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['correo']) && isset($_POST['fechaNac']) && isset($_POST['tipoIdentificacion']) && isset($_POST['programa'])) {
+    $fechaActual = date('Y-m-d');
 
-    $nombres            = $_POST['nombres'];
+    $nombres            = ucwords(mb_strtolower($_POST['nombres'], 'UTF-8'));
     $documento          = $_POST['documento'];
     $correo             = strtolower($_POST['correo']);
+    $fechaNac           = $_POST['fechaNac'];
     $tipoIdentificacion = $_POST['tipoIdentificacion'];
     $programa           = $_POST['programa'];
 
     //Validacion con Expresiones regulares
-    $patronNombres   = "/^([a-zA-Z ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.]{10,60})$/";
+    $patronNombres   = "/^([a-zA-Z ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ]{3,30})[\s]([a-zA-Z ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ]{3,30})$/";
     $patronDocumento = "/^[0-9]{6,12}+$/";
     $patronCorreo    = "/^([a-z0-9_.+-])*\@(([misena|sena]+)\.)+([edu])+\.([co])+$/";
+    $patronFechaNac  = "/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/";
     $patronTI        = "/^[0-9]{1,10}+$/";
     $patronPrograma  = "/^[0-9]{1,10}+$/";
 
     //Valida todos lo campos
-    if (empty($nombres) && empty($documento) && empty($correo) && !empty($tipoIdentificacion) && empty($programa)) {
+    if (empty($nombres) && empty($documento) && empty($correo) && empty($fechaNac) && !empty($tipoIdentificacion) && empty($programa)) {
         header("location:../Vistas/index");
         $_SESSION['MSN'] = 1;
     }
@@ -92,7 +95,22 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
 
         }
     }
-    //Valida TI
+    //Valida FechaNac
+        elseif (!preg_match($patronFechaNac, $fechaNac)) {
+        var_dump($fechaNac);
+        exit();
+        if (empty($fechaNac) || $fechaNac == "") {
+            header("location:../Vistas/index");
+            $_SESSION['MSN'] = 11;
+        } else {
+            header("location:../Vistas/index");
+            $_SESSION['MSN'] = 111;
+        }
+    } elseif ($fechaNac >= $fechaActual) {
+        header("location:../Vistas/index");
+        $_SESSION['MSN'] = 110;
+    }
+    //Valida Programa
         elseif (!preg_match($patronPrograma, $programa)) {
         if (empty($programa)) {
             header("location:../Vistas/index");
@@ -145,12 +163,18 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                 <title>Bienvenid@</title>
                 </head>
                 <body>
-                <p><b>Hola ' . $nombres . '!</b></p>
-                <p>Te has registrado exitosamente,</p>
-                <p>Tu cuenta es: <h2>' . $correo . '</h2> </p>
-                <p>Tu contraseña es: <h2>' . $pass . '</h2> </p>
-                <p>Al ingresar vas a tener que asignar una nueva clave personal.</p>
-                ** Por favor no responder a este correo. **
+                <img src="http://autoevaluacion.datasena.com/source/img/header.jpg" style="width:100%"/>
+                <div style="padding:15px; border-radius:10px; background:rgb(238, 239, 232);border-right:2px solid black">
+                <p><h3>BIENVENID@: <b>' . $nombres . ' !</h3></b></p>
+                <p>Te has registrado exitosamente, ingresa con los siguientes datos:</p>
+                <p>Tu correo es: <b>' . $correo . '</b></p>
+                <p>Tu contraseña es: <b>' . $pass . '</b></p>
+                <p><b>Al ingresar vas a tener que asignar una nueva clave personal.</b></p>
+                <p>Ingresa al siguiente link: autoevaluacion.datasena.com </p>
+                </div>
+                <p>************************************************</p>
+                <p>** Por favor no responder a este correo. **</p>
+                <p>************************************************</p>
                 </body>
                 </html>';
 
@@ -173,7 +197,7 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                 $ultimoUsuario    = mysqli_query($conexion, $verificaUsuario);
                 //Obtiene el id del ultimo usuario
                 $id_usuario       = $ultimoUsuario->fetch_array(MYSQLI_NUM);
-                $registroAprendiz = "INSERT INTO aprendiz (id_usuario, id_tipo_identificacion, id_programa, nombres, documento) VALUES ($id_usuario[0], '$tipoIdentificacion', '$programa', '$nombres', '$documento');";
+                $registroAprendiz = "INSERT INTO aprendiz (id_usuario, id_tipo_identificacion, id_programa, nombres, documento, fechaNacimiento) VALUES ($id_usuario[0], '$tipoIdentificacion', '$programa', '$nombres', '$documento', '$fechaNac');";
 
                 if (mysqli_query($conexion, $registroAprendiz)) {
                     //Consulta ultimo aprendiz registrado
@@ -195,7 +219,6 @@ if (isset($_POST['nombres']) && isset($_POST['documento']) && isset($_POST['corr
                         header("location:../Vistas/index");
                         $_SESSION['MSNLogin'] = 5;
                     }
-
                 } else {
                     //Si hay algún error elimina el usuario registrado
                     $eliminaUsuario = "DELETE FROM usuario where correo = '$correo';";

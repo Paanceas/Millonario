@@ -73,10 +73,6 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
       </div>
     </article>
 
-
-
-
-
     <!-- Add fancyBox main JS and CSS files -->
     <script src="../Bootstrap/js/jquery-1.10.2.min.js"></script>
     <script src="../Bootstrap/js/bootstrap.min.js"></script>

@@ -1,7 +1,7 @@
 
 <?php
-
-    include "../Conexion/config.php";
+session_start();
+    require("../Conexion/config.php");
 
     if (isset($_POST['submit'])) {
         //Aquí es donde seleccionamos nuestro csv
@@ -89,14 +89,16 @@
                   }
 
             //cerramos la lectura del archivo "abrir archivo" con un "cerrar archivo"
-            fclose($handle);
+
             header("location:../Vistas/cargaMasiva");
 
-            echo "<br>Importación exitosa!";
+            $_SESSION['pregunGuardada']='pregGuardada';
+            fclose($handle);
+
         } else {
             //si aparece esto es posible que el archivo no tenga el formato adecuado, inclusive cuando es cvs, revisarlo para             //ver si esta separado por " , "
             header("location:../Vistas/cargaMasiva");
-            echo "Archivo invalido!";
+            $_SESSION['archivoInval']=2;
         }
     }else if (isset($_POST['submitProgramas'])) {
         //Aquí es donde seleccionamos nuestro csv
@@ -123,9 +125,7 @@
               }
                 $sql = "INSERT into millonario.programa(id_programa, programas) values($id_pr[0], '$data[0]')";
                 //Insertamos los datos con los valores...
-
                 $ejecutaSql=mysqli_query($conexion, $sql);
-                // var_dump($sql);exit();
 
 
                 if ($data[0] == '') {
@@ -137,11 +137,13 @@
             fclose($handle);
             header("location:../Vistas/cargaMasiva");
 
-            echo "<br>Importación exitosa!";
+            $_SESSION['proogramaGuar']='proogramaGuar';
+
         } else {
             //si aparece esto es posible que el archivo no tenga el formato adecuado, inclusive cuando es cvs, revisarlo para             //ver si esta separado por " , "
             header("location:../Vistas/cargaMasiva");
-            echo "Archivo invalido!";
+            $_SESSION['archivoInvalProg']=2;
+
         }
     }
     // header("location:../Vistas/cargaMasiva");

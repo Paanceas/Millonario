@@ -22,23 +22,29 @@ if (isset($_POST['recuperar'])) {
     $claveEncriptada = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $pass, MCRYPT_MODE_CBC, md5(md5($key))));
 
     if (isset($_POST['correo']) && isset($_POST['documento'])) {
-        $correo    = strtolower($_POST['correo']);
-        $documento = $_POST['documento'];
+        $correo    = mysql_real_escape_string(strtolower($_POST['correo']));
+        $documento = mysql_real_escape_string($_POST['documento']);
 
-        $verificaRol="SELECT r.id_roll FROM roll r JOIN usuario u on u.id_roll = r.id_roll WHERE u.correo = '$correo';";
-        $ejecutaVerifica=mysqli_query($conexion, $verificaRol);
-        $filaRoll=mysqli_fetch_array($ejecutaVerifica);
+        $verificaRol     = "SELECT r.id_roll FROM roll r JOIN usuario u on u.id_roll = r.id_roll WHERE u.correo = '$correo';";
+        $ejecutaVerifica = mysqli_query($conexion, $verificaRol);
+        $filaRoll        = mysqli_fetch_array($ejecutaVerifica);
 
-        if ($filaRoll[0] == 1) {
-          $sqlExisteAdm  = "SELECT u.id_usuario, u.correo FROM usuario u WHERE correo = '$correo'";
-          $ejecutaSql = $conexion->query($sqlExisteAdm);
-        }else {
-
-        //Verifica si el correo ingresado existe
-        $sqlExiste  = "SELECT u.id_usuario, u.correo, a.documento FROM usuario u JOIN aprendiz a ON a.id_usuario = u.id_usuario
-        where correo = '$correo' and documento = '$documento';";
-        $ejecutaSql = $conexion->query($sqlExiste);
-      }
+        if ($filaRoll[0] == 1) { //Verifica si es Administrador
+            $sqlExisteAdm = "SELECT u.id_usuario, u.correo FROM usuario u WHERE correo = '$correo'";
+            $ejecutaSql   = $conexion->query($sqlExisteAdm);
+        } else { //Es Aprendiz
+            //Verifica si el correo ingresado existe
+            $documentoA4Digitos = substr($documento, -4);
+            //Ùltimos 4 dìgitos de la BD
+            $verificaDigitos    = "SELECT substr(documento,-4) FROM aprendiz a join usuario u on u.id_usuario = a.id_usuario where u.correo = '$correo';";
+            $ejecutaVerifica    = mysqli_query($conexion, $verificaDigitos);
+            $ultimos4Dig        = mysqli_fetch_array($ejecutaVerifica);
+            //Si el documento ingresado es igual al de la DB realiza consulta
+            if ($ultimos4Dig[0] == $documentoA4Digitos) {
+                $sqlExiste  = "SELECT u.id_usuario, u.correo, a.documento FROM usuario u JOIN aprendiz a ON a.id_usuario = u.id_usuario where correo = '$correo';";
+                $ejecutaSql = $conexion->query($sqlExiste);
+            }
+        }
 
         if (mysqli_num_rows($ejecutaSql) > 0) {
 
@@ -47,10 +53,15 @@ if (isset($_POST['recuperar'])) {
                 <title>Restablece tu contraseña</title>
                 </head>
                 <body>
+                <img src="http://autoevaluacion.datasena.com/source/img/header.jpg" style="width:100%"/>
+                <div style="padding:15px; border-radius:10px; background:rgb(238, 239, 232);border-right:2px solid black">
+                <p><b>HOLA!</b></p>
                 <p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
-                <p>Tu nueva Contraseña es: <h2>' . $pass . '</h2> </p>
-
-                Por favor no responda a este correo.
+                <p>Tu nueva Contraseña es: <b>' . $pass . '</b> </p>
+                </div>
+                <p>************************************************</p>
+                <p>** Por favor no responder a este correo. **</p>
+                <p>************************************************</p>
                 </body>
                 </html>';
 
@@ -86,8 +97,8 @@ if (isset($_POST['recuperar'])) {
 } else if (isset($_POST['nuevaPass'])) {
 
     if (isset($_POST['clave']) && isset($_POST['confirm'])) {
-        $clave   = $_POST['clave'];
-        $confirm = $_POST['confirm'];
+        $clave   = mysql_real_escape_string($_POST['clave']);
+        $confirm = mysql_real_escape_string($_POST['confirm']);
 
         $patronClave = "/^[^ ][0-9a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ.,¡!¿?\s]{5,60}+$/";
 
@@ -129,11 +140,11 @@ if (isset($_POST['recuperar'])) {
                 //Actualiza la clave a la del usuario y el estado a cero
                 $sql        = "UPDATE usuario SET clave = '$clave', recuperar = 0 where id_usuario = $usuarioSesion";
                 $ejecutaSql = $conexion->query($sql);
-                if($filaRoll[0] == 1){
-                  header("location: ../Vistas/cargaMasiva");
-                }else{
-                header("location: ../Vistas/admin");
-              }
+                if ($filaRoll[0] == 1) {
+                    header("location: ../Vistas/cargaMasiva");
+                } else {
+                    header("location: ../Vistas/admin");
+                }
             } else {
                 header("location: ../Vistas/nuevaPass");
                 $_SESSION['MSN'] = 2;

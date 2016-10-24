@@ -25,9 +25,12 @@ if (mysqli_num_rows($resultado) > 0) {
 
     $_SESSION['id_usuario']     = $row['id_usuario'];
     $user = $_SESSION['id_usuario'];
-
     $_SESSION['verificaSesion'] = $row['verificaSesion'];
-
+    //Control tiempo de logueo
+    $fechaIngreso = date("Y-m-d H:i:s");
+    $_SESSION['fechaIngreso']=$fechaIngreso;
+    $fechaIngresoHora = date("H:i");
+    $_SESSION['fechaIngresoHora']=$fechaIngresoHora;
     if ($row['id_roll'] == 1) {//Administrador
 
         $_SESSION['validacion'] = 1;
@@ -36,13 +39,14 @@ if (mysqli_num_rows($resultado) > 0) {
           //Cambia estado bool inicio de sesion
           $iniciaSessionAdmin     = "UPDATE usuario SET verificaSesion = 1 where id_usuario = $user";
           $verificaSesion         = mysqli_query($conexion, $iniciaSessionAdmin);
+
           header("location:../Vistas/cargaMasiva");
         }else{//Si había una sesión abierta le notifica y la cierra
           $iniciaSessionAdmin     = "UPDATE usuario SET verificaSesion = 0 where id_usuario = $user";
           $verificaSesion         = mysqli_query($conexion, $iniciaSessionAdmin);
           // $_SESSION['validacion'] = 0;
           $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
-          
+
           header("location: ../Vistas/index");
           $_SESSION['MSNLogin'] = 3;
         }

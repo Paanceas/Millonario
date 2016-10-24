@@ -1,6 +1,6 @@
 <?php
 session_start();
-// var_dump($_SESSION['verificaSesion']);
+
 if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
   header('location: admin');
@@ -26,8 +26,8 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
     <?php
        require('../Controlador/clases/MensajesLogin.php');
-      @include('../Conexion/config.php');//Conexion
-      @include('../Controlador/registroPersona.php');
+      require('../Conexion/config.php');//Conexion
+      require('../Controlador/registroPersona.php');
       require('../Controlador/clases/mensajes.php');
 
      ?>
@@ -42,6 +42,106 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
         border-radius:5px;
       }
     </style>
+    <style type="text/css" media="screen">
+    [data-tip] {
+    position:relative;
+
+  }
+  [data-tip]:before {
+    content:'';
+    /* hides the tooltip when not hovered */
+    display:block;
+    content:'';
+    display:block;
+    border-top: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+
+    border-left : 5px solid #1a1a1a;
+    position:absolute;
+    top:15px;
+    left:-10px;
+    z-index:8;
+    font-size:0;
+    line-height:0;
+    width:0;
+    height:0;
+    position:absolute;
+
+  }
+  [data-tip]:after {
+    display:block;
+    content:attr(data-tip);
+    position:absolute;
+    top:7px;
+    left:-99px;
+    padding:5px 8px;
+    background:#1a1a1a;
+    color:#fff;
+    z-index:9;
+    font-size: 1.30em;
+    height:25px;
+    line-height:18px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    white-space:nowrap;
+    word-wrap:normal;
+  }
+  [data-tip]:hover:before,
+  [data-tip]:hover:after {
+    display:block;
+  }
+
+  /*Fecha Nacimiento*/
+  [dataF-tip] {
+  position:relative;
+
+}
+[dataF-tip]:before {
+  content:'';
+  /* hides the tooltip when not hovered */
+  display:none;
+  content:'';
+  display:none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #1a1a1a;
+  position:absolute;
+  top:0px;
+  left:84px;
+  z-index:8;
+  font-size:0;
+  line-height:0;
+  width:0;
+  height:0;
+  position:absolute;
+
+}
+[dataF-tip]:after {
+  display:none;
+  content:attr(dataF-tip);
+  position:absolute;
+  top:-25px;
+  left:12px;
+  padding:5px 8px;
+  background:#1a1a1a;
+  color:#fff;
+  z-index:9;
+  font-size: 1.3em;
+  height:25px;
+  line-height:18px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space:nowrap;
+  word-wrap:normal;
+}
+[dataF-tip]:hover:before,
+[dataF-tip]:hover:after {
+  display:block;
+}
+    </style>
     <header class="header">
       <img src="../source/img/header.jpg" width="100% "/>
     </header>
@@ -51,7 +151,7 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
 
                 <!-- Form Module-->
         <div class="module form-module">
-          <div class="toggle"><i class="fa fa-times fa-pencil"></i>
+          <div class="toggle" data-tip="Regístrate"><i class="fa fa-times fa-pencil"></i>
             <div class="tooltip">Registrate</div>
           </div>
           <div class="form">
@@ -75,19 +175,20 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
  									echo TipoIdentificacionCombobox();?>
               </select>
               <br/>
-              <input type="text" placeholder="Número Documento" name="documento" size="40" required="true">
+              <input type="text" placeholder="Número Documento" name="documento" required="true">
+              <div dataF-tip="Fecha de Nacimiento">
+                <input type="date" name="fechaNac" min="1950-01-01" max="<?php echo date('Y-m-d'); ?>" required="true">
+              </div>
               <select name="programa" id ="programa" class="form-control" required="true">
                   <option value="null">Seleccione programa</option>
                   <?php echo ProgramaFormacionCombobox(); ?>
                 </select>
                 <br/>
                 <input type="email" placeholder="Correo Sena" name="correo" id="correo" required="true">
-                <!-- <input type="password" placeholder="Contraseña" name="clave" id="clave" required="true"> -->
-                <!-- <input type="password" placeholder="Confirme Contraseña" name="confirm" value="" id="clave2" required="true"> -->
 								<button type="submit" name="registrarse" class="botonRegistro">REGISTRARSE <span class="glyphicon glyphicon-user">
             </form>
           </div>
-          <div class="cta"><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign" style="font-size: 13px;"></span> ¿Olvidó su contraseña?</a></div>
+          <div class="cta"><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign" style="font-size: 13px;"></span><b> ¿Olvidó su contraseña?</b></a></div>
         </div>
       </section>
       <section class="slider">
@@ -173,8 +274,8 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
               <div class="form-group">
                 <label for="correo">Ingresa tu correo:</label>
                 <input type="email" name="correo" id="correo" placeholder="Correo (sena o misena)" class="form-control" required="true"></br>
-                <label for="documento">Ingresa tu documento:</label>
-                <input type="password" name="documento" id="documento" placeholder="Documento de identificación" class="form-control" required="true">
+                <label for="documento">Ingresa los últimos 4 dígitos del documento:</label>
+                <input type="password" name="documento" maxlength="4" id="documento" placeholder="4 últimos dígitos de tu Número de Documento" class="form-control" required="true">
               </div>
           </div>
           <div class="modal-footer">
@@ -187,16 +288,11 @@ if(isset($_SESSION['verificaSesion'] ) && $_SESSION['verificaSesion']  == 1){
     </form>
     </div>
 
-
-
     <!-- Add fancyBox main JS and CSS files -->
     <script src="../Bootstrap/js/jquery-1.10.2.min.js"></script>
     <script src="../Bootstrap/js/bootstrap.min.js"></script>
-    <script src="../source/js/bootstrap-notify.min.js"></script>
     <script src="../source/js/sweetalert.min.js"></script>
-      <!-- <script type="text/javascript" src="../source/jquery-1.10.1.min.js"></script> -->
-    <script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
-    <script type="text/javascript" src="../source/js/index.js"></script>
+    <script src="../source/js/index.js"></script>
 
 
     <?php

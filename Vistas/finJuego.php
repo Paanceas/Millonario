@@ -20,11 +20,14 @@ if ($_SESSION['recuperar'] == 1) {
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/animate.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../source/css/estilos.css" media="screen" title="no title">
     <link rel="stylesheet" href="../source/css/style.css" media="screen" title="no title">
     <link rel="stylesheet" href="../source/css/sweetalert.css" media="screen" title="no title">
+    <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
+
     <title>Fin</title>
     <?php include "modalinstrucc.php"; ?>
 
@@ -58,7 +61,7 @@ position: relative;
 }
   </style>
 
-  <!--Deshabiilita inspeccionar elemento <body> -->
+
   <script type="text/javascript">
   document.oncontextmenu=inhabilitar;
   //Deshabiilita clic derecho de toda la pagina
@@ -80,17 +83,10 @@ position: relative;
   }
   </script>
   <?php
-  /////////////////////////////////////////////////////////////////////
-  // This is the only portion of the code you may need to change.
-  // Indicate the location of your images
   $root = '';
-  // use if specifying path from root
-  //$root = $_SERVER['DOCUMENT_ROOT'];
-
   $path = '../source/img/gameOver/';
 
-  // End of user modified section
-  /////////////////////////////////////////////////////////////////////
+
 
   function getImagesFromDir($path) {
       $images = array();
@@ -119,7 +115,7 @@ position: relative;
 
   ?>
   <body onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"">
-
+    <audio src="../source/sonidos/<?php echo rand(1,2).".mp3" ?>" preload autoplay="true"></audio>
     <!-- barra de navegacion -->
     <nav class="navbar navbar-inverse navbar-juego">
     <div class="container-fluid">

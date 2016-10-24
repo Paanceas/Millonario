@@ -1,3 +1,3 @@
 <?php
-  header("location: ../Vistas/index");
+header("location:/Vistas/index");
  ?>

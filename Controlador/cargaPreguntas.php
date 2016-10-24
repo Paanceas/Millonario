@@ -7,6 +7,8 @@ if ($_SESSION['id_aprendiz'] > 0) {
     $aprendiz = $_SESSION['id_aprendiz'];
 }
 
+
+
 function cerrarSesionEstado()
 {
     include "../Conexion/config.php";
@@ -43,29 +45,28 @@ if ($ejecutaSql->num_rows > 0) {
     function randPregunta()
     {
         include "../Conexion/config.php";
-
         $cantPreguntas  = "SELECT count(e.id_respuesta) from respuesta e";
         $resulCantPreg  = $conexion->query($cantPreguntas);
         $numeroPregunta = $resulCantPreg->fetch_array(MYSQLI_NUM);
 
         //Genera el número rand
-        $aleatorio = rand(1, $numeroPregunta[0]);
+        $aleatorio = range(1, $numeroPregunta[0]);
+        shuffle($aleatorio);
 
-        $arrayPreguntas[] = $aleatorio;
-
-        for ($i = 0; $i < 20; $i++) {
-
-            $aleatorio = rand(1, $numeroPregunta[0]);
-
-            //Si el número rand dentro del for ya está almacenado en el array vuelve a hacer el rand
-            while (in_array($aleatorio, $arrayPreguntas)) { //buscamos que no este repetido
-                $aleatorio = rand(1, $numeroPregunta[0]);
-            }
-            $usados[] = $aleatorio; //No esta repetido, luego guardamos el aleatorio
+        foreach ($aleatorio as $value) {
+          $respuestasNumero[]=$value;
         }
-        return $usados;
+        $_SESSION['respuestaRandArr']=$respuestasNumero;
+        return $_SESSION['respuestaRandArr'];
     }
 
+    if(isset($_POST['searchQuestion']) && $_POST['searchQuestion'] == 'ok')
+    {
+      echo "ENTRE....";
+      $_SESSION['contData']=0;
+      $_SESSION['ObjectData']=randPregunta();
+
+    }
 
     function jugar($respuesta, $validarRes)
     {
@@ -87,7 +88,7 @@ if ($ejecutaSql->num_rows > 0) {
         if ($validarRes == 1 || $validarRes == 0) {
 
             if ($validarRes == 1) {
-
+                $_SESSION['contData']++;
                 //Actualiza el puntaje
                 $intento          = "SELECT * from puntaje where id_aprendiz = $aprendiz";
                 $resultadoIntento = $conexion->query($intento);
@@ -123,15 +124,20 @@ if ($ejecutaSql->num_rows > 0) {
             return 0;
         }
         //Muestra pregunta al azar
-        $aleatoria = randPregunta();
 
-        $query     = "SELECT r.id_respuesta from respuesta r where r.id_respuesta = $aleatoria[0];";
+
+        $cualquiera =  $_SESSION['ObjectData'][$_SESSION['contData']];
+        $query     = "SELECT r.id_respuesta from respuesta r where r.id_respuesta = $cualquiera;";
         $resultado = $conexion->query($query);
+
         $row       = $resultado->fetch_array(MYSQLI_ASSOC);
 
-        return $row['id_respuesta'];
+        $_SESSION['respuesta']=$row['id_respuesta'];
 
+        return $_SESSION['respuesta'];
     }
+
+
     function validaIntento()
     {
         include '../Conexion/config.php';
@@ -306,39 +312,68 @@ if ($ejecutaSql->num_rows > 0) {
                 $preguntaDesenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['preguntas']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
                 $preguntas .= "<span value='" . $row['id_pregunta'] . "'>" . $preguntaDesenc . "</span><br>";
 
+                //contador para dar la respuesta
+                $cont = 0;
+                function opcion($conta)
+                {
+                  $className = NULL;
+                  switch ($conta) {
+                    case '1':
+                      $className = "first_button";
+                      break;
+                    case '2':
+                      $className = "second_button";
+                      break;
+                    case '3':
+                      $className = "third_button";
+                      break;
+                    case '4':
+                      $className = "four_button";
+                      break;
+                  }
+                  return $className;
+                }
                 foreach ($arrayNumeros as $value) {
 
                     switch ($value) {
                         case '1':
-
                             $key        = ''; // Una clave de codificacion, debe usarse la misma para encriptar y desencriptar
+                            $cont++;
+
                             $vector[0]  = randomNumPregunta($vector);
+                            $class = opcion($cont);
+
                             $res1Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta1']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-                            $respuesta .= "<td><button class='btn-juego' onclick='vp($vector[0])'>" . $res1Desenc . "</button> </td>";
+                            $respuesta .= "<button class='btn-juego $class' onclick='vp($vector[0])'>" . $res1Desenc . "</button>";
 
                             $_SESSION["numeroCorrecto"]         = $vector[0];
                             $_SESSION['respuestaSelecciionada'] = 1;
                             break;
 
                         case '2':
-
+                          $cont++;
                             $vector[1]  = randomNumPregunta($vector);
+                            $class = opcion($cont);
+
                             $res2Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta2']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-                            $respuesta .= "<td><button class='btn-juego' onclick='vp($vector[1])'>" . $res2Desenc . "</button> </td>";
+                            $respuesta .= "<button class='btn-juego $class' onclick='vp($vector[1])'>" . $res2Desenc . "</button>";
                             break;
 
                         case '3':
-
+                          $cont++;
                             $vector[2]  = randomNumPregunta($vector);
+                            $class = opcion($cont);
                             $res3Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta3']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-                            $respuesta .= "<td><button class='btn-juego' onclick='vp($vector[2])'>" . $res3Desenc . "</button> </td>";
+                            $respuesta .= "<button class='btn-juego ".$class."' onclick='vp($vector[2])'>" . $res3Desenc . "</button>";
                             break;
 
                         case '4':
-
+                          $cont++;
                             $vector[3]  = randomNumPregunta($vector);
+                            $class = opcion($cont);
+
                             $res4Desenc = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($row['respuesta4']), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-                            $respuesta .= "<td><button class='btn-juego' onclick='vp($vector[3])'>" . $res4Desenc . "</button> </td>";
+                            $respuesta .= "<button class='btn-juego $class' onclick='vp($vector[3])'>" . $res4Desenc . "</button>";
                             break;
                     }
                 }

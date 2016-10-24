@@ -6,39 +6,41 @@ if (!isset($_SESSION)) {
 }
 
 $_COOKIE['ID'] = session_id();
-if($_COOKIE['ID'] != session_id()){
-  header("location:index");
+if ($_COOKIE['ID'] != session_id()) {
+    header("location:index");
 }
-if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1 ) {
-$bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
+if (isset($_SESSION['resCor']) && $_SESSION['resCor'] == 1) {
+    $bien = 'swal("Respuesta Correcta", "continua jugando!", "success");';
 }
 //Si refresca la página pierde
 if (isset($_SESSION['respuestaSelecciionada']) && $_SESSION['respuestaSelecciionada'] == 0) {
-  $_SESSION['resCor']=4;
-  echo '<script type="text/javascript">';
-      echo "location.href='finJuego';";
+    $_SESSION['resCor'] = 4;
+    echo '<script type="text/javascript">';
+    echo "location.href='finJuego';";
     echo '</script>';
     exit();
 }
 
 $_SESSION['verificaSesion'] = consultasAvanzadas::validarSession($_SESSION['id_usuario']);
 
-if($_SESSION['validacion']==1 && $_SESSION['id_usuario'] > 0 && $_SESSION['verificaSesion'] == 1){
-$usuario=$_SESSION['id_usuario'];
-//Clic en jugar
-if($_SESSION['clicJugarSess'] != 1){
-  header('location:../Vistas/admin');
-  $_SESSION['MSN']=4;
-}
+if ($_SESSION['validacion'] == 1 && $_SESSION['id_usuario'] > 0 && $_SESSION['verificaSesion'] == 1) {
+    $usuario = $_SESSION['id_usuario'];
+    //Clic en jugar
+    if ($_SESSION['clicJugarSess'] != 1) {
+        header('location:../Vistas/admin');
+        $_SESSION['MSN'] = 4;
+    }
 
-//Valida intentos
-if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
+    //Valida intentos
+    if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
 
 
- ?>
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta content="charset=utf-8"/>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
@@ -65,16 +67,15 @@ if ($_SESSION['intentos'] <= 1 && $_SESSION['verificaGanador'] != 1) {
     <link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
 <?php
-include "modalinstrucc.php";
-@include('../Controlador/cargaPreguntas.php');
+        include "modalinstrucc.php";
+        @include('../Controlador/cargaPreguntas.php');
 ?>
-	<title>Inicio</title>
+   <title>Inicio</title>
   <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
 
 </head>
-<!--Deshabiilita inspeccionar elemento <body> -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
-</script>
+
+
 <div>
 <script type="text/javascript">
 setTimeout('tr()', 30001);
@@ -88,31 +89,29 @@ function tr(){
   <div>
 <script type="text/javascript">
 
-//Deshabiilita clic derecho de toda la pagina
-// document.onmousedown=anularBotonDerecho;
-// document.oncontextmenu=new Function("return false");
-//
-// function anularBotonDerecho(e) {
-//  if (navigator.appName == 'Netscape'
-//        && (e.which == 3 || e.which == 2)){
-//    alert(sMensaje);
-//    return false;
-//  } else if (navigator.appName == 'Microsoft Internet Explorer'
-//        && (event.button == 2)) {
-//    alert(sMensaje);
-//  }
-// }
+document.onmousedown=anularBotonDerecho;
+document.oncontextmenu=new Function("return false");
 
-
+function anularBotonDerecho(e) {
+ if (navigator.appName == 'Netscape'
+       && (e.which == 3 || e.which == 2)){
+   alert(sMensaje);
+   return false;
+ } else if (navigator.appName == 'Microsoft Internet Explorer'
+       && (event.button == 2)) {
+   alert(sMensaje);
+ }
+}
 
 </script>
 </div>
 </div>
 </div>
 
-<body onLoad="timer()">
+<body onLoad="timer()" onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"">
+  <audio src="../source/sonidos/<?php echo rand(98,99).".mp3" ?>" loop="true" preload autoplay="true"></audio>
 
-<!--  onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"" -->
+
   <nav class="navbar navbar-inverse navbar-juego">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -132,11 +131,11 @@ function tr(){
     <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
       <ul class="nav navbar-nav">
         <li> <a>   <b>Bienvenid@:</b> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?php
-      echo $_SESSION['nombreAprendiz'];
-  ?></a> </li>
+        echo $_SESSION['nombreAprendiz'];
+?></a> </li>
         <li> <a> <b>Programa: </b><span class="glyphicon glyphicon-education" aria-hidden="true"></span>   <?php
-      echo $_SESSION['programaAprendiz'];
-  ?> </a></li>
+        echo $_SESSION['programaAprendiz'];
+?> </a></li>
       </ul>
 
     </div>
@@ -144,34 +143,43 @@ function tr(){
   </nav>
   <div class="estrellas">
 <?php
-    $cont = 20 - $resultadoAGanar;
-    for ($i=0; $i < $cont; $i++) {
-      echo '<i class="fa fa-check-circle-o animated zoomInRight" aria-hidden="true"></i>';
-    }
-    for ($i=0; $i < $resultadoAGanar; $i++) {
-      echo '<i class="fa fa-circle-o animated zoomInRight" aria-hidden="true"></i>';
-    }
- ?>
+        $cont = 20 - $resultadoAGanar;
+        for ($i = 0; $i < $cont; $i++) {
+            echo '<i class="fa fa-check-circle-o animated zoomInRight" aria-hidden="true"></i>';
+        }
+        for ($i = 0; $i < $resultadoAGanar; $i++) {
+            echo '<i class="fa fa-circle-o animated zoomInRight" aria-hidden="true"></i>';
+        }
+?>
 </div>
 
 
 <form class="" action="../Controlador/cargaPreguntas.php" method="post">
   <div class="vistaJuego">
     <div class="tiempoJuego">
-      <h2 class="titulo"><div id="contador"></div><h2>
+      <h2 class="titulo"><div id="contador">
+        <img src="../source/img/personaje2.png" width="100%" />
+      </div><h2>
     </div>
     <div style="font-size: 33px;">
   </div>
     <div class="pregunta">
-      <?php echo utf8_encode($preguntas); ?>
-    </div>
+      <?php
+        echo utf8_encode($preguntas);
+        ?>
+   </div>
   </div>
   <div class="vistaJuego">
-    <?php echo utf8_encode($respuesta); ?>
-  </div>
+    <?php
+        echo utf8_encode($respuesta);
+?>
+ </div>
 
-<input type="hidden" id="respCorrec" name="respCorrec" value="<?php echo $idRespuesta ?>"/>
+<input type="hidden" id="respCorrec" name="respCorrec" value="<?php
+        echo $idRespuesta;
+?>"/>
 <input type="hidden" name="respSeleccionada" id="respSeleccionada" />
+<input type="hidden" name="searchQuestion" value="oki"/>
 
 </form>
 
@@ -214,8 +222,10 @@ function tr(){
     document.getElementById('contador').innerHTML = 'FIN';
     clearTimeout(t);
     location.href='finJuego';
-    <?php $_SESSION['resCor']=2; ?>
-  }
+    <?php
+        $_SESSION['resCor'] = 2;
+?>
+ }
 }
 i=30;
 
@@ -233,18 +243,18 @@ i=30;
 
 <?php
 
-  if (isset($bien)||isset($mal)) {
-    if (isset($bien)) {
-      $imprimir = $bien;
-    }else {
-      $imprimir = $mal;
-    }
-    echo '<script type="text/javascript">';
-    echo $imprimir;
-    echo "</script>";
-  }
-  $_SESSION['r1']=0;
- ?>
+        if (isset($bien) || isset($mal)) {
+            if (isset($bien)) {
+                $imprimir = $bien;
+            } else {
+                $imprimir = $mal;
+            }
+            echo '<script type="text/javascript">';
+            echo $imprimir;
+            echo "</script>";
+        }
+        $_SESSION['r1'] = 0;
+?>
 
 
  <div>
@@ -270,18 +280,18 @@ i=30;
 </div>
 </html>
 <?php
-//Apenas ingresa la convierte a cero sesión de recarga
-if($_SESSION['respuestaSelecciionada'] == 2 ) {
-  $_SESSION['respuestaSelecciionada'] =0;
-}
+        //Apenas ingresa la convierte a cero sesión de recarga
+        if ($_SESSION['respuestaSelecciionada'] == 2) {
+            $_SESSION['respuestaSelecciionada'] = 0;
+        }
 
-  }else {
-      header('location:../Vistas/admin');
-      $_SESSION['MSN']=2;
-  }
+    } else {
+        header('location:../Vistas/admin');
+        $_SESSION['MSN'] = 2;
+    }
 
-}else{
-  header('location:../Vistas/index');
-  $_SESSION['MSNLogin']=2;
+} else {
+    header('location:../Vistas/index');
+    $_SESSION['MSNLogin'] = 2;
 }
 ?>

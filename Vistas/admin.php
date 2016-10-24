@@ -7,7 +7,21 @@ $_SESSION['recuperar']      = consultasAvanzadas::recuperar($_SESSION['id_usuari
 
 if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
     $_SESSION['clicJugarSess'] = 0;
-    
+
+    //Control tiempo de logueo
+    $fechaActual=date('Y-m-d H:i:s');
+    $tiempoTranscurrido = (strtotime($fechaActual) - strtotime($_SESSION['fechaIngreso']));
+    //Hora Ingreso
+    $fechaSoloHora = date('H:i', strtotime($_SESSION['fechaIngreso']));
+    //Cierra sesión después de 3600 milisegundos = 60 minutos de inactividad
+    if (isset($_SESSION['fechaIngreso'])) {
+      if($tiempoTranscurrido >= 1500){
+        header("location: /Controlador/logout.php");
+      }else{
+        $_SESSION['fechaIngreso']=$fechaActual;
+      }
+    }
+
     if ($_SESSION['id_roll'] == 1) {
       header("location: cargaMasiva");
     }
@@ -40,29 +54,30 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
 <link href='../source/img/favicon.ico' rel='icon' type='image/x-icon'/>
 
 </head>
-<!--Deshabiilita inspeccionar elemento <body> -->
-<!-- <script type="text/javascript">
-// document.oncontextmenu=inhabilitar;
-//Deshabiilita clic derecho de toda la pagina
-// document.onmousedown=anularBotonDerecho;
-// document.oncontextmenu=new Function("return false");
-// function inhabilitar(){
-//        alert ("Esta función está inhabilitada.\n\nPerdonen las molestias.")
-//        return false
-// }
-// function anularBotonDerecho(e) {
-//  if (navigator.appName == 'Netscape'
-//        && (e.which == 3 || e.which == 2)){
-//    alert(sMensaje);
-//    return false;
-//  } else if (navigator.appName == 'Microsoft Internet Explorer'
-//        && (event.button == 2)) {
-//    alert(sMensaje);
-//  }
+
+<script type="text/javascript">
+document.oncontextmenu=inhabilitar;
+
+document.onmousedown=anularBotonDerecho;
+document.oncontextmenu=new Function("return false");
+function inhabilitar(){
+       alert ("Esta función está inhabilitada.\n\nPerdonen las molestias.")
+       return false
 }
-</script> -->
-<body>
-<!-- onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"" -->
+function anularBotonDerecho(e) {
+ if (navigator.appName == 'Netscape'
+       && (e.which == 3 || e.which == 2)){
+   alert(sMensaje);
+   return false;
+ } else if (navigator.appName == 'Microsoft Internet Explorer'
+       && (event.button == 2)) {
+   alert(sMensaje);
+ }
+}
+</script>
+<body onmousedown="anularBotonDerecho(event); oncontextmenu="return false" onkeydown="return false"" >
+  <audio src="../source/sonidos/intro.mp3" preload autoplay="true"></audio>
+
 <!-- barra de navegacion -->
 <nav class="navbar navbar-inverse navbar-juego">
 <div class="container-fluid">
@@ -128,7 +143,8 @@ if ($_SESSION['validacion'] == 1 && $_SESSION['verificaSesion'] == 1) {
                    <input type="hidden" id="respCorrec" name="respCorrec" value="0"/>
                    <input type="hidden" name="respSeleccionada" id="respSeleccionada" value="0"/>
                    <input type="hidden" name="intento" id="intento" value="1"/>
-                    <button type="submit" name="clicJugar" class="opcion encorefois"><p><span class="glyphicon glyphicon-play" aria-hidden="true"></span> JUGAR</p></button>
+                   <input type="hidden" name="searchQuestion" value="ok"/>
+                    <button type="submit" name="clicJugar" class="opcion encorefois" ><p><span class="glyphicon glyphicon-play" aria-hidden="true"></span> JUGAR</p></button>
                  </div>
                </div>
             </fieldset>
